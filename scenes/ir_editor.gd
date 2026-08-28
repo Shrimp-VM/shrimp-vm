@@ -8,10 +8,17 @@ class_name ShrimpIREditor
 	"body": []
 }
 
+@onready var openBtn: Button = $%openBtn
+@onready var fileOpener: FileDialog = $%fileOpener
 @onready var deskWrapper: Control = $%wrapper
 @onready var treeCenter: Control = $%center
 
 func _ready() -> void:
+	openBtn.pressed.connect(
+		func():
+			fileOpener.popup()
+			load_file(await fileOpener.file_selected)
+	)
 	rebuild()
 
 func rebuild():
@@ -27,3 +34,15 @@ func rebuild():
 	treeCenter.add_child(instance)
 	instance.in_desk = false
 	instance.rebuild(ShrimpVMUtil.find_ir_node(treeData.type).get_wrapper_schema(), treeData)
+func load_file(filepath: String) -> int:
+	var file = FileAccess.open(filepath, FileAccess.ModeFlags.READ)
+	if !file:
+		return file.get_open_error()
+	var json = JSON.new()
+	var state = json.parse(file.get_as_text())
+	if state != OK:
+		return state
+	print(json.data)
+	treeData = json.data
+	rebuild()
+	return OK

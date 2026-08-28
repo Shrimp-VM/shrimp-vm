@@ -2,12 +2,25 @@
 
 [ext_resource type="Script" uid="uid://bismlewml5ugm" path="res://addons/shrimpvm/scenes/ir_editor.gd" id="1_iyhou"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_05f5v"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0, 0, 0, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glela"]
 content_margin_left = 10.0
 content_margin_top = 10.0
 content_margin_right = 10.0
 content_margin_bottom = 10.0
 bg_color = Color(0, 0, 0, 0.6)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_05f5v"]
+content_margin_left = 30.0
+content_margin_top = 30.0
+content_margin_right = 30.0
+content_margin_bottom = 30.0
 
 [node name="IR-Editor" type="CanvasLayer" unique_id=1041740263]
 script = ExtResource("1_iyhou")
@@ -29,27 +42,57 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.6)
 
-[node name="layout" type="HBoxContainer" parent="root" unique_id=2005437578]
+[node name="layout" type="VBoxContainer" parent="root" unique_id=29901121]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 0
 
-[node name="desk" type="PanelContainer" parent="root/layout" unique_id=921050149]
+[node name="nav" type="PanelContainer" parent="root/layout" unique_id=30026888]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_05f5v")
+
+[node name="openBtn" type="Button" parent="root/layout/nav" unique_id=1580073565]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Open"
+
+[node name="fileOpener" type="FileDialog" parent="root/layout/nav/openBtn" unique_id=594379426]
+unique_name_in_owner = true
+oversampling_override = 1.0
+title = "Open a File"
+position = Vector2i(0, 36)
+size = Vector2i(739, 360)
+file_mode = 0
+filters = PackedStringArray("*.sst")
+
+[node name="layout" type="HBoxContainer" parent="root/layout" unique_id=2005437578]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 0
+
+[node name="desk" type="PanelContainer" parent="root/layout/layout" unique_id=921050149]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_glela")
 
-[node name="wrapper" type="VBoxContainer" parent="root/layout/desk" unique_id=1487999515]
+[node name="wrapper" type="VBoxContainer" parent="root/layout/layout/desk" unique_id=1487999515]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="tree" type="ScrollContainer" parent="root/layout" unique_id=1722816101]
+[node name="workspace" type="PanelContainer" parent="root/layout/layout" unique_id=1939912592]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_05f5v")
+
+[node name="wrapper" type="ScrollContainer" parent="root/layout/layout/workspace" unique_id=1722816101]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="center" type="CenterContainer" parent="root/layout/tree" unique_id=1266214890]
+[node name="center" type="CenterContainer" parent="root/layout/layout/workspace/wrapper" unique_id=1266214890]
 unique_name_in_owner = true
 layout_mode = 2

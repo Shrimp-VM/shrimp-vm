@@ -10,6 +10,7 @@ class_name NodeParameter
 func make_template(namx: NodePath) -> Control:
 	return templateWrapper.get_node(namx).duplicate()
 func rebuild(schema: Dictionary, value: Variant):
+	nameLabel.text = schema.label
 	ShrimpVMUtil.disconnect_children(arrayWrapper)
 	ShrimpVMUtil.disconnect_children(valueWrapper)
 	if schema.array:
