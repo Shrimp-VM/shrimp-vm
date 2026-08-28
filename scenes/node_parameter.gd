@@ -17,6 +17,7 @@ func _ready() -> void:
 	unselect()
 	templateWrapper.hide()
 func _gui_input(event: InputEvent) -> void:
+	if schema.type != ShrimpIR.TYPE_ENUM: return
 	if event is InputEventMouseButton:
 		if event.button_index != MouseButton.MOUSE_BUTTON_LEFT: return
 		if !event.pressed: return
@@ -57,6 +58,8 @@ func create_showbox(schema: Dictionary, value: Variant, node: NodeBlock) -> Cont
 			else:
 				var label = Label.new()
 				label.text = "棍母"
+				label.label_settings = LabelSettings.new()
+				label.label_settings.font_color = Color.RED
 				return label
 		_:
 			return Control.new()
@@ -65,8 +68,10 @@ func create_editbox(schema: Dictionary, value: Variant) -> Control:
 		TYPE_STRING, TYPE_FLOAT:
 			var input = TextEdit.new()
 			input.custom_minimum_size = Vector2i(200, 100)
+			input.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
+			input.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 			input.text = "%s" % (value)
-			input.text_changed.connect(eventEmitter.event.emit)
+			input.text_changed.connect(func(): eventEmitter.event.emit(input.text))
 			return input
 		ShrimpIR.TYPE_ENUM:
 			return null

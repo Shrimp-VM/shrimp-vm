@@ -64,6 +64,6 @@ func unselect():
 func create_wrapper() -> Dictionary:
 	var result = {}
 	result.type = data.type
-	for key in schema:
+	for key in schema.attributes:
 		result[key] = NodeParameter.create_initial_value(schema.attributes[key].type)
 	return result

@@ -41,7 +41,7 @@ func rebuild():
 		var instance = preload("./node_block.tscn").instantiate() as NodeBlock
 		instance.inDesk = true
 		node_join(instance, true)
-		instance.rebuild(ir.get_wrapper_schema(), {})
+		instance.rebuild(ir.get_wrapper_schema(), {"type": ir.get_node_type()})
 		instance.clicked.connect(
 			func():
 				if !is_instance_valid(nodePointer): return
@@ -54,6 +54,7 @@ func rebuild():
 					datas.append(newNode)
 				else:
 					nodePointer.data[attributeKey] = newNode
+				rebuild()
 		)
 	ShrimpVMUtil.disconnect_children(treeCenter)
 	var instance = preload("./node_block.tscn").instantiate() as NodeBlock

@@ -34,6 +34,7 @@ func _import(source_file: String, save_path: String, options: Dictionary, platfo
 static func import_from_file(source: String) -> ShrimpIR:
 	var file = FileAccess.open(source, FileAccess.ModeFlags.READ)
 	if file == null:
+		push_error("Failed to read file.")
 		return null
 	var text = file.get_as_text()
 	var json = JSON.new()
@@ -55,16 +56,19 @@ static func import_from_file(source: String) -> ShrimpIR:
 		push_error("First node must be a dictionary.")
 		return null
 static func create_ir(from: Dictionary) -> ShrimpIR:
+	if !is_instance_valid(from):
+		push_error("Cannot create IR-Node from null.")
+		return null
 	for node in ShrimpVMUtil.get_ir_nodes():
 		if node == null:
-			push_warning("Failed to load node script: %s" % node)
+			push_warning("Failed to load node script: %s." % node)
 			continue
 		if node.get_node_type() == from.type:
 			var result = node.create_from(from)
 			if result is not ShrimpIR:
-				push_error("Broken node %s: not created an IR-Node" % node)
+				push_error("Broken node %s: not created an IR-Node." % node)
 				return null
 			result.node_type = from.type
 			return result
-	push_error("Unknown IR-Node type: %s" % from.type)
+	push_error("Unknown IR-Node type: %s." % from.type)
 	return null
