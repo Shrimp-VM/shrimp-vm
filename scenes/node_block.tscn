@@ -40,16 +40,18 @@ border_width_bottom = 2
 border_color = Color(1, 1, 1, 1)
 
 [node name="NodeBlock" type="PanelContainer" unique_id=1255986660]
-offset_right = 142.0
+offset_right = 102.0
 offset_bottom = 43.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_0pwqf")
 script = ExtResource("1_0pwqf")
 
 [node name="anchor" type="Control" parent="." unique_id=212837457]
 layout_mode = 2
+mouse_filter = 1
 
 [node name="selection" type="Panel" parent="anchor" unique_id=451766274]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
@@ -60,6 +62,7 @@ offset_right = 10.0
 offset_bottom = 10.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_0pwqf")
 
 [node name="wrapper" type="VBoxContainer" parent="." unique_id=79488617]
@@ -68,16 +71,19 @@ theme_override_constants/separation = 0
 
 [node name="node" type="PanelContainer" parent="wrapper" unique_id=488213655]
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_05f5v")
 
 [node name="name" type="Label" parent="wrapper/node" unique_id=1731801596]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 1
 text = "Root Node"
 
 [node name="parameters" type="PanelContainer" parent="wrapper" unique_id=1293641701]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_5xh4d")
 
 [node name="wrapper" type="VBoxContainer" parent="wrapper/parameters" unique_id=274422648]

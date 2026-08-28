@@ -34,7 +34,6 @@ func create_showbox(schema: Dictionary, value: Variant, node: NodeBlock) -> Cont
 			instance.parent = node
 			instance.rebuild(ShrimpVMUtil.find_ir_node(value.type).get_wrapper_schema(), value)
 			remove_child(instance)
-			node.mark_selection.emit(instance)
 			return instance
 		_:
 			return Control.new()

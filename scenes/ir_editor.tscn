@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bismlewml5ugm" path="res://addons/shrimpvm/scenes/ir_editor.gd" id="1_iyhou"]
 [ext_resource type="Script" uid="uid://drxoblkew75eu" path="res://addons/shrimpvm/shrimp_vm.gd" id="2_iyhou"]
+[ext_resource type="Script" uid="uid://chc23i883u687" path="res://addons/shrimpvm/scenes/editor_workspace.gd" id="3_ohykq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_05f5v"]
 content_margin_left = 10.0
@@ -101,9 +102,11 @@ layout_mode = 2
 theme_override_constants/separation = 10
 
 [node name="workspace" type="PanelContainer" parent="root/layout/layout" unique_id=1939912592]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_05f5v")
+script = ExtResource("3_ohykq")
 
 [node name="wrapper" type="ScrollContainer" parent="root/layout/layout/workspace" unique_id=1722816101]
 layout_mode = 2
@@ -115,18 +118,19 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="inspector" type="PanelContainer" parent="root/layout/layout" unique_id=815968616]
+[node name="inspector" type="PanelContainer" parent="root/layout/layout/workspace" unique_id=815968616]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 8
 theme_override_styles/panel = SubResource("StyleBoxFlat_glela")
 
-[node name="wrapper" type="VBoxContainer" parent="root/layout/layout/inspector" unique_id=743684548]
+[node name="wrapper" type="VBoxContainer" parent="root/layout/layout/workspace/inspector" unique_id=743684548]
 layout_mode = 2
 
-[node name="title" type="Label" parent="root/layout/layout/inspector/wrapper" unique_id=1672490136]
+[node name="title" type="Label" parent="root/layout/layout/workspace/inspector/wrapper" unique_id=1672490136]
 layout_mode = 2
 text = "检查器"
 
-[node name="attributes" type="VBoxContainer" parent="root/layout/layout/inspector/wrapper" unique_id=150692367]
+[node name="attributes" type="VBoxContainer" parent="root/layout/layout/workspace/inspector/wrapper" unique_id=150692367]
 unique_name_in_owner = true
 layout_mode = 2
