@@ -25,33 +25,40 @@ func _get_import_options(path: String, preset_index: int) -> Array[Dictionary]:
 		}
 	]
 func _import(source_file: String, save_path: String, options: Dictionary, platform_variants: Array[String], gen_files: Array[String]) -> Error:
-	var file = FileAccess.open(source_file, FileAccess.ModeFlags.READ)
+	var result = import_from_file(source_file, options)
+	if result is ShrimpIR:
+		return ResourceSaver.save(result, "%s.%s" % [save_path, _get_save_extension()])
+	else:
+		return ERR_PARSE_ERROR
+
+func import_from_file(source: String, options: Dictionary) -> ShrimpIR:
+	var file = FileAccess.open(source, FileAccess.ModeFlags.READ)
 	if file == null:
-		return file.get_open_error()
+		return null
 	var text = file.get_as_text()
 	var json = JSON.new()
 	var err = json.parse(text)
 	if err != OK:
 		push_error("Failed to parse json data.")
-		return ERR_PARSE_ERROR
+		return null
 	var data = json.data
 	if data is Dictionary:
 		var first = create_ir(data, options)
 		if !first:
 			push_error("Failed to create IR-Node.")
-			return ERR_PARSE_ERROR
+			return null
 		if first.node_type != ShrimpRootNode.get_node_type():
 			push_error("Must start with a root node.")
-			return ERR_PARSE_ERROR
-		return ResourceSaver.save(first, "%s.%s" % [save_path, _get_save_extension()])
+			return null
+		return first
 	else:
-		return ERR_PARSE_ERROR
-
+		push_error("First node must be a dictionary.")
+		return null
 func create_ir(from: Dictionary, options: Dictionary) -> ShrimpIR:
 	for i in options.nodes:
 		var node: GDScript = i.get_script()
 		if node == null:
-			push_error("Cannot load IR-Node script: %s" % i)
+			push_warning("Failed to load node script: %s, not a " % i)
 			continue
 		if node.get_node_type() == from.type:
 			var result = node.create_from(from, self, options)
