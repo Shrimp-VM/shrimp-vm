@@ -16,3 +16,5 @@ func readSymbol(key: StringName) -> Variant:
 		return null
 func writeSymbol(key: StringName, value: Variant):
 	symbols.set(key, value)
+func deleteSymbol(key: StringName):
+	symbols.erase(key)
