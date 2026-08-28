@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://twhmsepd8isx"]
 
 [ext_resource type="Script" uid="uid://bismlewml5ugm" path="res://addons/shrimpvm/scenes/ir_editor.gd" id="1_iyhou"]
+[ext_resource type="Script" uid="uid://drxoblkew75eu" path="res://addons/shrimpvm/shrimp_vm.gd" id="2_iyhou"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_05f5v"]
 content_margin_left = 10.0
@@ -14,7 +15,7 @@ content_margin_left = 10.0
 content_margin_top = 10.0
 content_margin_right = 10.0
 content_margin_bottom = 10.0
-bg_color = Color(0, 0, 0, 0.6)
+bg_color = Color(0, 0, 0, 0.4)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_05f5v"]
 content_margin_left = 30.0
@@ -24,6 +25,11 @@ content_margin_bottom = 30.0
 
 [node name="IR-Editor" type="CanvasLayer" unique_id=1041740263]
 script = ExtResource("1_iyhou")
+
+[node name="vm" type="Node" parent="." unique_id=1396633106]
+unique_name_in_owner = true
+script = ExtResource("2_iyhou")
+metadata/_custom_type_script = "uid://drxoblkew75eu"
 
 [node name="root" type="Control" parent="." unique_id=2000783686]
 layout_mode = 3
@@ -55,13 +61,17 @@ theme_override_constants/separation = 0
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_05f5v")
 
-[node name="openBtn" type="Button" parent="root/layout/nav" unique_id=1580073565]
+[node name="wrapper" type="HBoxContainer" parent="root/layout/nav" unique_id=119838587]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="openBtn" type="Button" parent="root/layout/nav/wrapper" unique_id=1580073565]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Open"
 
-[node name="fileOpener" type="FileDialog" parent="root/layout/nav/openBtn" unique_id=594379426]
+[node name="fileOpener" type="FileDialog" parent="root/layout/nav/wrapper/openBtn" unique_id=594379426]
 unique_name_in_owner = true
 oversampling_override = 1.0
 title = "Open a File"
@@ -69,6 +79,12 @@ position = Vector2i(0, 36)
 size = Vector2i(739, 360)
 file_mode = 0
 filters = PackedStringArray("*.sst")
+
+[node name="runBtn" type="Button" parent="root/layout/nav/wrapper" unique_id=98607733]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Run"
 
 [node name="layout" type="HBoxContainer" parent="root/layout" unique_id=2005437578]
 layout_mode = 2
@@ -98,3 +114,19 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="inspector" type="PanelContainer" parent="root/layout/layout" unique_id=815968616]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_glela")
+
+[node name="wrapper" type="VBoxContainer" parent="root/layout/layout/inspector" unique_id=743684548]
+layout_mode = 2
+
+[node name="title" type="Label" parent="root/layout/layout/inspector/wrapper" unique_id=1672490136]
+layout_mode = 2
+text = "检查器"
+
+[node name="attributes" type="VBoxContainer" parent="root/layout/layout/inspector/wrapper" unique_id=150692367]
+unique_name_in_owner = true
+layout_mode = 2

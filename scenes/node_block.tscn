@@ -2,6 +2,18 @@
 
 [ext_resource type="Script" uid="uid://01lhy4c4wwsh" path="res://addons/shrimpvm/scenes/node_block.gd" id="1_0pwqf"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0pwqf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0pwqf"]
+bg_color = Color(0.60038817, 0.60038817, 0.60038817, 0)
+draw_center = false
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(1, 0, 0, 1)
+border_blend = true
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_05f5v"]
 content_margin_left = 10.0
 content_margin_top = 5.0
@@ -27,26 +39,47 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color(1, 1, 1, 1)
 
-[node name="NodeBlock" type="VBoxContainer" unique_id=79488617]
-offset_right = 102.0
+[node name="NodeBlock" type="PanelContainer" unique_id=1255986660]
+offset_right = 142.0
 offset_bottom = 43.0
-theme_override_constants/separation = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_0pwqf")
 script = ExtResource("1_0pwqf")
 
-[node name="node" type="PanelContainer" parent="." unique_id=488213655]
+[node name="anchor" type="Control" parent="." unique_id=212837457]
+layout_mode = 2
+
+[node name="selection" type="Panel" parent="anchor" unique_id=451766274]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_0pwqf")
+
+[node name="wrapper" type="VBoxContainer" parent="." unique_id=79488617]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="node" type="PanelContainer" parent="wrapper" unique_id=488213655]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_05f5v")
 
-[node name="name" type="Label" parent="node" unique_id=1731801596]
+[node name="name" type="Label" parent="wrapper/node" unique_id=1731801596]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Root Node"
 
-[node name="parameters" type="PanelContainer" parent="." unique_id=1293641701]
+[node name="parameters" type="PanelContainer" parent="wrapper" unique_id=1293641701]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_5xh4d")
 
-[node name="wrapper" type="VBoxContainer" parent="parameters" unique_id=274422648]
+[node name="wrapper" type="VBoxContainer" parent="wrapper/parameters" unique_id=274422648]
 unique_name_in_owner = true
 layout_mode = 2

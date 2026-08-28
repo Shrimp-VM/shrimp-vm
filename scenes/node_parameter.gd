@@ -12,32 +12,39 @@ func _ready() -> void:
 
 func make_template(namx: NodePath) -> Control:
 	return templateWrapper.get_node(namx).duplicate()
-func rebuild(schema: Dictionary, value: Variant):
+func rebuild(schema: Dictionary, value: Variant, node: NodeBlock):
 	nameLabel.text = schema.label
 	ShrimpVMUtil.disconnect_children(arrayWrapper)
 	ShrimpVMUtil.disconnect_children(valueWrapper)
 	if schema.get("array", false):
 		for item in value:
-			arrayWrapper.add_child(create_primary_parameter(schema, item))
+			arrayWrapper.add_child(create_showbox(schema, item, node))
 	else:
-		valueWrapper.add_child(create_primary_parameter(schema, value))
-func create_primary_parameter(schema: Dictionary, value: Variant):
+		valueWrapper.add_child(create_showbox(schema, value, node))
+func create_showbox(schema: Dictionary, value: Variant, node: NodeBlock) -> Control:
 	match schema.type:
-		TYPE_FLOAT:
-			var input = make_template("numberInput")
-			if input is LineEdit:
-				input.text = str(value)
-			return input
-		TYPE_STRING:
-			var input = make_template("textInput")
-			if input is LineEdit:
-				input.text = value
+		TYPE_STRING, TYPE_FLOAT:
+			var input = Label.new()
+			input.text = "%s" % (value)
 			return input
 		ShrimpIR.TYPE_ENUM:
-			var irs = ShrimpVMUtil.get_ir_nodes()
-			var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate()
+			var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
 			add_child(instance)
 			instance.in_desk = false
+			instance.parent = node
 			instance.rebuild(ShrimpVMUtil.find_ir_node(value.type).get_wrapper_schema(), value)
 			remove_child(instance)
+			node.mark_selection.emit(instance)
 			return instance
+		_:
+			return Control.new()
+func create_editbox(schema: Dictionary, value: Variant) -> Control:
+	match schema.type:
+		TYPE_STRING, TYPE_FLOAT:
+			var input = LineEdit.new()
+			input.text = "%s" % (value)
+			return input
+		ShrimpIR.TYPE_ENUM:
+			return null
+		_:
+			return null

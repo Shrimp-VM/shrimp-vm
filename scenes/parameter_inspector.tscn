@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://bgp6f3yha4si1"]
+
+[ext_resource type="Script" uid="uid://dv6l00jnwu6hm" path="res://addons/shrimpvm/scenes/parameter_inspector.gd" id="1_5lk73"]
+
+[node name="ParameterInspector" type="HBoxContainer" unique_id=1577221721]
+offset_right = 5.0
+offset_bottom = 23.0
+script = ExtResource("1_5lk73")
+
+[node name="name" type="Label" parent="." unique_id=1920622066]
+unique_name_in_owner = true
+layout_mode = 2
+text = "参数名称"
+
+[node name="editor" type="CenterContainer" parent="." unique_id=704067819]
+unique_name_in_owner = true
+layout_mode = 2
