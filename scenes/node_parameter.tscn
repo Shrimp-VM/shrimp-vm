@@ -44,7 +44,22 @@ text = "Body"
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_y6t73")
 
-[node name="wrapper" type="VBoxContainer" parent="children" unique_id=2005003967]
+[node name="templates" type="VBoxContainer" parent="children" unique_id=318737698]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="textInput" type="LineEdit" parent="children/templates" unique_id=32274155]
+layout_mode = 2
+
+[node name="numberInput" type="LineEdit" parent="children/templates" unique_id=1485942989]
+layout_mode = 2
+
+[node name="array" type="VBoxContainer" parent="children" unique_id=2005003967]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 0
+
+[node name="value" type="CenterContainer" parent="children" unique_id=334177503]
+unique_name_in_owner = true
+layout_mode = 2
