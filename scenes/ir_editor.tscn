@@ -10,19 +10,39 @@ content_margin_top = 10.0
 content_margin_right = 10.0
 content_margin_bottom = 10.0
 bg_color = Color(0, 0, 0, 1)
+border_width_bottom = 10
+border_color = Color(1, 1, 1, 1)
+border_blend = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glela"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(0, 0, 0, 0.4)
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(0, 0, 0, 0.70000005)
+border_color = Color(1, 1, 1, 1)
+border_blend = true
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_05f5v"]
-content_margin_left = 30.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ohykq"]
+content_margin_left = 0.0
 content_margin_top = 30.0
 content_margin_right = 30.0
 content_margin_bottom = 30.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ohykq"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(0, 0, 0, 0.8)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(1, 1, 1, 1)
+border_blend = true
 
 [sub_resource type="LabelSettings" id="LabelSettings_ohykq"]
 font_size = 25
@@ -85,6 +105,19 @@ size = Vector2i(739, 360)
 file_mode = 0
 filters = PackedStringArray("*.sst")
 
+[node name="saveBtn" type="Button" parent="root/layout/nav/wrapper" unique_id=942157068]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+text = "Save"
+
+[node name="fileSaver" type="FileDialog" parent="root/layout/nav/wrapper/saveBtn" unique_id=594606514]
+unique_name_in_owner = true
+oversampling_override = 1.0
+position = Vector2i(0, 36)
+size = Vector2i(739, 360)
+filters = PackedStringArray("*.sst")
+
 [node name="runBtn" type="Button" parent="root/layout/nav/wrapper" unique_id=98607733]
 unique_name_in_owner = true
 layout_mode = 2
@@ -122,27 +155,49 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="inspector" type="PanelContainer" parent="root/layout/layout/workspace" unique_id=815968616]
+[node name="margins" type="PanelContainer" parent="root/layout/layout/workspace" unique_id=963820862]
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_styles/panel = SubResource("StyleBoxEmpty_ohykq")
+
+[node name="inspector" type="PanelContainer" parent="root/layout/layout/workspace/margins" unique_id=815968616]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
-theme_override_styles/panel = SubResource("StyleBoxFlat_glela")
+theme_override_styles/panel = SubResource("StyleBoxFlat_ohykq")
 
-[node name="wrapper" type="VBoxContainer" parent="root/layout/layout/workspace/inspector" unique_id=743684548]
+[node name="wrapper" type="VBoxContainer" parent="root/layout/layout/workspace/margins/inspector" unique_id=743684548]
 layout_mode = 2
 
-[node name="title" type="Label" parent="root/layout/layout/workspace/inspector/wrapper" unique_id=1672490136]
+[node name="title" type="Label" parent="root/layout/layout/workspace/margins/inspector/wrapper" unique_id=1672490136]
 layout_mode = 2
-text = "检查器"
+text = "Inspector"
 label_settings = SubResource("LabelSettings_ohykq")
 horizontal_alignment = 1
 
-[node name="attributes" type="VBoxContainer" parent="root/layout/layout/workspace/inspector/wrapper" unique_id=150692367]
+[node name="attributes" type="VBoxContainer" parent="root/layout/layout/workspace/margins/inspector/wrapper" unique_id=150692367]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="deleteBtn" type="Button" parent="root/layout/layout/workspace/inspector/wrapper" unique_id=1007425784]
+[node name="deleteBtn" type="Button" parent="root/layout/layout/workspace/margins/inspector/wrapper" unique_id=1007425784]
 unique_name_in_owner = true
 layout_mode = 2
-text = "删除节点"
+text = "Delete Node"
+
+[node name="fileManager" type="PanelContainer" parent="root/layout/layout" unique_id=533633626]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_glela")
+script = ExtResource("3_ohykq")
+
+[node name="wrapper" type="VBoxContainer" parent="root/layout/layout/fileManager" unique_id=442025681]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="title" type="Label" parent="root/layout/layout/fileManager/wrapper" unique_id=1322068035]
+layout_mode = 2
+text = "Script Management"
+
+[node name="files" type="VBoxContainer" parent="root/layout/layout/fileManager/wrapper" unique_id=210109251]
+layout_mode = 2
+size_flags_vertical = 3

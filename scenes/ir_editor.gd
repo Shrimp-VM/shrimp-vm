@@ -10,8 +10,10 @@ class_name ShrimpIREditor
 
 @onready var vm: ShrimpVM = $%vm
 @onready var openBtn: Button = $%openBtn
+@onready var saveBtn: Button = $%saveBtn
 @onready var runBtn: Button = $%runBtn
 @onready var fileOpener: FileDialog = $%fileOpener
+@onready var fileSaver: FileDialog = $%fileSaver
 @onready var deskWrapper: Control = $%wrapper
 @onready var workspace: EditorWorkspace = $%workspace
 @onready var treeCenter: Control = $%center
@@ -26,12 +28,17 @@ func _ready() -> void:
 	openBtn.pressed.connect(
 		func():
 			fileOpener.popup()
-			load_file(await fileOpener.file_selected)
+			load_from(await fileOpener.file_selected)
+	)
+	saveBtn.pressed.connect(
+		func():
+			fileSaver.popup()
+			save_to(await fileSaver.file_selected)
 	)
 	runBtn.pressed.connect(
 		func():
 			print("正在运行IR", treeData)
-			vm.execute(ShrimpSyntaxTreeImporter.create_ir(treeData), debugContext)
+			vm.execute(ShrimpSyntaxTreeImporter.compile(treeData), debugContext)
 	)
 	workspace.clicked.connect(func(): select(null))
 	deleteBtn.pressed.connect(
@@ -76,7 +83,7 @@ func node_join(node: NodeBlock, desk: bool):
 		deskWrapper.add_child(node)
 	else:
 		treeCenter.add_child(node)
-func load_file(filepath: String) -> int:
+func load_from(filepath: String) -> int:
 	var file = FileAccess.open(filepath, FileAccess.ModeFlags.READ)
 	if !file:
 		return file.get_open_error()
@@ -89,6 +96,15 @@ func load_file(filepath: String) -> int:
 func load_data(data: Dictionary):
 	treeData = data
 	rebuild()
+func save_data(indent: bool = false):
+	var json = JSON.new()
+	return json.stringify(treeData, "    " if indent else "")
+func save_to(filepath: String):
+	var file = FileAccess.open(filepath, FileAccess.ModeFlags.WRITE)
+	if !file:
+		return file.get_open_error()
+	file.store_string(save_data())
+	return OK
 func select(node: NodeBlock):
 	if is_instance_valid(nodePointer):
 		nodePointer.unselect()

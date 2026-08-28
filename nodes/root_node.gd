@@ -13,7 +13,7 @@ static func get_node_type() -> String:
 	return "root"
 static func create_from(wrapper: Dictionary) -> ShrimpRootNode:
 	var result = ShrimpRootNode.new()
-	result.body = ShrimpSyntaxTreeImporter.create_ir_body(wrapper.body)
+	result.body = ShrimpSyntaxTreeImporter.compile_body(wrapper.body)
 	return result
 static func get_wrapper_schema() -> Dictionary[String, Variant]:
 	return super.get_wrapper_schema().merged({
