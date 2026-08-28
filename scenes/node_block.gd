@@ -8,7 +8,7 @@ class_name NodeBlock
 var in_desk: bool = false
 
 func rebuild(schema: Dictionary, data: Dictionary):
-	parameterPanel.visible = !in_desk
+	parameterPanel.visible = !in_desk && len(schema.attributes) > 0
 	nameLabel.text = schema.name
 	ShrimpVMUtil.disconnect_children(parameterWrapper)
 	if !in_desk:

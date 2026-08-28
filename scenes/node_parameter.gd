@@ -7,6 +7,9 @@ class_name NodeParameter
 @onready var arrayWrapper: Control = $%array
 @onready var valueWrapper: Control = $%value
 
+func _ready() -> void:
+	templateWrapper.hide()
+
 func make_template(namx: NodePath) -> Control:
 	return templateWrapper.get_node(namx).duplicate()
 func rebuild(schema: Dictionary, value: Variant):
@@ -21,9 +24,15 @@ func rebuild(schema: Dictionary, value: Variant):
 func create_primary_parameter(schema: Dictionary, value: Variant):
 	match schema.type:
 		TYPE_FLOAT:
-			return make_template("numberInput")
+			var input = make_template("numberInput")
+			if input is LineEdit:
+				input.text = str(value)
+			return input
 		TYPE_STRING:
-			return make_template("textInput")
+			var input = make_template("textInput")
+			if input is LineEdit:
+				input.text = value
+			return input
 		ShrimpIR.TYPE_ENUM:
 			var irs = ShrimpVMUtil.get_ir_nodes()
 			var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate()
