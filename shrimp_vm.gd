@@ -2,7 +2,7 @@
 extends Node
 class_name ShrimpVM
 
-@export_tool_button("运行") var run = executeRootNode
+@export_tool_button("Run") var run = executeRootNode
 @export var rootNode: ShrimpIR
 
 func _ready() -> void:
