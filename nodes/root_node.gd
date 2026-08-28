@@ -18,3 +18,7 @@ static func create_from(wrapper: Dictionary, importer: ShrimpSyntaxTreeImporter,
 	for node in wrapper.body:
 		result.body.append(importer.create_ir(node, options))
 	return result
+static func get_wrapper_schema() -> Dictionary[String, Variant]:
+	return super.get_wrapper_schema().merged({
+		"name": "Root Node"
+	}, true)

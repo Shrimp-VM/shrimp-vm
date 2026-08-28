@@ -56,7 +56,7 @@ func import_from_file(source: String, options: Dictionary) -> ShrimpIR:
 		return null
 func create_ir(from: Dictionary, options: Dictionary) -> ShrimpIR:
 	for i in options.nodes:
-		var node: GDScript = i.get_script()
+		var node: ShrimpIR = i as ShrimpIR
 		if node == null:
 			push_warning("Failed to load node script: %s, not a " % i)
 			continue
