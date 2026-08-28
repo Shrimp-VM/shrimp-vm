@@ -28,9 +28,9 @@ border_color = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5xh4d"]
 content_margin_left = 20.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
 bg_color = Color(1, 0, 0, 1)
 draw_center = false
 border_width_left = 2
@@ -51,6 +51,7 @@ mouse_filter = 2
 
 [node name="selection" type="Panel" parent="anchor" unique_id=451766274]
 unique_name_in_owner = true
+visible = false
 z_index = 10
 z_as_relative = false
 layout_mode = 1

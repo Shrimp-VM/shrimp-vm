@@ -29,6 +29,7 @@ func _ready() -> void:
 	)
 	runBtn.pressed.connect(
 		func():
+			print("正在运行IR", treeData)
 			vm.execute(ShrimpSyntaxTreeImporter.create_ir(treeData), debugContext)
 	)
 	workspace.clicked.connect(func(): select(null))

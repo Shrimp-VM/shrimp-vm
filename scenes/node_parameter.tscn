@@ -28,9 +28,9 @@ border_color = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y6t73"]
 content_margin_left = 10.0
-content_margin_top = 5.0
+content_margin_top = 10.0
 content_margin_right = 10.0
-content_margin_bottom = 5.0
+content_margin_bottom = 10.0
 bg_color = Color(0, 0, 1, 1)
 draw_center = false
 border_width_left = 2
@@ -109,7 +109,7 @@ text = "test"
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 0
+theme_override_constants/separation = 5
 
 [node name="value" type="CenterContainer" parent="wrapper/children" unique_id=334177503]
 unique_name_in_owner = true

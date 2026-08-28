@@ -56,7 +56,7 @@ static func import_from_file(source: String) -> ShrimpIR:
 		push_error("First node must be a dictionary.")
 		return null
 static func create_ir(from: Dictionary) -> ShrimpIR:
-	if !is_instance_valid(from):
+	if !from:
 		push_error("Cannot create IR-Node from null.")
 		return null
 	for node in ShrimpVMUtil.get_ir_nodes():

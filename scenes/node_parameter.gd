@@ -17,11 +17,13 @@ func _ready() -> void:
 	unselect()
 	templateWrapper.hide()
 func _gui_input(event: InputEvent) -> void:
-	if schema.type != ShrimpIR.TYPE_ENUM: return
 	if event is InputEventMouseButton:
 		if event.button_index != MouseButton.MOUSE_BUTTON_LEFT: return
 		if !event.pressed: return
-		selected.emit(self)
+		if schema.type == ShrimpIR.TYPE_ENUM:
+			selected.emit(self)
+		else:
+			node.selected.emit(node)
 
 func make_template(namx: NodePath) -> Control:
 	return templateWrapper.get_node(namx).duplicate()
@@ -34,6 +36,8 @@ func rebuild(schemx: Dictionary, value: Variant, nodx: NodeBlock):
 	if schemx.get("array", false):
 		for item in value:
 			arrayWrapper.add_child(create_showbox(schemx, item, nodx))
+			if schemx.type == ShrimpIR.TYPE_ENUM:
+				arrayWrapper.add_child(preload("res://addons/shrimpvm/scenes/step_arrow.tscn").instantiate())
 	else:
 		valueWrapper.add_child(create_showbox(schemx, value, nodx))
 func select():

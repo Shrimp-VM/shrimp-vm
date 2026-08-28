@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://j8k2lj5ccd8k"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3vf43"]
+bg_color = Color(0, 0, 0, 0.75000006)
+border_width_left = 10
+border_width_right = 10
+border_color = Color(1, 1, 1, 1)
+border_blend = true
+corner_radius_bottom_right = 1000
+corner_radius_bottom_left = 1000
+corner_detail = 1
+
+[node name="StepArrow" type="PanelContainer" unique_id=139038155]
+offset_right = 181.0
+offset_bottom = 23.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_3vf43")
+
+[node name="logo" type="Label" parent="." unique_id=1146846093]
+layout_mode = 2
+size_flags_vertical = 1
+text = "↓↓↓"
+horizontal_alignment = 1
+vertical_alignment = 1
