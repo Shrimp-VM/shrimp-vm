@@ -13,6 +13,6 @@ func rebuild(schema: Dictionary, data: Dictionary):
 	ShrimpVMUtil.disconnect_children(parameterWrapper)
 	if !in_desk:
 		for parameter in schema.attributes:
-			var instance = preload("./node_parameter.tscn").instantiate() as NodeParameter
+			var instance = load("res://addons/shrimpvm/scenes/node_parameter.tscn").instantiate() as NodeParameter
 			parameterWrapper.add_child(instance)
 			instance.rebuild(schema.attributes[parameter], data[parameter])

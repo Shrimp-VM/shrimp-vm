@@ -14,8 +14,7 @@ const TYPE_ENUM = -1
 static func get_wrapper_schema() -> Dictionary[String, Variant]:
 	return {
 		"name": "Unnamed IR-Node",
-		"attributes": {},
-		"array": false
+		"attributes": {}
 	}
 static func get_node_type() -> String:
 	assert(false, ERR_NOT_IMPLEMENTED)
