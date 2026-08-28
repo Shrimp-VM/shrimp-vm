@@ -8,7 +8,8 @@ func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
 	var filemgr = context.env.readSymbol("filemgr")
 	if filemgr is ShrimpFileManager:
 		if is_instance_valid(filemgr.currentOpening):
-			filemgr.currentOpening.rename(newName)
+			filemgr.rename(newName)
+			filemgr.rebuild()
 	return
 func decompile() -> Dictionary:
 	return {

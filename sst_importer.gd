@@ -59,7 +59,7 @@ static func import_data(data: Variant) -> ShrimpIR:
 		return null
 static func compile(from: Variant) -> ShrimpIR:
 	if from is not Dictionary:
-		push_error("Can only compile wrapper to IR-Node.")
+		assert(false,"Can only compile wrapper to IR-Node.")
 		return null
 	if !from:
 		push_error("Cannot create IR-Node from null.")

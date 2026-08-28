@@ -23,6 +23,9 @@ func rename(fn: StringName):
 	if !is_instance_valid(currentOpening): return
 	currentOpening.fileName = fn
 	archive()
+func rebuild():
+	if is_instance_valid(currentOpening):
+		currentOpening.rebuild()
 func save(content: String):
 	if !is_instance_valid(currentOpening): return
 	currentOpening.content = content
