@@ -21,14 +21,18 @@ static func disconnect_children(node: Node, excludes: Array = []):
 			node.remove_child(child)
 static func get_importer_setting():
 	return ProjectSettings.get_setting("importer_defaults/%s" % ShrimpSyntaxTreeImporter.IMPORTER_ID)
+static func list_dir(base: String):
+	return Array(
+		Array(DirAccess.get_files_at(base))
+			.filter(func(e: String): return e.ends_with(".gd"))
+			.map(func(e: String): return base.path_join(e))
+	)
 static func get_ir_nodes() -> Array[ShrimpIR]:
 	var base: String = get_importer_setting().ir_script_dir
 	var result: Array[ShrimpIR] = []
 	for i in ShrimpVMUtil.concat_array(
-		["res://addons/shrimpvm/nodes/root_node.gd"],
-		Array(DirAccess.get_files_at(base))
-			.filter(func(e: String): return e.ends_with(".gd"))
-			.map(func(e: String): return base.path_join(e)),
+		list_dir("res://addons/shrimpvm/nodes"),
+		list_dir(get_importer_setting().ir_script_dir),
 	):
 		result.append((load(i) as GDScript).new())
 	return result

@@ -9,9 +9,11 @@ class_name ShrimpIREditor
 }
 
 @onready var vm: ShrimpVM = $%vm
+@onready var fileManager: ShrimpFileManager = $%fileManager
 @onready var openBtn: Button = $%openBtn
 @onready var saveBtn: Button = $%saveBtn
 @onready var runBtn: Button = $%runBtn
+@onready var newFileBtn: Button = $%newBtn
 @onready var fileOpener: FileDialog = $%fileOpener
 @onready var fileSaver: FileDialog = $%fileSaver
 @onready var deskWrapper: Control = $%wrapper
@@ -21,15 +23,17 @@ class_name ShrimpIREditor
 @onready var inspector: Control = $%inspector
 @onready var attributeWrapper: Control = $%attributes
 @onready var deleteBtn: Button = $%deleteBtn
+@onready var filesWrapper: Control = $%files
 var debugContext: ExecutionContext
 var nodePointer: NodeBlock = null
 
 func _ready() -> void:
 	debugContext = ExecutionContext.new()
+	debugContext.env.writeSymbol("filemgr", fileManager)
 	openBtn.pressed.connect(
 		func():
 			fileOpener.popup()
-			load_from(await fileOpener.file_selected)
+			load_file(await fileOpener.file_selected)
 	)
 	saveBtn.pressed.connect(
 		func():
@@ -41,11 +45,20 @@ func _ready() -> void:
 			print("正在运行IR", treeData)
 			vm.execute(ShrimpSyntaxTreeImporter.compile(treeData), debugContext)
 	)
+	newFileBtn.pressed.connect(
+		func():
+			fileManager.add(str(randi_range(100000, 999999)), "{}")
+	)
 	workspace.clicked.connect(func(): select(null))
 	deleteBtn.pressed.connect(
 		func():
 			nodePointer.data.invalid = true
 			rebuild()
+	)
+	fileManager.add_file.connect(filesWrapper.add_child)
+	fileManager.open_file.connect(
+		func(f: VirtualFile):
+			load_json(f.content)
 	)
 	rebuild()
 
@@ -91,6 +104,7 @@ func rebuild():
 	else:
 		select(null)
 		tipLabel.show()
+	fileManager.save(save_data())
 func has_root_node() -> bool:
 	return len(treeData) > 0 && treeData.has("type")
 func mark_selection(node: NodeBlock):
@@ -101,16 +115,16 @@ func node_join(node: NodeBlock, desk: bool):
 		deskWrapper.add_child(node)
 	else:
 		treeCenter.add_child(node)
-func load_from(filepath: String) -> int:
+func load_file(filepath: String):
 	var file = FileAccess.open(filepath, FileAccess.ModeFlags.READ)
 	if !file:
-		return file.get_open_error()
+		return
+	return load_json(file.get_as_text())
+func load_json(text: String):
 	var json = JSON.new()
-	var state = json.parse(file.get_as_text())
-	if state != OK:
-		return state
-	load_data(json.data)
-	return OK
+	if json.parse(text) != OK:
+		return
+	return load_data(json.data)
 func load_data(data: Dictionary):
 	treeData = data
 	rebuild()

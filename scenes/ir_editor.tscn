@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bismlewml5ugm" path="res://addons/shrimpvm/scenes/ir_editor.gd" id="1_iyhou"]
 [ext_resource type="Script" uid="uid://drxoblkew75eu" path="res://addons/shrimpvm/shrimp_vm.gd" id="2_iyhou"]
+[ext_resource type="Script" uid="uid://6uypkkt4063e" path="res://addons/shrimpvm/file_manager.gd" id="3_fjp0f"]
 [ext_resource type="Script" uid="uid://chc23i883u687" path="res://addons/shrimpvm/scenes/editor_workspace.gd" id="3_ohykq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_05f5v"]
@@ -54,6 +55,10 @@ border_blend = true
 font_size = 25
 outline_size = 1
 
+[sub_resource type="LabelSettings" id="LabelSettings_nc1qr"]
+font_size = 20
+outline_size = 1
+
 [node name="IR-Editor" type="CanvasLayer" unique_id=1041740263]
 script = ExtResource("1_iyhou")
 treeData = {}
@@ -62,6 +67,11 @@ treeData = {}
 unique_name_in_owner = true
 script = ExtResource("2_iyhou")
 metadata/_custom_type_script = "uid://drxoblkew75eu"
+
+[node name="fileManager" type="Node" parent="." unique_id=1307891398]
+unique_name_in_owner = true
+script = ExtResource("3_fjp0f")
+metadata/_custom_type_script = "uid://6uypkkt4063e"
 
 [node name="root" type="Control" parent="." unique_id=2000783686]
 layout_mode = 3
@@ -131,6 +141,12 @@ layout_mode = 2
 size_flags_horizontal = 0
 text = "Run"
 
+[node name="newBtn" type="Button" parent="root/layout/nav/wrapper" unique_id=806747857]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 10
+text = "New File"
+
 [node name="layout" type="HBoxContainer" parent="root/layout" unique_id=2005437578]
 layout_mode = 2
 size_flags_vertical = 3
@@ -165,8 +181,8 @@ size_flags_vertical = 3
 [node name="tip" type="Label" parent="root/layout/layout/workspace/wrapper/center" unique_id=287250670]
 unique_name_in_owner = true
 layout_mode = 2
-text = "当前脚本中没有根节点
-请先创建“Root Node”"
+text = "没有根节点。
+建议点一下“Root Node”创建一个，或者其他节点也行"
 label_settings = SubResource("LabelSettings_fjp0f")
 horizontal_alignment = 1
 
@@ -177,6 +193,7 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_ohykq")
 
 [node name="inspector" type="PanelContainer" parent="root/layout/layout/workspace/margins" unique_id=815968616]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_styles/panel = SubResource("StyleBoxFlat_ohykq")
@@ -207,12 +224,14 @@ script = ExtResource("3_ohykq")
 
 [node name="wrapper" type="VBoxContainer" parent="root/layout/layout/fileManager" unique_id=442025681]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 10
 
 [node name="title" type="Label" parent="root/layout/layout/fileManager/wrapper" unique_id=1322068035]
 layout_mode = 2
 text = "Script Management"
+label_settings = SubResource("LabelSettings_nc1qr")
 
 [node name="files" type="VBoxContainer" parent="root/layout/layout/fileManager/wrapper" unique_id=210109251]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3

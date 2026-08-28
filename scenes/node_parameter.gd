@@ -35,7 +35,7 @@ func rebuild(schemx: Dictionary, value: Variant, nodx: NodeBlock):
 	ShrimpVMUtil.disconnect_children(valueWrapper)
 	if schemx.get("array", false):
 		if value is Array:
-			if schemx.type == ShrimpIR.TYPE_ENUM:
+			if typeof(schemx) == TYPE_INT && schemx.type == ShrimpIR.TYPE_ENUM:
 				value = value.filter(func(e): return !e.get("invalid", false))
 			for item in value:
 				arrayWrapper.add_child(create_showbox(schemx, item, nodx))
@@ -44,7 +44,7 @@ func rebuild(schemx: Dictionary, value: Variant, nodx: NodeBlock):
 		else:
 			push_error("array参数的值不是Array")
 	else:
-		if schemx.type == ShrimpIR.TYPE_ENUM:
+		if typeof(schemx) == TYPE_INT && schemx.type == ShrimpIR.TYPE_ENUM:
 			if value is Dictionary:
 				if value.get("invalid", false):
 					return

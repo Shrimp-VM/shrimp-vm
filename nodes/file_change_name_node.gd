@@ -1,0 +1,33 @@
+@tool
+extends ShrimpIR
+class_name ShrimpFileChangeNameNode
+
+@export var newName: String
+
+func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
+	var filemgr = context.env.readSymbol("filemgr")
+	if filemgr is ShrimpFileManager:
+		if is_instance_valid(filemgr.currentOpening):
+			filemgr.currentOpening.rename(newName)
+	return
+func decompile() -> Dictionary:
+	return {
+		"new_name": newName
+	}
+
+static func get_node_type() -> String:
+	return "file_change_name"
+static func create_from(wrapper: Dictionary) -> ShrimpFileChangeNameNode:
+	var result = new()
+	result.newName = wrapper.new_name
+	return result
+static func get_wrapper_schema() -> Dictionary[String, Variant]:
+	return super.get_wrapper_schema().merged({
+		"name": "Change File Name",
+		"attributes": {
+			"new_name": {
+				"type": TYPE_STRING,
+				"label": "New File Name"
+			}
+		}
+	}, true)

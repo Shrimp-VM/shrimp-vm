@@ -1,0 +1,53 @@
+[gd_scene format=3 uid="uid://djlu0xf1suhk"]
+
+[ext_resource type="Script" uid="uid://bpvmao6jthoeh" path="res://addons/shrimpvm/scenes/virtual_file.gd" id="1_rsdkj"]
+[ext_resource type="Texture2D" uid="uid://7xnb1dpko6q1" path="res://addons/shrimpvm/icons/file.png" id="2_kafmh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rsdkj"]
+content_margin_left = 10.0
+content_margin_right = 10.0
+bg_color = Color(0, 0, 0, 0)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_kafmh"]
+color = Color(1, 1, 1, 0.5)
+grow_begin = -3.0
+grow_end = -3.0
+thickness = 2
+vertical = true
+
+[node name="VirtualFile" type="PanelContainer" unique_id=36684926]
+offset_right = 73.0
+offset_bottom = 23.0
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_rsdkj")
+script = ExtResource("1_rsdkj")
+
+[node name="wrapper" type="HBoxContainer" parent="." unique_id=1190472104]
+layout_mode = 2
+size_flags_horizontal = 0
+
+[node name="icon" type="TextureRect" parent="wrapper" unique_id=1117093036]
+custom_minimum_size = Vector2(15, 15)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+texture = ExtResource("2_kafmh")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="sep" type="VSeparator" parent="wrapper" unique_id=2097120944]
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/separator = SubResource("StyleBoxLine_kafmh")
+
+[node name="name" type="Label" parent="wrapper" unique_id=1032112148]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 1
+text = "File.sst"
