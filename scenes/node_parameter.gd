@@ -29,9 +29,9 @@ func create_showbox(schema: Dictionary, value: Variant, node: NodeBlock) -> Cont
 			return input
 		ShrimpIR.TYPE_ENUM:
 			var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
-			add_child(instance)
 			instance.in_desk = false
 			instance.parent = node
+			add_child(instance)
 			instance.rebuild(ShrimpVMUtil.find_ir_node(value.type).get_wrapper_schema(), value)
 			remove_child(instance)
 			return instance

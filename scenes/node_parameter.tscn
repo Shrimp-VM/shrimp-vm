@@ -40,12 +40,17 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Body"
 
+[node name="debug" type="Button" parent="name" unique_id=356742432]
+layout_mode = 2
+size_flags_horizontal = 8
+
 [node name="children" type="PanelContainer" parent="." unique_id=1440198449]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_y6t73")
 
 [node name="templates" type="VBoxContainer" parent="children" unique_id=318737698]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="textShow" type="Label" parent="children/templates" unique_id=2080763787]

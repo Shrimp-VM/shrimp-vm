@@ -33,7 +33,6 @@ func _ready() -> void:
 	)
 	workspace.clicked.connect(func(): select(null))
 	rebuild()
-	select(null)
 
 func rebuild():
 	var irs = ShrimpVMUtil.get_ir_nodes()
@@ -48,6 +47,7 @@ func rebuild():
 	instance.in_desk = false
 	node_join(instance, false)
 	instance.rebuild(ShrimpVMUtil.find_ir_node(treeData.type).get_wrapper_schema(), treeData)
+	select(null)
 func mark_selection(node: NodeBlock):
 	node.selected.connect(select)
 	print("m", node)
@@ -65,9 +65,11 @@ func load_file(filepath: String) -> int:
 	var state = json.parse(file.get_as_text())
 	if state != OK:
 		return state
-	treeData = json.data
-	rebuild()
+	load_data(json.data)
 	return OK
+func load_data(data: Dictionary):
+	treeData = data
+	rebuild()
 func select(node: NodeBlock):
 	if is_instance_valid(currentSelectingNode):
 		currentSelectingNode.unselect()

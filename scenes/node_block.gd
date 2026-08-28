@@ -15,18 +15,19 @@ var data: Dictionary
 var parent: NodeBlock
 
 func _ready() -> void:
+	unselect()
 	mark_selection.connect(
 		func(node: NodeBlock):
 			if is_instance_valid(parent):
 				parent.mark_selection.emit(node)
 	)
-	unselect()
 	if !in_desk:
 		mark_selection.emit(self)
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index != MouseButton.MOUSE_BUTTON_LEFT: return
 		if !event.pressed: return
+		print("click", self.schema)
 		selected.emit(self)
 
 func rebuild(schemx: Dictionary, datx: Dictionary):
