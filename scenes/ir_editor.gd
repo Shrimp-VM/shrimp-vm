@@ -16,12 +16,10 @@ class_name ShrimpIREditor
 @onready var treeCenter: Control = $%center
 @onready var inspector: Control = $%inspector
 @onready var attributeWrapper: Control = $%attributes
-var importer: ShrimpSyntaxTreeImporter
 var debugContext: ExecutionContext
 var currentSelectingNode: NodeBlock = null
 
 func _ready() -> void:
-	importer = ShrimpSyntaxTreeImporter.new()
 	debugContext = ExecutionContext.new()
 	openBtn.pressed.connect(
 		func():

@@ -20,10 +20,12 @@ func _ready() -> void:
 			if is_instance_valid(parent):
 				parent.mark_selection.emit(node)
 	)
+	unselect()
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index != MouseButton.MOUSE_BUTTON_LEFT: return
 		if !event.pressed: return
+		print("test")
 		selected.emit(self)
 
 func rebuild(schemx: Dictionary, datx: Dictionary):
