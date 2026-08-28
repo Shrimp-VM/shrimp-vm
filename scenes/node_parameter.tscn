@@ -83,6 +83,7 @@ mouse_filter = 1
 text = "Body"
 
 [node name="debug" type="Button" parent="wrapper/name" unique_id=356742432]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 mouse_filter = 1

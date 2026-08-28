@@ -18,7 +18,7 @@ class_name ShrimpIREditor
 @onready var inspector: Control = $%inspector
 @onready var attributeWrapper: Control = $%attributes
 var debugContext: ExecutionContext
-var currentSelectingNode: NodeBlock = null
+var nodePointer: NodeBlock = null
 
 func _ready() -> void:
 	debugContext = ExecutionContext.new()
@@ -42,6 +42,19 @@ func rebuild():
 		instance.inDesk = true
 		node_join(instance, true)
 		instance.rebuild(ir.get_wrapper_schema(), {})
+		instance.clicked.connect(
+			func():
+				if !is_instance_valid(nodePointer): return
+				if !is_instance_valid(nodePointer.paramPointer): return
+				if nodePointer.paramPointer.schema.type != ShrimpIR.TYPE_ENUM: return
+				var attributeKey = nodePointer.paramPointer.name
+				var newNode = instance.create_wrapper()
+				if nodePointer.paramPointer.schema.get("array", false):
+					var datas = nodePointer.data[attributeKey] as Array
+					datas.append(newNode)
+				else:
+					nodePointer.data[attributeKey] = newNode
+		)
 	ShrimpVMUtil.disconnect_children(treeCenter)
 	var instance = preload("./node_block.tscn").instantiate() as NodeBlock
 	instance.inDesk = false
@@ -70,9 +83,10 @@ func load_data(data: Dictionary):
 	treeData = data
 	rebuild()
 func select(node: NodeBlock):
-	if is_instance_valid(currentSelectingNode):
-		currentSelectingNode.unselect()
-	currentSelectingNode = node
+	if is_instance_valid(nodePointer):
+		nodePointer.unselect()
+		nodePointer.paramPointer = null
+	nodePointer = node
 	if is_instance_valid(node):
 		node.select()
 		ShrimpVMUtil.disconnect_children(attributeWrapper)

@@ -11,6 +11,7 @@ signal selected(parameter: NodeParameter)
 @onready var valueWrapper: Control = $%value
 var eventEmitter: ShrimpVMUtil.EventEmitter
 var node: NodeBlock
+var schema: Dictionary
 
 func _ready() -> void:
 	unselect()
@@ -23,16 +24,21 @@ func _gui_input(event: InputEvent) -> void:
 
 func make_template(namx: NodePath) -> Control:
 	return templateWrapper.get_node(namx).duplicate()
-func rebuild(schema: Dictionary, value: Variant, nodx: NodeBlock):
+func rebuild(schemx: Dictionary, value: Variant, nodx: NodeBlock):
+	schema = schemx
 	node = nodx
-	nameLabel.text = schema.label
+	nameLabel.text = schemx.label
 	ShrimpVMUtil.disconnect_children(arrayWrapper)
 	ShrimpVMUtil.disconnect_children(valueWrapper)
-	if schema.get("array", false):
+	if schemx.get("array", false):
 		for item in value:
-			arrayWrapper.add_child(create_showbox(schema, item, nodx))
+			arrayWrapper.add_child(create_showbox(schemx, item, nodx))
 	else:
-		valueWrapper.add_child(create_showbox(schema, value, nodx))
+		valueWrapper.add_child(create_showbox(schemx, value, nodx))
+func select():
+	selectionBar.show()
+func unselect():
+	selectionBar.hide()
 func create_showbox(schema: Dictionary, value: Variant, node: NodeBlock) -> Control:
 	match schema.type:
 		TYPE_STRING, TYPE_FLOAT:
@@ -61,7 +67,14 @@ func create_editbox(schema: Dictionary, value: Variant) -> Control:
 			return null
 		_:
 			return null
-func select():
-	selectionBar.show()
-func unselect():
-	selectionBar.hide()
+
+static func create_initial_value(type: int) -> Variant:
+	match type:
+		TYPE_STRING:
+			return "棍母"
+		TYPE_FLOAT:
+			return 0
+		ShrimpIR.TYPE_ENUM:
+			return null
+		_:
+			return NAN
