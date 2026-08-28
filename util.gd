@@ -27,6 +27,15 @@ static func list_dir(base: String):
 			.filter(func(e: String): return e.ends_with(".gd"))
 			.map(func(e: String): return base.path_join(e))
 	)
+static func get_categoried_irs() -> Dictionary[String, Array]:
+	var irs = get_ir_nodes()
+	var result: Dictionary[String, Array] = {}
+	for ir in irs:
+		var category = ir.get_category_tag()
+		if !result.has(category):
+			result[category] = []
+		result[category].append(ir)
+	return result
 static func get_ir_nodes() -> Array[ShrimpIR]:
 	var base: String = get_importer_setting().ir_script_dir
 	var result: Array[ShrimpIR] = []

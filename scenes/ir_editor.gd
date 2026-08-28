@@ -42,12 +42,13 @@ func _ready() -> void:
 	)
 	runBtn.pressed.connect(
 		func():
+			fileManager.save(save_data())
 			print("正在运行IR", treeData)
 			vm.execute(ShrimpSyntaxTreeImporter.compile(treeData), debugContext)
 	)
 	newFileBtn.pressed.connect(
 		func():
-			fileManager.add(str(randi_range(100000, 999999)), "{}")
+			fileManager.add("%d.sst" % randi_range(100000, 999999), "{}")
 	)
 	workspace.clicked.connect(func(): select(null))
 	deleteBtn.pressed.connect(
@@ -60,34 +61,39 @@ func _ready() -> void:
 		func(f: VirtualFile):
 			load_json(f.content)
 	)
+	fileManager.inarchive()
 	rebuild()
 
 func rebuild():
-	var irs = ShrimpVMUtil.get_ir_nodes()
 	ShrimpVMUtil.disconnect_children(deskWrapper)
-	for ir in irs:
-		var instance = preload("./node_block.tscn").instantiate() as NodeBlock
-		instance.inDesk = true
-		node_join(instance, true)
-		instance.rebuild(ir.get_wrapper_schema(), {"type": ir.get_node_type()})
-		instance.clicked.connect(
-			func():
-				if has_root_node():
-					if !is_instance_valid(nodePointer): return
-					if !is_instance_valid(nodePointer.paramPointer): return
-					if nodePointer.paramPointer.schema.type != ShrimpIR.TYPE_ENUM: return
-					var attributeKey = nodePointer.paramPointer.name
-					var newNode = instance.create_wrapper()
-					if nodePointer.paramPointer.schema.get("array", false):
-						var datas = nodePointer.data[attributeKey] as Array
-						datas.append(newNode)
+	var categories = ShrimpVMUtil.get_categoried_irs()
+	for category in categories:
+		var title = Label.new()
+		title.text = category
+		deskWrapper.add_child(title)
+		for ir in categories[category]:
+			var instance = preload("./node_block.tscn").instantiate() as NodeBlock
+			instance.inDesk = true
+			node_join(instance, true)
+			instance.rebuild(ir.get_wrapper_schema(), {"type": ir.get_node_type()})
+			instance.clicked.connect(
+				func():
+					if has_root_node():
+						if !is_instance_valid(nodePointer): return
+						if !is_instance_valid(nodePointer.paramPointer): return
+						if nodePointer.paramPointer.schema.type != ShrimpIR.TYPE_ENUM: return
+						var attributeKey = nodePointer.paramPointer.name
+						var newNode = instance.create_wrapper()
+						if nodePointer.paramPointer.schema.get("array", false):
+							var datas = nodePointer.data[attributeKey] as Array
+							datas.append(newNode)
+						else:
+							nodePointer.data[attributeKey] = newNode
 					else:
-						nodePointer.data[attributeKey] = newNode
-				else:
-					treeData = instance.create_wrapper()
+						treeData = instance.create_wrapper()
+						rebuild()
 					rebuild()
-				rebuild()
-		)
+			)
 	ShrimpVMUtil.disconnect_children(treeCenter, [tipLabel])
 	if treeData.get("invalid", false):
 		treeData = {}
@@ -104,7 +110,6 @@ func rebuild():
 	else:
 		select(null)
 		tipLabel.show()
-	fileManager.save(save_data())
 func has_root_node() -> bool:
 	return len(treeData) > 0 && treeData.has("type")
 func mark_selection(node: NodeBlock):

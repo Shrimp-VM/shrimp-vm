@@ -18,8 +18,5 @@ func _gui_input(event: InputEvent) -> void:
 		if !event.pressed: return
 		opened.emit(self)
 
-func rename(base: StringName):
-	fileName = "%s.sst" % base
-	rebuild()
 func rebuild():
 	nameLabel.text = fileName

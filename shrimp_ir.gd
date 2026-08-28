@@ -12,6 +12,8 @@ const TYPE_ENUM = -1
 func decompile() -> Dictionary:
 	return {}
 
+static func get_category_tag() -> String:
+	return "Base"
 static func get_node_type() -> String:
 	assert(false, ERR_NOT_IMPLEMENTED)
 	return "unknown_node"
