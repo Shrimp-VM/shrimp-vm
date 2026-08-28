@@ -24,6 +24,10 @@ content_margin_top = 30.0
 content_margin_right = 30.0
 content_margin_bottom = 30.0
 
+[sub_resource type="LabelSettings" id="LabelSettings_ohykq"]
+font_size = 25
+outline_size = 1
+
 [node name="IR-Editor" type="CanvasLayer" unique_id=1041740263]
 script = ExtResource("1_iyhou")
 
@@ -130,6 +134,8 @@ layout_mode = 2
 [node name="title" type="Label" parent="root/layout/layout/workspace/inspector/wrapper" unique_id=1672490136]
 layout_mode = 2
 text = "检查器"
+label_settings = SubResource("LabelSettings_ohykq")
+horizontal_alignment = 1
 
 [node name="attributes" type="VBoxContainer" parent="root/layout/layout/workspace/inspector/wrapper" unique_id=150692367]
 unique_name_in_owner = true

@@ -9,7 +9,7 @@ signal mark_selection(node: NodeBlock)
 @onready var nameLabel: Label = $%name
 @onready var parameterPanel: Control = $%parameters
 @onready var parameterWrapper: Control = $%wrapper
-var in_desk: bool = false
+var inDesk: bool = false
 var schema: Dictionary
 var data: Dictionary
 var parent: NodeBlock
@@ -21,22 +21,22 @@ func _ready() -> void:
 			if is_instance_valid(parent):
 				parent.mark_selection.emit(node)
 	)
-	if !in_desk:
-		mark_selection.emit(self)
+	mark_selection.emit(self)
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index != MouseButton.MOUSE_BUTTON_LEFT: return
 		if !event.pressed: return
 		print("click", self.schema)
-		selected.emit(self)
+		if !inDesk:
+			selected.emit(self)
 
 func rebuild(schemx: Dictionary, datx: Dictionary):
 	schema = schemx
 	data = datx
-	parameterPanel.visible = !in_desk && len(schemx.attributes) > 0
+	parameterPanel.visible = !inDesk && len(schemx.attributes) > 0
 	nameLabel.text = schemx.name
 	ShrimpVMUtil.disconnect_children(parameterWrapper)
-	if !in_desk:
+	if !inDesk:
 		for attributeKey in schemx.attributes:
 			var instance = load("res://addons/shrimpvm/scenes/node_parameter.tscn").instantiate() as NodeParameter
 			parameterWrapper.add_child(instance)

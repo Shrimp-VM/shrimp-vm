@@ -30,7 +30,7 @@ func create_showbox(schema: Dictionary, value: Variant, node: NodeBlock) -> Cont
 			return input
 		ShrimpIR.TYPE_ENUM:
 			var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
-			instance.in_desk = false
+			instance.inDesk = false
 			instance.parent = node
 			add_child(instance)
 			instance.rebuild(ShrimpVMUtil.find_ir_node(value.type).get_wrapper_schema(), value)
@@ -41,7 +41,8 @@ func create_showbox(schema: Dictionary, value: Variant, node: NodeBlock) -> Cont
 func create_editbox(schema: Dictionary, value: Variant) -> Control:
 	match schema.type:
 		TYPE_STRING, TYPE_FLOAT:
-			var input = LineEdit.new()
+			var input = TextEdit.new()
+			input.custom_minimum_size = Vector2i(200, 100)
 			input.text = "%s" % (value)
 			input.text_changed.connect(eventEmitter.event.emit)
 			return input

@@ -39,12 +39,12 @@ func rebuild():
 	ShrimpVMUtil.disconnect_children(deskWrapper)
 	for ir in irs:
 		var instance = preload("./node_block.tscn").instantiate() as NodeBlock
-		instance.in_desk = true
+		instance.inDesk = true
 		node_join(instance, true)
 		instance.rebuild(ir.get_wrapper_schema(), {})
 	ShrimpVMUtil.disconnect_children(treeCenter)
 	var instance = preload("./node_block.tscn").instantiate() as NodeBlock
-	instance.in_desk = false
+	instance.inDesk = false
 	node_join(instance, false)
 	instance.rebuild(ShrimpVMUtil.find_ir_node(treeData.type).get_wrapper_schema(), treeData)
 	select(null)
