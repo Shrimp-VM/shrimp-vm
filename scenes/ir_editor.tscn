@@ -1,12 +1,6 @@
 [gd_scene format=3 uid="uid://twhmsepd8isx"]
 
 [ext_resource type="Script" uid="uid://bismlewml5ugm" path="res://addons/shrimpvm/scenes/ir_editor.gd" id="1_iyhou"]
-[ext_resource type="Script" uid="uid://qq17orpp58tj" path="res://addons/shrimpvm/shrimp_ir.gd" id="2_ohykq"]
-[ext_resource type="Script" uid="uid://uw4oee4tvks" path="res://addons/shrimpvm/nodes/root_node.gd" id="3_fjp0f"]
-
-[sub_resource type="Resource" id="Resource_nc1qr"]
-script = ExtResource("3_fjp0f")
-metadata/_custom_type_script = "uid://uw4oee4tvks"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glela"]
 content_margin_left = 10.0
@@ -17,7 +11,6 @@ bg_color = Color(0, 0, 0, 0.6)
 
 [node name="IR-Editor" type="CanvasLayer" unique_id=1041740263]
 script = ExtResource("1_iyhou")
-schemas = Array[ExtResource("2_ohykq")]([SubResource("Resource_nc1qr")])
 
 [node name="root" type="Control" parent="." unique_id=2000783686]
 layout_mode = 3

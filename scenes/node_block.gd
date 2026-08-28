@@ -14,5 +14,5 @@ func rebuild(schema: Dictionary, data: Dictionary):
 	if !in_desk:
 		for parameter in schema.attributes:
 			var instance = preload("./node_parameter.tscn").instantiate() as NodeParameter
-			instance.rebuild(schema.attributes[parameter], data[parameter])
 			parameterWrapper.add_child(instance)
+			instance.rebuild(schema.attributes[parameter], data[parameter])

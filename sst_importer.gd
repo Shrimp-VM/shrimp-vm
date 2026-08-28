@@ -2,8 +2,10 @@
 extends EditorImportPlugin
 class_name ShrimpSyntaxTreeImporter
 
+const IMPORTER_ID = "shrimpvm.shrimpir"
+
 func _get_importer_name() -> String:
-	return "shrimpvm.shrimpir"
+	return IMPORTER_ID
 func _get_visible_name() -> String:
 	return "Shrimp IR Graph"
 func _get_recognized_extensions() -> PackedStringArray:
@@ -15,13 +17,11 @@ func _get_resource_type() -> String:
 func _get_import_options(path: String, preset_index: int) -> Array[Dictionary]:
 	return [
 		{
-			"name": "nodes",
-			"display_name": "IR-Nodes",
-			"type": TYPE_ARRAY,
-			"property_hint": PropertyHint.PROPERTY_HINT_ARRAY_TYPE,
-			"hint_string": "ShrimpIR",
+			"name": "ir_script_dir",
+			"display_name": "IR script directory",
+			"property_hint": PropertyHint.PROPERTY_HINT_DIR,
 			"usage": PROPERTY_USAGE_DEFAULT,
-			"default_value": [ShrimpRootNode.new()]
+			"default_value": ""
 		}
 	]
 func _import(source_file: String, save_path: String, options: Dictionary, platform_variants: Array[String], gen_files: Array[String]) -> Error:
@@ -55,15 +55,14 @@ func import_from_file(source: String, options: Dictionary) -> ShrimpIR:
 		push_error("First node must be a dictionary.")
 		return null
 func create_ir(from: Dictionary, options: Dictionary) -> ShrimpIR:
-	for i in options.nodes:
-		var node: ShrimpIR = i as ShrimpIR
+	for node in ShrimpVMUtil.get_ir_nodes():
 		if node == null:
-			push_warning("Failed to load node script: %s, not a " % i)
+			push_warning("Failed to load node script: %s" % node)
 			continue
 		if node.get_node_type() == from.type:
 			var result = node.create_from(from, self, options)
 			if result is not ShrimpIR:
-				push_error("Broken node %s: not created an IR-Node." % node)
+				push_error("Broken node %s: not created an IR-Node" % node)
 				return null
 			result.node_type = from.type
 			return result
