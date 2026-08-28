@@ -46,13 +46,18 @@ func create_showbox(schema: Dictionary, value: Variant, node: NodeBlock) -> Cont
 			input.text = "%s" % (value)
 			return input
 		ShrimpIR.TYPE_ENUM:
-			var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
-			instance.inDesk = false
-			instance.parent = node
-			add_child(instance)
-			instance.rebuild(ShrimpVMUtil.find_ir_node(value.type).get_wrapper_schema(), value)
-			remove_child(instance)
-			return instance
+			if value is Dictionary:
+				var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
+				instance.inDesk = false
+				instance.parent = node
+				add_child(instance)
+				instance.rebuild(ShrimpVMUtil.find_ir_node(value.type).get_wrapper_schema(), value)
+				remove_child(instance)
+				return instance
+			else:
+				var label = Label.new()
+				label.text = "棍母"
+				return label
 		_:
 			return Control.new()
 func create_editbox(schema: Dictionary, value: Variant) -> Control:
