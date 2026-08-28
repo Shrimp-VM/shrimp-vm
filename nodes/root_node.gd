@@ -20,5 +20,12 @@ static func create_from(wrapper: Dictionary, importer: ShrimpSyntaxTreeImporter,
 	return result
 static func get_wrapper_schema() -> Dictionary[String, Variant]:
 	return super.get_wrapper_schema().merged({
-		"name": "Root Node"
+		"name": "Root Node",
+		"attributes": {
+			"body": {
+				"type": ShrimpIR.TYPE_ENUM,
+				"label": "脚本的内容",
+				"array": true
+			}
+		}
 	}, true)

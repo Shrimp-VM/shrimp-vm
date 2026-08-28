@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://daf1is503pe2i"]
+
+[ext_resource type="Script" uid="uid://01lhy4c4wwsh" path="res://addons/shrimpvm/scenes/node_block.gd" id="1_0pwqf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_05f5v"]
+content_margin_left = 10.0
+content_margin_top = 5.0
+content_margin_right = 10.0
+content_margin_bottom = 5.0
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5xh4d"]
+content_margin_left = 20.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0, 0, 0, 0.25)
+border_color = Color(1, 1, 1, 1)
+
+[node name="NodeBlock" type="VBoxContainer" unique_id=79488617]
+offset_right = 102.0
+offset_bottom = 43.0
+theme_override_constants/separation = 0
+script = ExtResource("1_0pwqf")
+
+[node name="node" type="PanelContainer" parent="." unique_id=488213655]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_05f5v")
+
+[node name="name" type="Label" parent="node" unique_id=1731801596]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Root Node"
+
+[node name="parameters" type="PanelContainer" parent="." unique_id=1293641701]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_5xh4d")
+
+[node name="wrapper" type="VBoxContainer" parent="parameters" unique_id=274422648]
+unique_name_in_owner = true
+layout_mode = 2
