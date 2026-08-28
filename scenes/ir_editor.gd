@@ -30,7 +30,7 @@ func _ready() -> void:
 	)
 	runBtn.pressed.connect(
 		func():
-			vm.execute(importer.create_ir(treeData, ShrimpVMUtil.get_importer_setting()), debugContext)
+			vm.execute(ShrimpSyntaxTreeImporter.create_ir(treeData), debugContext)
 	)
 	rebuild()
 

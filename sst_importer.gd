@@ -25,13 +25,13 @@ func _get_import_options(path: String, preset_index: int) -> Array[Dictionary]:
 		}
 	]
 func _import(source_file: String, save_path: String, options: Dictionary, platform_variants: Array[String], gen_files: Array[String]) -> Error:
-	var result = import_from_file(source_file, options)
+	var result = import_from_file(source_file)
 	if result is ShrimpIR:
 		return ResourceSaver.save(result, "%s.%s" % [save_path, _get_save_extension()])
 	else:
 		return ERR_PARSE_ERROR
 
-func import_from_file(source: String, options: Dictionary) -> ShrimpIR:
+static func import_from_file(source: String) -> ShrimpIR:
 	var file = FileAccess.open(source, FileAccess.ModeFlags.READ)
 	if file == null:
 		return null
@@ -43,7 +43,7 @@ func import_from_file(source: String, options: Dictionary) -> ShrimpIR:
 		return null
 	var data = json.data
 	if data is Dictionary:
-		var first = create_ir(data, options)
+		var first = create_ir(data)
 		if !first:
 			push_error("Failed to create IR-Node.")
 			return null
@@ -54,13 +54,13 @@ func import_from_file(source: String, options: Dictionary) -> ShrimpIR:
 	else:
 		push_error("First node must be a dictionary.")
 		return null
-func create_ir(from: Dictionary, options: Dictionary) -> ShrimpIR:
+static func create_ir(from: Dictionary) -> ShrimpIR:
 	for node in ShrimpVMUtil.get_ir_nodes():
 		if node == null:
 			push_warning("Failed to load node script: %s" % node)
 			continue
 		if node.get_node_type() == from.type:
-			var result = node.create_from(from, self, options)
+			var result = node.create_from(from)
 			if result is not ShrimpIR:
 				push_error("Broken node %s: not created an IR-Node" % node)
 				return null

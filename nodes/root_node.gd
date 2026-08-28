@@ -12,11 +12,11 @@ func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
 
 static func get_node_type() -> String:
 	return "root"
-static func create_from(wrapper: Dictionary, importer: ShrimpSyntaxTreeImporter, options: Dictionary) -> ShrimpRootNode:
+static func create_from(wrapper: Dictionary) -> ShrimpRootNode:
 	var result = ShrimpRootNode.new()
 	result.body = [] as Array[ShrimpIR]
 	for node in wrapper.body:
-		result.body.append(importer.create_ir(node, options))
+		result.body.append(ShrimpSyntaxTreeImporter.create_ir(node))
 	return result
 static func get_wrapper_schema() -> Dictionary[String, Variant]:
 	return super.get_wrapper_schema().merged({
