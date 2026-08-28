@@ -14,3 +14,5 @@ func readSymbol(key: StringName) -> Variant:
 		return parent.readSymbol(key)
 	else:
 		return null
+func writeSymbol(key: StringName, value: Variant):
+	symbols.set(key, value)
