@@ -50,7 +50,6 @@ func rebuild():
 	select(null)
 func mark_selection(node: NodeBlock):
 	node.selected.connect(select)
-	print("m", node)
 func node_join(node: NodeBlock, desk: bool):
 	node.mark_selection.connect(mark_selection)
 	if desk:
@@ -84,11 +83,9 @@ func select(node: NodeBlock):
 			parameter.eventEmitter = eventEmitter
 			var editor = parameter.create_editbox(attribute, node.data[attributeKey])
 			if !is_instance_valid(editor):
-				print(attributeKey, "没有编辑器，跳过")
 				continue
 			eventEmitter.event.connect(
 				func(v):
-					print("value gaibian", v)
 					node.data[attributeKey] = v
 					parameter.rebuild(node.schema.attributes[attributeKey], v, node)
 			)

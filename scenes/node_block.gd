@@ -13,6 +13,7 @@ var inDesk: bool = false
 var schema: Dictionary
 var data: Dictionary
 var parent: NodeBlock
+var currentSelectingParameter: NodeParameter
 
 func _ready() -> void:
 	unselect()
@@ -26,7 +27,6 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index != MouseButton.MOUSE_BUTTON_LEFT: return
 		if !event.pressed: return
-		print("click", self.schema)
 		if !inDesk:
 			selected.emit(self)
 
@@ -42,7 +42,19 @@ func rebuild(schemx: Dictionary, datx: Dictionary):
 			parameterWrapper.add_child(instance)
 			instance.name = attributeKey
 			instance.rebuild(schemx.attributes[attributeKey], datx[attributeKey], self)
+			instance.selected.connect(
+				func(e):
+					if is_instance_valid(currentSelectingParameter):
+						currentSelectingParameter.unselect()
+					currentSelectingParameter = e
+					selected.emit(self)
+			)
 func select():
+	unselect()
 	selectionBar.show()
+	if is_instance_valid(currentSelectingParameter):
+		currentSelectingParameter.select()
 func unselect():
 	selectionBar.hide()
+	if is_instance_valid(currentSelectingParameter):
+		currentSelectingParameter.unselect()

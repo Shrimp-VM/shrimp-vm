@@ -2,6 +2,18 @@
 
 [ext_resource type="Script" uid="uid://o1e7jwnqy7pi" path="res://addons/shrimpvm/scenes/node_parameter.gd" id="1_y6t73"]
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y6t73"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4jtv5"]
+bg_color = Color(0.60038817, 0.60038817, 0.60038817, 0)
+draw_center = false
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+border_color = Color(1, 0.7269941, 0, 1)
+border_blend = true
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0pwqf"]
 content_margin_left = 10.0
 content_margin_top = 5.0
@@ -27,46 +39,78 @@ border_width_right = 2
 border_width_bottom = 2
 border_color = Color(1, 1, 1, 1)
 
-[node name="NodeParameter" type="HBoxContainer" unique_id=1179675663]
-theme_override_constants/separation = 0
+[node name="NodeParameter" type="PanelContainer" unique_id=527761297]
+offset_right = 79.0
+offset_bottom = 33.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_y6t73")
 script = ExtResource("1_y6t73")
 
-[node name="name" type="PanelContainer" parent="." unique_id=2033548576]
+[node name="anchor" type="Control" parent="." unique_id=1753864934]
 layout_mode = 2
+mouse_filter = 1
+
+[node name="selection" type="Panel" parent="anchor" unique_id=871403165]
+unique_name_in_owner = true
+visible = false
+z_index = 15
+z_as_relative = false
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_4jtv5")
+
+[node name="wrapper" type="HBoxContainer" parent="." unique_id=1179675663]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="name" type="PanelContainer" parent="wrapper" unique_id=2033548576]
+layout_mode = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_0pwqf")
 
-[node name="name" type="Label" parent="name" unique_id=196848224]
+[node name="name" type="Label" parent="wrapper/name" unique_id=196848224]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 1
 text = "Body"
 
-[node name="debug" type="Button" parent="name" unique_id=356742432]
-visible = false
+[node name="debug" type="Button" parent="wrapper/name" unique_id=356742432]
 layout_mode = 2
 size_flags_horizontal = 8
+mouse_filter = 1
 
-[node name="children" type="PanelContainer" parent="." unique_id=1440198449]
+[node name="children" type="PanelContainer" parent="wrapper" unique_id=1440198449]
 layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_y6t73")
 
-[node name="templates" type="VBoxContainer" parent="children" unique_id=318737698]
+[node name="templates" type="VBoxContainer" parent="wrapper/children" unique_id=318737698]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
-mouse_filter = 2
 
-[node name="textShow" type="Label" parent="children/templates" unique_id=2080763787]
+[node name="textShow" type="Label" parent="wrapper/children/templates" unique_id=2080763787]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
+mouse_filter = 1
 text = "test"
 
-[node name="array" type="VBoxContainer" parent="children" unique_id=2005003967]
+[node name="array" type="VBoxContainer" parent="wrapper/children" unique_id=2005003967]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="value" type="CenterContainer" parent="children" unique_id=334177503]
+[node name="value" type="CenterContainer" parent="wrapper/children" unique_id=334177503]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
