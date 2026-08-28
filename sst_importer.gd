@@ -72,3 +72,8 @@ static func create_ir(from: Dictionary) -> ShrimpIR:
 			return result
 	push_error("Unknown IR-Node type: %s." % from.type)
 	return null
+static func create_ir_body(from: Array) -> Array[ShrimpIR]:
+	var result: Array[ShrimpIR] = []
+	for wrapper in from:
+		result.append(create_ir(wrapper))
+	return result

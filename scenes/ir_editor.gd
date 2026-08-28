@@ -17,6 +17,7 @@ class_name ShrimpIREditor
 @onready var treeCenter: Control = $%center
 @onready var inspector: Control = $%inspector
 @onready var attributeWrapper: Control = $%attributes
+@onready var deleteBtn: Button = $%deleteBtn
 var debugContext: ExecutionContext
 var nodePointer: NodeBlock = null
 
@@ -33,6 +34,10 @@ func _ready() -> void:
 			vm.execute(ShrimpSyntaxTreeImporter.create_ir(treeData), debugContext)
 	)
 	workspace.clicked.connect(func(): select(null))
+	deleteBtn.pressed.connect(
+		func():
+			pass
+	)
 	rebuild()
 
 func rebuild():

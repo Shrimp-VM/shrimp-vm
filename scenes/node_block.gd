@@ -65,5 +65,5 @@ func create_wrapper() -> Dictionary:
 	var result = {}
 	result.type = data.type
 	for key in schema.attributes:
-		result[key] = NodeParameter.create_initial_value(schema.attributes[key].type)
+		result[key] = NodeParameter.create_initial_value(schema.attributes[key])
 	return result

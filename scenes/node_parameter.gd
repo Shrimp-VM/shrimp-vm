@@ -20,7 +20,7 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index != MouseButton.MOUSE_BUTTON_LEFT: return
 		if !event.pressed: return
-		if schema.type == ShrimpIR.TYPE_ENUM:
+		if typeof(schema.type) == TYPE_INT && schema.type == ShrimpIR.TYPE_ENUM:
 			selected.emit(self)
 		else:
 			node.selected.emit(node)
@@ -45,11 +45,15 @@ func select():
 func unselect():
 	selectionBar.hide()
 func create_showbox(schema: Dictionary, value: Variant, node: NodeBlock) -> Control:
+	if schema.type is Array:
+		var label = Label.new()
+		label.text = str(schema.type[value])
+		return label
 	match schema.type:
 		TYPE_STRING, TYPE_FLOAT:
-			var input = Label.new()
-			input.text = "%s" % (value)
-			return input
+			var label = Label.new()
+			label.text = "%s" % (value)
+			return label
 		ShrimpIR.TYPE_ENUM:
 			if value is Dictionary:
 				var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
@@ -68,8 +72,15 @@ func create_showbox(schema: Dictionary, value: Variant, node: NodeBlock) -> Cont
 		_:
 			return Control.new()
 func create_editbox(schema: Dictionary, value: Variant) -> Control:
+	if schema.type is Array:
+		var btn = OptionButton.new()
+		for item in schema.type:
+			btn.add_item(str(item))
+		btn.item_selected.connect(eventEmitter.event.emit)
+		btn.selected = value
+		return btn
 	match schema.type:
-		TYPE_STRING, TYPE_FLOAT:
+		TYPE_STRING:
 			var input = TextEdit.new()
 			input.custom_minimum_size = Vector2i(200, 100)
 			input.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
@@ -77,13 +88,29 @@ func create_editbox(schema: Dictionary, value: Variant) -> Control:
 			input.text = "%s" % (value)
 			input.text_changed.connect(func(): eventEmitter.event.emit(input.text))
 			return input
+		TYPE_FLOAT:
+			var input = LineEdit.new()
+			input.custom_minimum_size = Vector2i(300, 30)
+			input.text = "%s" % (value)
+			input.text_changed.connect(
+				func(new: String):
+					if new.is_valid_float():
+						eventEmitter.event.emit(float(new))
+			)
+			return input
 		ShrimpIR.TYPE_ENUM:
 			return null
 		_:
 			return null
 
-static func create_initial_value(type: int) -> Variant:
-	match type:
+static func create_initial_value(schema: Dictionary) -> Variant:
+	if schema.has("default"):
+		return schema.default
+	if schema.get("array", false):
+		return []
+	if schema.type is Array:
+		return 0
+	match schema.type:
 		TYPE_STRING:
 			return "棍母"
 		TYPE_FLOAT:

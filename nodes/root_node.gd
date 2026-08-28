@@ -6,17 +6,14 @@ class_name ShrimpRootNode
 
 func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
 	var newContext = ExecutionContext.new(context)
-	for node in body:
-		vm.execute(node, newContext)
+	vm.executeAll(body, newContext)
 	return
 
 static func get_node_type() -> String:
 	return "root"
 static func create_from(wrapper: Dictionary) -> ShrimpRootNode:
 	var result = ShrimpRootNode.new()
-	result.body = [] as Array[ShrimpIR]
-	for node in wrapper.body:
-		result.body.append(ShrimpSyntaxTreeImporter.create_ir(node))
+	result.body = ShrimpSyntaxTreeImporter.create_ir_body(wrapper.body)
 	return result
 static func get_wrapper_schema() -> Dictionary[String, Variant]:
 	return super.get_wrapper_schema().merged({

@@ -140,3 +140,9 @@ horizontal_alignment = 1
 [node name="attributes" type="VBoxContainer" parent="root/layout/layout/workspace/inspector/wrapper" unique_id=150692367]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 3
+
+[node name="deleteBtn" type="Button" parent="root/layout/layout/workspace/inspector/wrapper" unique_id=1007425784]
+unique_name_in_owner = true
+layout_mode = 2
+text = "删除节点"
