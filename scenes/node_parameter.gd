@@ -6,6 +6,7 @@ class_name NodeParameter
 @onready var templateWrapper: Control = $%templates
 @onready var arrayWrapper: Control = $%array
 @onready var valueWrapper: Control = $%value
+var eventEmitter: ShrimpVMUtil.EventEmitter
 
 func _ready() -> void:
 	templateWrapper.hide()
@@ -42,6 +43,7 @@ func create_editbox(schema: Dictionary, value: Variant) -> Control:
 		TYPE_STRING, TYPE_FLOAT:
 			var input = LineEdit.new()
 			input.text = "%s" % (value)
+			input.text_changed.connect(eventEmitter.event.emit)
 			return input
 		ShrimpIR.TYPE_ENUM:
 			return null

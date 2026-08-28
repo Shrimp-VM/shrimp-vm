@@ -1,5 +1,8 @@
 class_name ShrimpVMUtil
 
+class EventEmitter extends RefCounted:
+	signal event()
+
 static func hide_keys(dic: Dictionary, keys: Array[StringName]) -> Dictionary:
 	var result = dic.duplicate()
 	for key in keys:

@@ -78,12 +78,20 @@ func select(node: NodeBlock):
 		node.select()
 		ShrimpVMUtil.disconnect_children(attributeWrapper)
 		for attributeKey in node.schema.attributes:
+			var eventEmitter = ShrimpVMUtil.EventEmitter.new()
 			var attribute = node.schema.attributes[attributeKey]
 			var parameter = node.parameterWrapper.get_node(attributeKey) as NodeParameter
+			parameter.eventEmitter = eventEmitter
 			var editor = parameter.create_editbox(attribute, node.data[attributeKey])
 			if !is_instance_valid(editor):
 				print(attributeKey, "没有编辑器，跳过")
 				continue
+			eventEmitter.event.connect(
+				func(v):
+					print("value gaibian", v)
+					node.data[attributeKey] = v
+					parameter.rebuild(node.schema.attributes[attributeKey], v, node)
+			)
 			var instance = load("res://addons/shrimpvm/scenes/parameter_inspector.tscn").instantiate() as ParameterInspector
 			attributeWrapper.add_child(instance)
 			instance.rebuild(attribute.label, editor)
