@@ -8,6 +8,10 @@ func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
 	var newContext = ExecutionContext.new(context)
 	vm.executeAll(body, newContext)
 	return
+func decompile() -> Dictionary:
+	return {
+		"body": ShrimpSyntaxTreeImporter.decompile_body(body)
+	}
 
 static func get_node_type() -> String:
 	return "root"

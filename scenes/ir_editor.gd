@@ -17,6 +17,7 @@ class_name ShrimpIREditor
 @onready var deskWrapper: Control = $%wrapper
 @onready var workspace: EditorWorkspace = $%workspace
 @onready var treeCenter: Control = $%center
+@onready var tipLabel: Control = $%tip
 @onready var inspector: Control = $%inspector
 @onready var attributeWrapper: Control = $%attributes
 @onready var deleteBtn: Button = $%deleteBtn
@@ -43,7 +44,8 @@ func _ready() -> void:
 	workspace.clicked.connect(func(): select(null))
 	deleteBtn.pressed.connect(
 		func():
-			pass
+			nodePointer.data.invalid = true
+			rebuild()
 	)
 	rebuild()
 
@@ -57,24 +59,40 @@ func rebuild():
 		instance.rebuild(ir.get_wrapper_schema(), {"type": ir.get_node_type()})
 		instance.clicked.connect(
 			func():
-				if !is_instance_valid(nodePointer): return
-				if !is_instance_valid(nodePointer.paramPointer): return
-				if nodePointer.paramPointer.schema.type != ShrimpIR.TYPE_ENUM: return
-				var attributeKey = nodePointer.paramPointer.name
-				var newNode = instance.create_wrapper()
-				if nodePointer.paramPointer.schema.get("array", false):
-					var datas = nodePointer.data[attributeKey] as Array
-					datas.append(newNode)
+				if has_root_node():
+					if !is_instance_valid(nodePointer): return
+					if !is_instance_valid(nodePointer.paramPointer): return
+					if nodePointer.paramPointer.schema.type != ShrimpIR.TYPE_ENUM: return
+					var attributeKey = nodePointer.paramPointer.name
+					var newNode = instance.create_wrapper()
+					if nodePointer.paramPointer.schema.get("array", false):
+						var datas = nodePointer.data[attributeKey] as Array
+						datas.append(newNode)
+					else:
+						nodePointer.data[attributeKey] = newNode
 				else:
-					nodePointer.data[attributeKey] = newNode
+					treeData = instance.create_wrapper()
+					rebuild()
 				rebuild()
 		)
-	ShrimpVMUtil.disconnect_children(treeCenter)
-	var instance = preload("./node_block.tscn").instantiate() as NodeBlock
-	instance.inDesk = false
-	node_join(instance, false)
-	instance.rebuild(ShrimpVMUtil.find_ir_node(treeData.type).get_wrapper_schema(), treeData)
-	select(null)
+	ShrimpVMUtil.disconnect_children(treeCenter, [tipLabel])
+	if treeData.get("invalid", false):
+		treeData = {}
+		select(null)
+		rebuild()
+		return
+	if has_root_node():
+		var instance = preload("./node_block.tscn").instantiate() as NodeBlock
+		instance.inDesk = false
+		node_join(instance, false)
+		instance.rebuild(ShrimpVMUtil.find_ir_node(treeData.type).get_wrapper_schema(), treeData)
+		select(null)
+		tipLabel.hide()
+	else:
+		select(null)
+		tipLabel.show()
+func has_root_node() -> bool:
+	return len(treeData) > 0 && treeData.has("type")
 func mark_selection(node: NodeBlock):
 	node.selected.connect(select)
 func node_join(node: NodeBlock, desk: bool):
@@ -118,14 +136,14 @@ func select(node: NodeBlock):
 			var attribute = node.schema.attributes[attributeKey]
 			var parameter = node.parameterWrapper.get_node(attributeKey) as NodeParameter
 			parameter.eventEmitter = eventEmitter
-			var editor = parameter.create_editbox(attribute, node.data[attributeKey])
-			if !is_instance_valid(editor):
-				continue
-			eventEmitter.event.connect(
+			parameter.eventEmitter.event.connect(
 				func(v):
 					node.data[attributeKey] = v
 					parameter.rebuild(node.schema.attributes[attributeKey], v, node)
 			)
+			var editor = parameter.create_editbox(attribute, node.data[attributeKey])
+			if !is_instance_valid(editor):
+				continue
 			var instance = load("res://addons/shrimpvm/scenes/parameter_inspector.tscn").instantiate() as ParameterInspector
 			attributeWrapper.add_child(instance)
 			instance.rebuild(attribute.label, editor)

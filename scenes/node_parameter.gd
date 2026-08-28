@@ -34,11 +34,20 @@ func rebuild(schemx: Dictionary, value: Variant, nodx: NodeBlock):
 	ShrimpVMUtil.disconnect_children(arrayWrapper)
 	ShrimpVMUtil.disconnect_children(valueWrapper)
 	if schemx.get("array", false):
-		for item in value:
-			arrayWrapper.add_child(create_showbox(schemx, item, nodx))
+		if value is Array:
 			if schemx.type == ShrimpIR.TYPE_ENUM:
-				arrayWrapper.add_child(preload("res://addons/shrimpvm/scenes/step_arrow.tscn").instantiate())
+				value = value.filter(func(e): return !e.get("invalid", false))
+			for item in value:
+				arrayWrapper.add_child(create_showbox(schemx, item, nodx))
+				if schemx.type == ShrimpIR.TYPE_ENUM:
+					arrayWrapper.add_child(preload("res://addons/shrimpvm/scenes/step_arrow.tscn").instantiate())
+		else:
+			push_error("array参数的值不是Array")
 	else:
+		if schemx.type == ShrimpIR.TYPE_ENUM:
+			if value is Dictionary:
+				if value.get("invalid", false):
+					return
 		valueWrapper.add_child(create_showbox(schemx, value, nodx))
 func select():
 	selectionBar.show()

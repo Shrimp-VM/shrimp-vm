@@ -15,9 +15,10 @@ static func is_script_inherits(script: GDScript, ancestor: GDScript) -> bool:
 			return true
 		current = current.get_base_script()
 	return false
-static func disconnect_children(node: Node):
+static func disconnect_children(node: Node, excludes: Array = []):
 	for child in node.get_children():
-		node.remove_child(child)
+		if child not in excludes:
+			node.remove_child(child)
 static func get_importer_setting():
 	return ProjectSettings.get_setting("importer_defaults/%s" % ShrimpSyntaxTreeImporter.IMPORTER_ID)
 static func get_ir_nodes() -> Array[ShrimpIR]:

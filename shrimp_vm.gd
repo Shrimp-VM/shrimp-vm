@@ -14,6 +14,9 @@ func _ready() -> void:
 func executeRootNode():
 	execute(rootNode, ExecutionContext.new())
 func execute(node: ShrimpIR, context: ExecutionContext) -> Variant:
+	if !is_instance_valid(node):
+		push_warning("%s is not a IR-Node, execution skipping." % node)
+		return null
 	if !is_instance_valid(context):
 		context = ExecutionContext.new()
 	return node.execute.call(self, context)

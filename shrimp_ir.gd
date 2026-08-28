@@ -9,6 +9,8 @@ const TYPE_ENUM = -1
 @export var node_type: String
 
 @abstract func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant
+func decompile() -> Dictionary:
+	return {}
 
 static func get_node_type() -> String:
 	assert(false, ERR_NOT_IMPLEMENTED)
