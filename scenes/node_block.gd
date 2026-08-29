@@ -7,6 +7,7 @@ signal selected(node: NodeBlock)
 signal mark_selection(node: NodeBlock)
 
 @onready var selectionBar: Control = $%selection
+@onready var frameBar: ClickableWrapper = $%frame
 @onready var nameLabel: Label = $%name
 @onready var parameterPanel: Control = $%parameters
 @onready var parameterWrapper: Control = $%wrapper
@@ -18,6 +19,7 @@ var paramPointer: NodeParameter
 
 func _ready() -> void:
 	unselect()
+	frameBar.clicked.connect(func(): parameterPanel.visible = !parameterPanel.visible)
 	mark_selection.connect(
 		func(node: NodeBlock):
 			if is_instance_valid(parent):
