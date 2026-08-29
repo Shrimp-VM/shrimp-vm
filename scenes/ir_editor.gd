@@ -29,7 +29,7 @@ var nodePointer: NodeBlock = null
 
 func _ready() -> void:
 	debugContext = ExecutionContext.new()
-	debugContext.env.writeSymbol("filemgr", fileManager)
+	debugContext.env.write_symbol("filemgr", fileManager)
 	openBtn.pressed.connect(
 		func():
 			fileOpener.popup()

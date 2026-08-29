@@ -6,7 +6,7 @@ class_name ShrimpRootNode
 
 func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
 	var newContext = ExecutionContext.new(context)
-	vm.executeAll(body, newContext)
+	vm.execute_all(body, newContext)
 	return
 func decompile() -> Dictionary:
 	return {
