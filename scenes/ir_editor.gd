@@ -21,7 +21,8 @@ signal compilation_warn(type: ShrimpOptimizer.WarnType, message: String)
 @onready var deskWrapper: Control = $%wrapper
 @onready var workspace: EditorWorkspace = $%workspace
 @onready var treeCenter: Control = $%center
-@onready var tipLabel: Control = $%tip
+@onready var treeTip: Control = $%treeTip
+@onready var fileTip: Control = $%fileTip
 @onready var inspector: Control = $%inspector
 @onready var attributeWrapper: Control = $%attributes
 @onready var deleteBtn: Button = $%deleteBtn
@@ -48,14 +49,18 @@ func _ready() -> void:
 	runBtn.pressed.connect(
 		func():
 			fileManager.save(save_data())
-			print("正在编译IR：", JSON.stringify(treeData, "    "))
+			if !has_root_node():
+				modal("编译失败：没有创建根节点")
+				return
+			print("正在编译IR ", JSON.stringify(treeData, "    "))
 			compilationWarns = []
 			var ir = ShrimpCompiler.compile(treeData, true, compilation_warn)
-			if compilationWarns.is_empty():
-				await vm.execute(ir, debugContext)
-			else:
+			print("编译完成 ", ir)
+			if !compilationWarns.is_empty():
 				print(compilationWarns)
 				modal("编译失败：脚本中有%d个[color=red]红色棍母[/color]，请检查节点树" % len(compilationWarns))
+				return
+			await vm.execute(ir, debugContext)
 	)
 	newFileBtn.pressed.connect(
 		func():
@@ -67,13 +72,18 @@ func _ready() -> void:
 			nodePointer.data.invalid = true
 			rebuild()
 	)
-	fileManager.add_file.connect(filesWrapper.add_child)
+	fileManager.add_file.connect(
+		func(f: VirtualFile):
+			filesWrapper.add_child(f)
+			fileTip.hide()
+	)
 	fileManager.open_file.connect(
 		func(f: VirtualFile):
 			load_json(f.content)
 	)
 	modalPanel.clicked.connect(modal)
 	compilation_warn.connect(func(t, m): compilationWarns.append([t, m]))
+	fileTip.show()
 	fileManager.inarchive()
 	rebuild()
 	modal()
@@ -108,7 +118,7 @@ func rebuild():
 						rebuild()
 					rebuild()
 			)
-	ShrimpVMUtil.disconnect_children(treeCenter, [tipLabel])
+	ShrimpVMUtil.disconnect_children(treeCenter, [treeTip])
 	if treeData.get("invalid", false):
 		treeData = {}
 		select(null)
@@ -120,10 +130,10 @@ func rebuild():
 		node_join(instance, false)
 		instance.rebuild(ShrimpVMUtil.find_ir_node(treeData.type).get_wrapper_schema(), treeData)
 		select(null)
-		tipLabel.hide()
+		treeTip.hide()
 	else:
 		select(null)
-		tipLabel.show()
+		treeTip.show()
 func has_root_node() -> bool:
 	return len(treeData) > 0 && treeData.has("type")
 func mark_selection(node: NodeBlock):

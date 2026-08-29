@@ -19,7 +19,11 @@ var paramPointer: NodeParameter
 
 func _ready() -> void:
 	unselect()
-	frameBar.clicked.connect(func(): parameterPanel.visible = !parameterPanel.visible)
+	frameBar.clicked.connect(
+		func():
+			if !inDesk && !parameterWrapper.get_children().is_empty():
+				parameterPanel.visible = !parameterPanel.visible
+	)
 	mark_selection.connect(
 		func(node: NodeBlock):
 			if is_instance_valid(parent):

@@ -60,6 +60,12 @@ outline_size = 1
 font_size = 20
 outline_size = 1
 
+[sub_resource type="LabelSettings" id="LabelSettings_0kp88"]
+font_size = 15
+font_color = Color(1, 0, 0, 1)
+outline_size = 1
+outline_color = Color(1, 0, 0, 1)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fjp0f"]
 bg_color = Color(0, 0, 0, 0.70000005)
 
@@ -83,44 +89,24 @@ corner_radius_bottom_left = 15
 script = ExtResource("1_iyhou")
 treeData = {
 "body": [{
-"invalid": true,
-"time": null,
-"type": "sleep"
-}, {
-"content": {
-"content": "开始",
-"invalid": true,
-"type": "string"
-},
-"type": "print"
-}, {
-"invalid": true,
-"time": {
-"content": 1.0,
+"a": {
+"content": 0.0,
 "type": "number"
 },
-"type": "sleep"
-}, {
-"content": {
-"content": "结束",
-"type": "string"
-},
-"invalid": true,
-"type": "print"
-}, {
-"time": {
-"content": 1.0,
-"invalid": true,
+"b": {
+"content": 0.0,
 "type": "number"
 },
-"type": "sleep"
+"method": 0.0,
+"type": "multiply"
 }, {
-"content": {
-"content": "结束",
-"invalid": true,
-"type": "string"
-},
+"condition": null,
+"elses": [],
+"thens": [{
+"content": null,
 "type": "print"
+}],
+"type": "if"
 }],
 "type": "root"
 }
@@ -173,7 +159,7 @@ theme_override_constants/separation = 20
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
-text = "Open"
+text = "从电脑打开"
 
 [node name="fileOpener" type="FileDialog" parent="root/layout/nav/wrapper/openBtn" unique_id=594379426]
 unique_name_in_owner = true
@@ -188,7 +174,7 @@ filters = PackedStringArray("*.sst")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
-text = "Save"
+text = "保存到电脑"
 
 [node name="fileSaver" type="FileDialog" parent="root/layout/nav/wrapper/saveBtn" unique_id=594606514]
 unique_name_in_owner = true
@@ -201,13 +187,13 @@ filters = PackedStringArray("*.sst")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
-text = "Run"
+text = "运行脚本"
 
 [node name="newBtn" type="Button" parent="root/layout/nav/wrapper" unique_id=806747857]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
-text = "New File"
+text = "新建脚本"
 
 [node name="layout" type="HBoxContainer" parent="root/layout" unique_id=2005437578]
 layout_mode = 2
@@ -244,12 +230,12 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="tip" type="Label" parent="root/layout/layout/workspace/wrapper/center" unique_id=287250670]
+[node name="treeTip" type="Label" parent="root/layout/layout/workspace/wrapper/center" unique_id=287250670]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 text = "没有根节点。
-建议点一下“Root Node”创建一个，或者其他节点也行"
+建议点一下“根节点”创建一个，或者其他节点也行"
 label_settings = SubResource("LabelSettings_fjp0f")
 horizontal_alignment = 1
 
@@ -295,7 +281,8 @@ theme_override_constants/separation = 10
 
 [node name="title" type="Label" parent="root/layout/layout/fileManager/wrapper" unique_id=1322068035]
 layout_mode = 2
-text = "Script Management"
+size_flags_horizontal = 8
+text = "脚本管理"
 label_settings = SubResource("LabelSettings_nc1qr")
 
 [node name="wrapper" type="ScrollContainer" parent="root/layout/layout/fileManager/wrapper" unique_id=683617047]
@@ -309,8 +296,17 @@ layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
+[node name="fileTip" type="Label" parent="root/layout/layout/fileManager/wrapper/wrapper/files" unique_id=156850020]
+unique_name_in_owner = true
+layout_mode = 2
+text = "没有脚本
+请点击“新建脚本”创建一个"
+label_settings = SubResource("LabelSettings_0kp88")
+horizontal_alignment = 2
+
 [node name="modalPanel" type="PanelContainer" parent="root" unique_id=1078647368]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

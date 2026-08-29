@@ -9,6 +9,7 @@ signal selected(parameter: NodeParameter)
 @onready var templateWrapper: Control = $%templates
 @onready var arrayWrapper: Control = $%array
 @onready var valueWrapper: Control = $%value
+@onready var emptyTip: Control = $%emptyTip
 var eventEmitter: ShrimpVMUtil.EventEmitter
 var node: NodeBlock
 var schema: Dictionary
@@ -31,14 +32,18 @@ func rebuild(schemx: Dictionary, value: Variant, nodx: NodeBlock):
 	schema = schemx
 	node = nodx
 	nameLabel.text = schemx.label
-	ShrimpVMUtil.disconnect_children(arrayWrapper)
+	ShrimpVMUtil.disconnect_children(arrayWrapper, [emptyTip])
 	ShrimpVMUtil.disconnect_children(valueWrapper)
 	if schemx.get("array", false):
 		if value is Array:
 			if typeof(schemx.type) == TYPE_INT && schemx.type == ShrimpIR.TYPE_ENUM:
-				value = value.filter(func(e): return !e.get("invalid", false))
-			for item in value:
-				arrayWrapper.add_child(create_showbox(schemx, item, nodx))
+					value = value.filter(func(e): return !e.get("invalid", false))
+			if value.is_empty():
+				emptyTip.show()
+			else:
+				emptyTip.hide()
+				for item in value:
+					arrayWrapper.add_child(create_showbox(schemx, item, nodx))
 		else:
 			push_error("array参数的值不是Array")
 	else:

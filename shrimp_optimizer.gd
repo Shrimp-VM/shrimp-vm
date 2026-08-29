@@ -5,7 +5,8 @@ class_name ShrimpOptimizer
 signal warning(type: WarnType, message: String)
 
 enum WarnType {
-	NULL_NODE
+	NULL_NODE,
+	NULL_ROOT
 }
 
 var input: ShrimpIR
@@ -14,12 +15,12 @@ var result: ShrimpIR
 func _init(inpux: ShrimpIR) -> void:
 	input = inpux
 
-func warn(type: WarnType, message: String):
+func warn(type: WarnType, message: String = ""):
 	warning.emit(type, message)
 func optimize() -> ShrimpIR:
 	result = input
 	if result == null:
-		warn(WarnType.NULL_NODE, "input")
+		warn(WarnType.NULL_ROOT)
 		return result
 	execute(result, result.get_node_type())
 	return result

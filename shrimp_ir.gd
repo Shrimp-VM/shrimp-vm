@@ -15,7 +15,7 @@ func get_keys_type(attribute: String):
 	return get_wrapper_schema().attributes[attribute].type
 
 static func get_category_tag() -> String:
-	return "Base"
+	return "基本"
 static func get_node_type() -> String:
 	assert(false, ERR_NOT_IMPLEMENTED)
 	return "unknown_node"
