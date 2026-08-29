@@ -1,4 +1,3 @@
-## Not implemented
 @tool
 extends RefCounted
 class_name ShrimpOptimizer
@@ -17,7 +16,29 @@ func _init(inpux: ShrimpIR) -> void:
 
 func warn(type: WarnType, message: String):
 	warning.emit(type, message)
-## Not implemented!!!
 func optimize() -> ShrimpIR:
 	result = input
+	if result == null:
+		warn(WarnType.NULL_NODE, "input")
+		return result
+	execute(result, result.get_node_type())
 	return result
+func execute(node: ShrimpIR, path: String) -> void:
+	for prop in node.get_property_list():
+		if not (prop.usage & PROPERTY_USAGE_SCRIPT_VARIABLE):
+			continue
+		var value = node.get(prop.name)
+		match prop.type:
+			TYPE_OBJECT:
+				if value == null:
+					warn(WarnType.NULL_NODE, "%s.%s" % [path, prop.name])
+				elif value is ShrimpIR:
+					execute(value, "%s.%s" % [path, prop.name])
+			TYPE_ARRAY:
+				if value is Array:
+					for i in value.size():
+						var item = value[i]
+						if item == null:
+							warn(WarnType.NULL_NODE, "%s.%s[%d]" % [path, prop.name, i])
+						elif item is ShrimpIR:
+							execute(item, "%s.%s[%d]" % [path, prop.name, i])
