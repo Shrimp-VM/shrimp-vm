@@ -44,7 +44,7 @@ func _ready() -> void:
 		func():
 			fileManager.save(save_data())
 			print("正在运行IR", treeData)
-			vm.execute(ShrimpSyntaxTreeImporter.compile(treeData), debugContext)
+			await vm.execute(ShrimpSyntaxTreeImporter.compile(treeData), debugContext)
 	)
 	newFileBtn.pressed.connect(
 		func():
