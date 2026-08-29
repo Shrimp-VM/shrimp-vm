@@ -20,10 +20,10 @@ static func disconnect_children(node: Node, excludes: Array = []):
 		if child not in excludes:
 			node.remove_child(child)
 static func get_importer_setting():
-	return ProjectSettings.get_setting("importer_defaults/%s" % ShrimpSyntaxTreeImporter.IMPORTER_ID)
+	return ProjectSettings.get_setting("importer_defaults/%s" % ShrimpCompiler.IMPORTER_ID)
 static func list_dir(base: String):
 	return Array(
-		Array(DirAccess.get_files_at(base))
+		Array(ResourceLoader.list_directory(base))
 			.filter(func(e: String): return e.ends_with(".gd"))
 			.map(func(e: String): return base.path_join(e))
 	)

@@ -44,7 +44,7 @@ func _ready() -> void:
 		func():
 			fileManager.save(save_data())
 			print("正在运行IR", treeData)
-			await vm.execute(ShrimpSyntaxTreeImporter.compile(treeData), debugContext)
+			await vm.execute(ShrimpCompiler.compile(treeData), debugContext)
 	)
 	newFileBtn.pressed.connect(
 		func():
@@ -72,7 +72,7 @@ func rebuild():
 		title.text = category
 		deskWrapper.add_child(title)
 		for ir in categories[category]:
-			var instance = load("./node_block.tscn").instantiate() as NodeBlock
+			var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
 			instance.inDesk = true
 			node_join(instance, true)
 			instance.rebuild(ir.get_wrapper_schema(), {"type": ir.get_node_type()})
@@ -101,7 +101,7 @@ func rebuild():
 		rebuild()
 		return
 	if has_root_node():
-		var instance = load("./node_block.tscn").instantiate() as NodeBlock
+		var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
 		instance.inDesk = false
 		node_join(instance, false)
 		instance.rebuild(ShrimpVMUtil.find_ir_node(treeData.type).get_wrapper_schema(), treeData)

@@ -10,14 +10,14 @@ func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
 	return
 func decompile() -> Dictionary:
 	return {
-		"body": ShrimpSyntaxTreeImporter.decompile_body(body)
+		"body": ShrimpCompiler.decompile_body(body)
 	}
 
 static func get_node_type() -> String:
 	return "root"
 static func create_from(wrapper: Dictionary) -> ShrimpRootNode:
 	var result = ShrimpRootNode.new()
-	result.body = ShrimpSyntaxTreeImporter.compile_body(wrapper.body)
+	result.body = ShrimpCompiler.compile_body(wrapper.body)
 	return result
 static func get_wrapper_schema() -> Dictionary[String, Variant]:
 	return super.get_wrapper_schema().merged({

@@ -1,10 +1,10 @@
 @tool
 extends EditorPlugin
 
-var sstImporter: ShrimpSyntaxTreeImporter
+var sstImporter: SSTImporter
 
 func _enter_tree() -> void:
-	sstImporter = load("./sst_importer.gd").new()
+	sstImporter = SSTImporter.new()
 	add_import_plugin(sstImporter)
 func _exit_tree() -> void:
 	remove_import_plugin(sstImporter)
