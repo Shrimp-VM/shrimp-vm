@@ -61,6 +61,7 @@ func _ready() -> void:
 				modal("编译失败：脚本中有%d个[color=red]红色棍母[/color]，请检查节点树" % len(compilationWarns))
 				return
 			await vm.execute(ir, debugContext)
+			modal("脚本运行完成")
 	)
 	newFileBtn.pressed.connect(
 		func():

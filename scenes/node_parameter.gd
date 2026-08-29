@@ -47,6 +47,7 @@ func rebuild(schemx: Dictionary, value: Variant, nodx: NodeBlock):
 		else:
 			push_error("array参数的值不是Array")
 	else:
+		emptyTip.hide()
 		valueWrapper.add_child(create_showbox(schemx, value, nodx))
 func select():
 	selectionBar.show()

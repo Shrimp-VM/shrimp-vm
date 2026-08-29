@@ -74,7 +74,7 @@ content_margin_left = 20.0
 content_margin_top = 20.0
 content_margin_right = 20.0
 content_margin_bottom = 20.0
-bg_color = Color(0, 0, 0, 0.70000005)
+bg_color = Color(0, 0, 0, 1)
 border_width_left = 3
 border_width_top = 3
 border_width_right = 3
@@ -89,24 +89,22 @@ corner_radius_bottom_left = 15
 script = ExtResource("1_iyhou")
 treeData = {
 "body": [{
-"a": {
-"content": 0.0,
-"type": "number"
-},
-"b": {
-"content": 0.0,
-"type": "number"
-},
-"method": 0.0,
-"type": "multiply"
+"body": [],
+"invalid": true,
+"type": "root"
 }, {
-"condition": null,
-"elses": [],
-"thens": [{
-"content": null,
-"type": "print"
-}],
-"type": "if"
+"invalid": true,
+"type": "get_current_entity"
+}, {
+"invalid": true,
+"type": "get_current_entity"
+}, {
+"invalid": true,
+"type": "get_current_entity"
+}, {
+"invalid": true,
+"target": null,
+"type": "get_health"
 }],
 "type": "root"
 }
@@ -298,6 +296,7 @@ size_flags_vertical = 3
 
 [node name="fileTip" type="Label" parent="root/layout/layout/fileManager/wrapper/wrapper/files" unique_id=156850020]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 text = "没有脚本
 请点击“新建脚本”创建一个"
