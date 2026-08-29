@@ -2,6 +2,8 @@
 extends CanvasLayer
 class_name ShrimpIREditor
 
+signal compilation_warn(type: ShrimpOptimizer.WarnType, message: String)
+
 @export_tool_button("重建") var rebuilder = rebuild
 @export var treeData: Dictionary = {
 	"type": "root",
@@ -24,10 +26,11 @@ class_name ShrimpIREditor
 @onready var attributeWrapper: Control = $%attributes
 @onready var deleteBtn: Button = $%deleteBtn
 @onready var filesWrapper: Control = $%files
-@onready var modalPanel: Control = $%modalPanel
-@onready var modalLabel: Label = $%modalTip
+@onready var modalPanel: ClickableWrapper = $%modalPanel
+@onready var modalLabel: RichTextLabel = $%modalTip
 var debugContext: ExecutionContext
 var nodePointer: NodeBlock = null
+var compilationWarns: Array[Array] = []
 
 func _ready() -> void:
 	debugContext = ExecutionContext.new()
@@ -45,8 +48,14 @@ func _ready() -> void:
 	runBtn.pressed.connect(
 		func():
 			fileManager.save(save_data())
-			print("正在运行IR", treeData)
-			await vm.execute(ShrimpCompiler.compile(treeData), debugContext)
+			print("正在编译IR：", JSON.stringify(treeData, "    "))
+			compilationWarns = []
+			var ir = ShrimpCompiler.compile(treeData, true, compilation_warn)
+			if compilationWarns.is_empty():
+				await vm.execute(ir, debugContext)
+			else:
+				print(compilationWarns)
+				modal("编译失败：脚本中有%d个[color=red]红色棍母[/color]，请检查节点树" % len(compilationWarns))
 	)
 	newFileBtn.pressed.connect(
 		func():
@@ -63,6 +72,8 @@ func _ready() -> void:
 		func(f: VirtualFile):
 			load_json(f.content)
 	)
+	modalPanel.clicked.connect(modal)
+	compilation_warn.connect(func(t, m): compilationWarns.append([t, m]))
 	fileManager.inarchive()
 	rebuild()
 	modal()

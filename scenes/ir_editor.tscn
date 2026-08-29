@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://drxoblkew75eu" path="res://addons/shrimpvm/shrimp_vm.gd" id="2_iyhou"]
 [ext_resource type="Script" uid="uid://6uypkkt4063e" path="res://addons/shrimpvm/file_manager.gd" id="3_fjp0f"]
 [ext_resource type="Script" uid="uid://chc23i883u687" path="res://addons/shrimpvm/scenes/editor_workspace.gd" id="3_ohykq"]
+[ext_resource type="Script" uid="uid://2bp5i42dylnd" path="res://addons/shrimpvm/clickable_wrapper.gd" id="5_nc1qr"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_05f5v"]
 content_margin_left = 10.0
@@ -77,9 +78,6 @@ corner_radius_top_left = 15
 corner_radius_top_right = 15
 corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
-
-[sub_resource type="LabelSettings" id="LabelSettings_0kp88"]
-font_color = Color(1, 0, 0, 1)
 
 [node name="IR-Editor" type="CanvasLayer" unique_id=1041740263]
 script = ExtResource("1_iyhou")
@@ -320,6 +318,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_fjp0f")
+script = ExtResource("5_nc1qr")
 
 [node name="modal" type="PanelContainer" parent="root/modalPanel" unique_id=933523188]
 layout_mode = 2
@@ -327,10 +326,11 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_nc1qr")
 
-[node name="modalTip" type="Label" parent="root/modalPanel/modal" unique_id=950780692]
+[node name="modalTip" type="RichTextLabel" parent="root/modalPanel/modal" unique_id=2065829977]
 unique_name_in_owner = true
 layout_mode = 2
-text = "你的脚本中有3个棍母，编译失败
-请检查脚本"
-label_settings = SubResource("LabelSettings_0kp88")
+bbcode_enabled = true
+text = "ModalText"
+fit_content = true
+autowrap_mode = 0
 horizontal_alignment = 1

@@ -1,8 +1,10 @@
 @tool
-extends RefCounted
 class_name ShrimpCompiler
 
 const IMPORTER_ID = "shrimpvm.shrimpir"
+
+func _init() -> void:
+	assert(false, "Don't instantiate ShrimpCompiler!!!")
 
 static func import_file(source: String) -> ShrimpIR:
 	var file = FileAccess.open(source, FileAccess.ModeFlags.READ)
@@ -30,7 +32,7 @@ static func import_data(data: Variant) -> ShrimpIR:
 	else:
 		push_error("First node must be a dictionary.")
 		return null
-static func compile(from: Variant, optimize: bool = false) -> ShrimpIR:
+static func compile(from: Variant, optimize: bool = false, warnSignal = null) -> ShrimpIR:
 	if from is not Dictionary:
 		push_error("Can only compile #wrapper dictionary# to IR-Node.")
 		return null
@@ -50,7 +52,10 @@ static func compile(from: Variant, optimize: bool = false) -> ShrimpIR:
 				push_error("Broken node %s: not created an IR-Node." % node)
 				return null
 			if optimize:
-				return ShrimpOptimizer.new(result).optimize()
+				var optimizer = ShrimpOptimizer.new(result)
+				if warnSignal is Signal:
+					optimizer.warning.connect(warnSignal.emit)
+				return optimizer.optimize()
 			else:
 				return result
 	push_error("Unknown IR-Node type: %s." % from.type)
