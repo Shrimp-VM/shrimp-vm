@@ -72,7 +72,7 @@ func rebuild():
 		title.text = category
 		deskWrapper.add_child(title)
 		for ir in categories[category]:
-			var instance = preload("./node_block.tscn").instantiate() as NodeBlock
+			var instance = load("./node_block.tscn").instantiate() as NodeBlock
 			instance.inDesk = true
 			node_join(instance, true)
 			instance.rebuild(ir.get_wrapper_schema(), {"type": ir.get_node_type()})
@@ -101,7 +101,7 @@ func rebuild():
 		rebuild()
 		return
 	if has_root_node():
-		var instance = preload("./node_block.tscn").instantiate() as NodeBlock
+		var instance = load("./node_block.tscn").instantiate() as NodeBlock
 		instance.inDesk = false
 		node_join(instance, false)
 		instance.rebuild(ShrimpVMUtil.find_ir_node(treeData.type).get_wrapper_schema(), treeData)

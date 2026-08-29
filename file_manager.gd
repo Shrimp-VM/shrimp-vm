@@ -12,7 +12,7 @@ func _ready() -> void:
 	open_file.connect(func(f): currentOpening = f)
 
 func add(fn: StringName, content: String):
-	var file = preload("res://addons/shrimpvm/scenes/virtual_file.tscn").instantiate() as VirtualFile
+	var file = load("res://addons/shrimpvm/scenes/virtual_file.tscn").instantiate() as VirtualFile
 	file.fileName = fn
 	file.content = content
 	files.append(file)

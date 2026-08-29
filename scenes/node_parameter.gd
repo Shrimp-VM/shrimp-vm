@@ -40,7 +40,7 @@ func rebuild(schemx: Dictionary, value: Variant, nodx: NodeBlock):
 			for item in value:
 				arrayWrapper.add_child(create_showbox(schemx, item, nodx))
 				if schemx.type == ShrimpIR.TYPE_ENUM:
-					arrayWrapper.add_child(preload("res://addons/shrimpvm/scenes/step_arrow.tscn").instantiate())
+					arrayWrapper.add_child(load("res://addons/shrimpvm/scenes/step_arrow.tscn").instantiate())
 		else:
 			push_error("array参数的值不是Array")
 	else:
