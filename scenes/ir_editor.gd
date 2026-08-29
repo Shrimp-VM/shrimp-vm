@@ -24,6 +24,8 @@ class_name ShrimpIREditor
 @onready var attributeWrapper: Control = $%attributes
 @onready var deleteBtn: Button = $%deleteBtn
 @onready var filesWrapper: Control = $%files
+@onready var modalPanel: Control = $%modalPanel
+@onready var modalLabel: Label = $%modalTip
 var debugContext: ExecutionContext
 var nodePointer: NodeBlock = null
 
@@ -63,6 +65,7 @@ func _ready() -> void:
 	)
 	fileManager.inarchive()
 	rebuild()
+	modal()
 
 func rebuild():
 	ShrimpVMUtil.disconnect_children(deskWrapper)
@@ -169,3 +172,9 @@ func select(node: NodeBlock):
 		inspector.show()
 	else:
 		inspector.hide()
+func modal(content: String = ""):
+	if content:
+		modalLabel.text = content
+		modalPanel.show()
+	else:
+		modalPanel.hide()

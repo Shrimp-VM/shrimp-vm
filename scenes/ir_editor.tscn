@@ -59,21 +59,72 @@ outline_size = 1
 font_size = 20
 outline_size = 1
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fjp0f"]
+bg_color = Color(0, 0, 0, 0.70000005)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nc1qr"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(0, 0, 0, 0.70000005)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="LabelSettings" id="LabelSettings_0kp88"]
+font_color = Color(1, 0, 0, 1)
+
 [node name="IR-Editor" type="CanvasLayer" unique_id=1041740263]
 script = ExtResource("1_iyhou")
 treeData = {
-"id": 0.0,
-"root": {
-"left": {
-"type": "get_target_entity"
+"body": [{
+"invalid": true,
+"time": null,
+"type": "sleep"
+}, {
+"content": {
+"content": "开始",
+"invalid": true,
+"type": "string"
 },
-"method": 0.0,
-"right": {
-"type": "get_target_entity"
+"type": "print"
+}, {
+"invalid": true,
+"time": {
+"content": 1.0,
+"type": "number"
 },
-"type": "compare"
+"type": "sleep"
+}, {
+"content": {
+"content": "结束",
+"type": "string"
 },
-"type": "set_action"
+"invalid": true,
+"type": "print"
+}, {
+"time": {
+"content": 1.0,
+"invalid": true,
+"type": "number"
+},
+"type": "sleep"
+}, {
+"content": {
+"content": "结束",
+"invalid": true,
+"type": "string"
+},
+"type": "print"
+}],
+"type": "root"
 }
 
 [node name="vm" type="Node" parent="." unique_id=1396633106]
@@ -259,3 +310,27 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+
+[node name="modalPanel" type="PanelContainer" parent="root" unique_id=1078647368]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_fjp0f")
+
+[node name="modal" type="PanelContainer" parent="root/modalPanel" unique_id=933523188]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_nc1qr")
+
+[node name="modalTip" type="Label" parent="root/modalPanel/modal" unique_id=950780692]
+unique_name_in_owner = true
+layout_mode = 2
+text = "你的脚本中有3个棍母，编译失败
+请检查脚本"
+label_settings = SubResource("LabelSettings_0kp88")
+horizontal_alignment = 1
