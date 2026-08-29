@@ -37,9 +37,7 @@ func execute(node: ShrimpIR, path: String) -> void:
 					execute(value, "%s.%s" % [path, prop.name])
 			TYPE_ARRAY:
 				if value is Array:
-					for i in value.size():
-						var item = value[i]
-						if item == null:
-							warn(WarnType.NULL_NODE, "%s.%s[%d]" % [path, prop.name, i])
-						elif item is ShrimpIR:
-							execute(item, "%s.%s[%d]" % [path, prop.name, i])
+					value.assign(value.filter(func(item): return item != null && !(item is Dictionary && item.get("invalid", false))))
+					for item in value:
+						if item is ShrimpIR:
+							execute(item, "%s.%s[]" % [path, prop.name])
