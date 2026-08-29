@@ -48,7 +48,7 @@ static func import_data(data: Variant) -> ShrimpIR:
 	if data is Dictionary:
 		var first = compile(data)
 		if !first:
-			push_error("Failed to create IR-Node.")
+			push_error("IR-Node compilation failed.")
 			return null
 		if first.get_node_type() != ShrimpRootNode.get_node_type():
 			push_error("Must start with a root node.")
@@ -59,10 +59,10 @@ static func import_data(data: Variant) -> ShrimpIR:
 		return null
 static func compile(from: Variant) -> ShrimpIR:
 	if from is not Dictionary:
-		assert(false,"Can only compile wrapper to IR-Node.")
+		push_error("Can only compile #wrapper dictionary# to IR-Node.")
 		return null
 	if !from:
-		push_error("Cannot create IR-Node from null.")
+		push_error("Cannot compile null to IR-Node.")
 		return null
 	if from.get("invalid", false):
 		# 这是个棍母，直接跳过

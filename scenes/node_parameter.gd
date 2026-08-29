@@ -35,7 +35,7 @@ func rebuild(schemx: Dictionary, value: Variant, nodx: NodeBlock):
 	ShrimpVMUtil.disconnect_children(valueWrapper)
 	if schemx.get("array", false):
 		if value is Array:
-			if typeof(schemx) == TYPE_INT && schemx.type == ShrimpIR.TYPE_ENUM:
+			if typeof(schemx.type) == TYPE_INT && schemx.type == ShrimpIR.TYPE_ENUM:
 				value = value.filter(func(e): return !e.get("invalid", false))
 			for item in value:
 				arrayWrapper.add_child(create_showbox(schemx, item, nodx))
@@ -44,10 +44,6 @@ func rebuild(schemx: Dictionary, value: Variant, nodx: NodeBlock):
 		else:
 			push_error("array参数的值不是Array")
 	else:
-		if typeof(schemx) == TYPE_INT && schemx.type == ShrimpIR.TYPE_ENUM:
-			if value is Dictionary:
-				if value.get("invalid", false):
-					return
 		valueWrapper.add_child(create_showbox(schemx, value, nodx))
 func select():
 	selectionBar.show()
@@ -64,7 +60,7 @@ func create_showbox(schema: Dictionary, value: Variant, node: NodeBlock) -> Cont
 			label.text = "%s" % (value)
 			return label
 		ShrimpIR.TYPE_ENUM:
-			if value is Dictionary:
+			if value is Dictionary && !value.get("invalid", false):
 				var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
 				instance.inDesk = false
 				instance.parent = node

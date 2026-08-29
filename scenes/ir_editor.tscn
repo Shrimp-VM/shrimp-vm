@@ -61,7 +61,20 @@ outline_size = 1
 
 [node name="IR-Editor" type="CanvasLayer" unique_id=1041740263]
 script = ExtResource("1_iyhou")
-treeData = {}
+treeData = {
+"id": 0.0,
+"root": {
+"left": {
+"type": "get_target_entity"
+},
+"method": 0.0,
+"right": {
+"type": "get_target_entity"
+},
+"type": "compare"
+},
+"type": "set_action"
+}
 
 [node name="vm" type="Node" parent="." unique_id=1396633106]
 unique_name_in_owner = true
@@ -156,7 +169,11 @@ theme_override_constants/separation = 0
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_glela")
 
-[node name="wrapper" type="VBoxContainer" parent="root/layout/layout/desk" unique_id=1487999515]
+[node name="wrapper" type="ScrollContainer" parent="root/layout/layout/desk" unique_id=601822105]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="wrapper" type="VBoxContainer" parent="root/layout/layout/desk/wrapper" unique_id=1487999515]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 10
@@ -180,6 +197,7 @@ size_flags_vertical = 3
 
 [node name="tip" type="Label" parent="root/layout/layout/workspace/wrapper/center" unique_id=287250670]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 text = "没有根节点。
 建议点一下“Root Node”创建一个，或者其他节点也行"
@@ -231,7 +249,13 @@ layout_mode = 2
 text = "Script Management"
 label_settings = SubResource("LabelSettings_nc1qr")
 
-[node name="files" type="VBoxContainer" parent="root/layout/layout/fileManager/wrapper" unique_id=210109251]
+[node name="wrapper" type="ScrollContainer" parent="root/layout/layout/fileManager/wrapper" unique_id=683617047]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="files" type="VBoxContainer" parent="root/layout/layout/fileManager/wrapper/wrapper" unique_id=210109251]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 3

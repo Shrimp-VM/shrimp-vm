@@ -11,6 +11,8 @@ const TYPE_ENUM = -1
 @abstract func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant
 func decompile() -> Dictionary:
 	return {}
+func get_keys_type(attribute: String):
+	return get_wrapper_schema().attributes[attribute].type
 
 static func get_category_tag() -> String:
 	return "Base"
