@@ -39,13 +39,13 @@ ShrimpVM.execute()          ← await 递归执行，返回 Variant
   attributes: Record<string, {
     type: int | string[],                // 类型枚举；字符串数组 = 下拉枚举；TYPE_ENUM(-1) = 可嵌套子 IR 节点
     label: string,
-    array?: boolean,                     // 是否为节点数组
+    array?: boolean,                     // 值是否为数组，适用于任意 type（TYPE_ENUM/TYPE_STRING/TYPE_FLOAT/字符串枚举）
     default?: any
   }>
 }
 ```
 
-`type: TYPE_ENUM` 的属性可以在编辑器里继续挂子积木，从而构成表达式树（如 CompareNode 的 left/right 是任意返回值的节点）。
+`type: TYPE_ENUM` 的属性可以在编辑器里继续挂子积木，从而构成表达式树（如 CompareNode 的 left/right 是任意返回值的节点）。`array: true` 时编辑器会将属性渲染为元素列表（TYPE_ENUM 数组会自动过滤无效子节点），初始值为空数组。
 
 ## 编辑器（scenes/ir_editor.tscn）
 

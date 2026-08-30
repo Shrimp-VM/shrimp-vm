@@ -105,6 +105,48 @@ treeData = {
 "invalid": true,
 "target": null,
 "type": "get_health"
+}, {
+"condition": {
+"left": {
+"target": {
+"type": "get_current_entity"
+},
+"type": "get_health"
+},
+"method": 0.0,
+"right": {
+"target": {
+"type": "get_target_entity"
+},
+"type": "get_health"
+},
+"type": "compare"
+},
+"elses": [],
+"thens": [{
+"amount": {
+"a": {
+"target": {
+"type": "get_current_entity"
+},
+"type": "get_health"
+},
+"b": {
+"content": 0.5,
+"type": "number"
+},
+"method": 2.0,
+"type": "multiply"
+},
+"entity_launcher": {
+"type": "get_current_entity"
+},
+"entity_target": {
+"type": "get_target_entity"
+},
+"type": "take_damage"
+}],
+"type": "if"
 }],
 "type": "root"
 }

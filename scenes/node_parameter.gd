@@ -63,6 +63,11 @@ func create_showbox(schema: Dictionary, value: Variant, node: NodeBlock) -> Cont
 			var label = Label.new()
 			label.text = "%s" % (value)
 			return label
+		TYPE_BOOL:
+			var check = CheckButton.new()
+			check.button_pressed = value
+			check.disabled = true
+			return check
 		ShrimpIR.TYPE_ENUM:
 			if value is Dictionary && !value.get("invalid", false):
 				var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
@@ -107,6 +112,11 @@ func create_editbox(schema: Dictionary, value: Variant) -> Control:
 						eventEmitter.event.emit(float(new))
 			)
 			return input
+		TYPE_BOOL:
+			var check = CheckButton.new()
+			check.button_pressed = value
+			check.toggled.connect(eventEmitter.event.emit)
+			return check
 		ShrimpIR.TYPE_ENUM:
 			return null
 		_:
@@ -124,6 +134,8 @@ static func create_initial_value(schema: Dictionary) -> Variant:
 			return "棍母"
 		TYPE_FLOAT:
 			return 0
+		TYPE_BOOL:
+			return false
 		ShrimpIR.TYPE_ENUM:
 			return null
 		_:
