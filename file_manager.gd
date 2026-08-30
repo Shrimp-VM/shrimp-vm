@@ -6,6 +6,7 @@ signal add_file(file: VirtualFile)
 signal open_file(file: VirtualFile)
 signal close_file(file: VirtualFile)
 signal delete_file(file: VirtualFile)
+signal rebuilding(file: VirtualFile)
 
 @export_global_file var archiveFile = "user://virtuals.json"
 
@@ -44,6 +45,7 @@ func save(content: String):
 	currentOpening.content = content
 	archive()
 func rebuild():
+	rebuilding.emit(currentOpening)
 	if is_instance_valid(currentOpening):
 		currentOpening.rebuild()
 func compile() -> String:

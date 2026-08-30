@@ -71,7 +71,7 @@ func _ready() -> void:
 	)
 	newFileBtn.pressed.connect(
 		func():
-			fileManager.add("%d.sst" % randi_range(100000, 999999), "{}")
+			fileManager.add("%d.sst" % randi_range(100000, 999999), save_data())
 	)
 	closeFileBtn.pressed.connect(fileManager.close)
 	deleteFileBtn.pressed.connect(fileManager.delete)
@@ -79,6 +79,7 @@ func _ready() -> void:
 	deleteNodeBtn.pressed.connect(
 		func():
 			nodePointer.data.invalid = true
+			save_current_file()
 			rebuild()
 	)
 	fileManager.add_file.connect(
@@ -95,6 +96,11 @@ func _ready() -> void:
 	)
 	fileManager.close_file.connect(func(_f): close_current_file())
 	fileManager.delete_file.connect(func(_f): close_current_file())
+	fileManager.rebuilding.connect(
+		func(file: VirtualFile):
+			if is_instance_valid(file):
+				scriptNameLabel.text = file.fileName
+	)
 	modalPanel.clicked.connect(modal)
 	compilation_warn.connect(func(t, m): compilationWarns.append([t, m]))
 	fileTip.show()
