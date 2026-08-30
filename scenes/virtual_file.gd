@@ -2,7 +2,7 @@
 extends Control
 class_name VirtualFile
 
-signal opened()
+signal clicked()
 
 @export_tool_button("Rebuild") var rebuilder = rebuild
 @export var fileName: StringName = "File.sst"
@@ -16,7 +16,7 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index != MouseButton.MOUSE_BUTTON_LEFT: return
 		if !event.pressed: return
-		opened.emit(self)
+		clicked.emit(self)
 
 func rebuild():
 	nameLabel.text = fileName

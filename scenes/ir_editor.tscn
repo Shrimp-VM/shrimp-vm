@@ -11,8 +11,7 @@ content_margin_left = 10.0
 content_margin_top = 10.0
 content_margin_right = 10.0
 content_margin_bottom = 10.0
-bg_color = Color(0, 0, 0, 1)
-border_width_bottom = 3
+bg_color = Color(0.4, 0.4, 0.4, 1)
 border_color = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glela"]
@@ -20,7 +19,7 @@ content_margin_left = 20.0
 content_margin_top = 20.0
 content_margin_right = 20.0
 content_margin_bottom = 20.0
-bg_color = Color(0, 0, 0, 1)
+bg_color = Color(0, 0, 0, 0.7019608)
 border_color = Color(1, 1, 1, 1)
 border_blend = true
 
@@ -138,7 +137,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_05f5v")
 
 [node name="wrapper" type="HBoxContainer" parent="root/layout/nav" unique_id=119838587]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 10
 
 [node name="openBtn" type="Button" parent="root/layout/nav/wrapper" unique_id=1580073565]
 unique_name_in_owner = true
@@ -174,11 +173,24 @@ layout_mode = 2
 size_flags_horizontal = 0
 text = "Run script"
 
-[node name="newBtn" type="Button" parent="root/layout/nav/wrapper" unique_id=806747857]
+[node name="newFileBtn" type="Button" parent="root/layout/nav/wrapper" unique_id=806747857]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
-text = "Create virtual script"
+text = "Create new script"
+
+[node name="closeFileBtn" type="Button" parent="root/layout/nav/wrapper" unique_id=901052568]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Close"
+
+[node name="deleteFileBtn" type="Button" parent="root/layout/nav/wrapper" unique_id=1440390961]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 8
+text = "Delete"
 
 [node name="layout" type="HBoxContainer" parent="root/layout" unique_id=2005437578]
 layout_mode = 2
@@ -205,17 +217,28 @@ size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_05f5v")
 script = ExtResource("3_ohykq")
 
-[node name="wrapper2" type="PanelContainer" parent="root/layout/layout/workspace" unique_id=1835959688]
+[node name="workspace" type="PanelContainer" parent="root/layout/layout/workspace" unique_id=1835959688]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_nc1qr")
 
-[node name="decoration" type="Label" parent="root/layout/layout/workspace/wrapper2" unique_id=30092913]
+[node name="wrapper" type="HBoxContainer" parent="root/layout/layout/workspace/workspace" unique_id=171671562]
+layout_mode = 2
+
+[node name="decoration" type="Label" parent="root/layout/layout/workspace/workspace/wrapper" unique_id=30092913]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
-text = "Workspace"
+text = "Workspace:"
+label_settings = SubResource("LabelSettings_iejdg")
+
+[node name="scriptName" type="Label" parent="root/layout/layout/workspace/workspace/wrapper" unique_id=699603676]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "* Untitled"
 label_settings = SubResource("LabelSettings_iejdg")
 
 [node name="wrapper" type="ScrollContainer" parent="root/layout/layout/workspace" unique_id=1722816101]
@@ -232,7 +255,7 @@ size_flags_vertical = 3
 unique_name_in_owner = true
 layout_mode = 2
 text = "No root node.
-Create one with clicking the \"Root Node\" !"
+Create one with clicking \"Root Node\" !"
 label_settings = SubResource("LabelSettings_fjp0f")
 horizontal_alignment = 1
 
@@ -261,7 +284,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="deleteBtn" type="Button" parent="root/layout/layout/workspace/margins/inspector/wrapper" unique_id=1007425784]
+[node name="deleteNode" type="Button" parent="root/layout/layout/workspace/margins/inspector/wrapper" unique_id=1007425784]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Delete Node"
@@ -296,7 +319,7 @@ size_flags_vertical = 3
 unique_name_in_owner = true
 layout_mode = 2
 text = "No scripts.
-Create one with the button above !"
+Create one with the button aobve !"
 label_settings = SubResource("LabelSettings_0kp88")
 horizontal_alignment = 2
 

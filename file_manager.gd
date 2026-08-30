@@ -2,16 +2,15 @@
 extends Node
 class_name ShrimpFileManager
 
-signal open_file(file: VirtualFile)
 signal add_file(file: VirtualFile)
+signal open_file(file: VirtualFile)
+signal close_file(file: VirtualFile)
+signal delete_file(file: VirtualFile)
 
 @export_global_file var archiveFile = "user://virtuals.json"
 
 var files: Array[VirtualFile] = []
 var currentOpening: VirtualFile = null
-
-func _ready() -> void:
-	open_file.connect(func(f): currentOpening = f)
 
 func add(fn: StringName, content: String):
 	var file = load("res://addons/shrimpvm/scenes/virtual_file.tscn").instantiate() as VirtualFile
@@ -19,19 +18,34 @@ func add(fn: StringName, content: String):
 	file.content = content
 	files.append(file)
 	add_file.emit(file)
-	file.opened.connect(open_file.emit)
-	file.opened.emit(file)
+	file.clicked.connect(open)
+	open(file)
+	archive()
+func open(file: VirtualFile):
+	open_file.emit(file)
+	currentOpening = file
+func close():
+	close_file.emit(currentOpening)
+	currentOpening = null
+func delete():
+	delete_file.emit(currentOpening)
+	if is_instance_valid(currentOpening):
+		if currentOpening in files:
+			files.erase(currentOpening)
+		currentOpening.queue_free()
+	currentOpening = null
+	archive()
 func rename(fn: StringName):
 	if !is_instance_valid(currentOpening): return
 	currentOpening.fileName = fn
 	archive()
-func rebuild():
-	if is_instance_valid(currentOpening):
-		currentOpening.rebuild()
 func save(content: String):
 	if !is_instance_valid(currentOpening): return
 	currentOpening.content = content
 	archive()
+func rebuild():
+	if is_instance_valid(currentOpening):
+		currentOpening.rebuild()
 func compile() -> String:
 	return JSON.new().stringify(files.map(func(e: VirtualFile): return [e.fileName, e.content]))
 func decompile(src: String) -> Array:

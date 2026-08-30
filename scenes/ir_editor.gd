@@ -20,17 +20,20 @@ signal script_run_finihsed()
 @onready var openBtn: Button = $%openBtn
 @onready var saveBtn: Button = $%saveBtn
 @onready var runBtn: Button = $%runBtn
-@onready var newFileBtn: Button = $%newBtn
+@onready var newFileBtn: Button = $%newFileBtn
+@onready var closeFileBtn: Button = $%closeFileBtn
+@onready var deleteFileBtn: Button = $%deleteFileBtn
 @onready var fileOpener: FileDialog = $%fileOpener
 @onready var fileSaver: FileDialog = $%fileSaver
 @onready var deskWrapper: Control = $%wrapper
 @onready var workspace: EditorWorkspace = $%workspace
+@onready var scriptNameLabel: Label = $%scriptName
 @onready var treeCenter: Control = $%center
 @onready var treeTip: Control = $%treeTip
 @onready var fileTip: Control = $%fileTip
 @onready var inspector: Control = $%inspector
+@onready var deleteNodeBtn: Button = $%deleteNode
 @onready var attributeWrapper: Control = $%attributes
-@onready var deleteBtn: Button = $%deleteBtn
 @onready var filesWrapper: Control = $%files
 @onready var modalPanel: ClickableWrapper = $%modalPanel
 @onready var modalLabel: RichTextLabel = $%modalTip
@@ -55,7 +58,7 @@ func _ready() -> void:
 		func():
 			compilation_start.emit()
 			compilationWarns = []
-			fileManager.save(save_data())
+			save_current_file()
 			if !has_root_node():
 				compilation_warn.emit(ShrimpOptimizer.WarnType.NULL_ROOT, "Cannot run null script.")
 				return
@@ -70,8 +73,10 @@ func _ready() -> void:
 		func():
 			fileManager.add("%d.sst" % randi_range(100000, 999999), "{}")
 	)
+	closeFileBtn.pressed.connect(fileManager.close)
+	deleteFileBtn.pressed.connect(fileManager.delete)
 	workspace.clicked.connect(func(): select(null))
-	deleteBtn.pressed.connect(
+	deleteNodeBtn.pressed.connect(
 		func():
 			nodePointer.data.invalid = true
 			rebuild()
@@ -84,13 +89,17 @@ func _ready() -> void:
 	fileManager.open_file.connect(
 		func(f: VirtualFile):
 			load_json(f.content)
+			scriptNameLabel.text = f.fileName
+			closeFileBtn.show()
+			deleteFileBtn.show()
 	)
+	fileManager.close_file.connect(func(_f): close_current_file())
+	fileManager.delete_file.connect(func(_f): close_current_file())
 	modalPanel.clicked.connect(modal)
 	compilation_warn.connect(func(t, m): compilationWarns.append([t, m]))
-	if Engine.is_editor_hint():
-		treeData = {}
 	fileTip.show()
 	fileManager.inarchive()
+	fileManager.close()
 	rebuild()
 	modal()
 
@@ -121,7 +130,7 @@ func rebuild():
 							nodePointer.data[attributeKey] = newNode
 					else:
 						treeData = instance.create_wrapper()
-						rebuild()
+					save_current_file()
 					rebuild()
 			)
 	ShrimpVMUtil.disconnect_children(treeCenter, [treeTip])
@@ -140,6 +149,14 @@ func rebuild():
 	else:
 		select(null)
 		treeTip.show()
+func save_current_file():
+	fileManager.save(save_data())
+func close_current_file():
+	treeData = {}
+	scriptNameLabel.text = "* Untitled"
+	closeFileBtn.hide()
+	deleteFileBtn.hide()
+	rebuild()
 func has_root_node() -> bool:
 	return len(treeData) > 0 && treeData.has("type")
 func mark_selection(node: NodeBlock):
@@ -188,6 +205,7 @@ func select(node: NodeBlock):
 			parameter.eventEmitter.event.connect(
 				func(v):
 					node.data[attributeKey] = v
+					save_current_file()
 					parameter.rebuild(node.schema.attributes[attributeKey], v, node)
 			)
 			var editor = parameter.create_editbox(attribute, node.data[attributeKey])
