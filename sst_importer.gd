@@ -12,17 +12,23 @@ func _get_save_extension() -> String:
 	return "tres"
 func _get_resource_type() -> String:
 	return "ShrimpIR"
-func _get_import_options(path: String, preset_index: int) -> Array[Dictionary]:
+func _get_import_options(_path: String, _preset_index: int) -> Array[Dictionary]:
 	return [
 		{
 			"name": "ir_script_dir",
-			"display_name": "IR script directory",
+			"display_name": "IR-Scripts directory",
 			"property_hint": PropertyHint.PROPERTY_HINT_DIR,
 			"usage": PROPERTY_USAGE_DEFAULT,
 			"default_value": ""
 		}
 	]
-func _import(source_file: String, save_path: String, options: Dictionary, platform_variants: Array[String], gen_files: Array[String]) -> Error:
+func _import(
+	source_file: String,
+	save_path: String,
+	_options: Dictionary,
+	_platform_variants: Array[String],
+	_gen_files: Array[String]
+) -> Error:
 	var result = ShrimpCompiler.import_file(source_file)
 	if result is ShrimpIR:
 		return ResourceSaver.save(result, "%s.%s" % [save_path, _get_save_extension()])

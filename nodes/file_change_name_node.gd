@@ -24,11 +24,11 @@ static func create_from(wrapper: Dictionary) -> ShrimpFileChangeNameNode:
 	return result
 static func get_wrapper_schema() -> Dictionary[String, Variant]:
 	return super.get_wrapper_schema().merged({
-		"name": "重命名当前脚本",
+		"name": "Rename the script",
 		"attributes": {
 			"new_name": {
 				"type": TYPE_STRING,
-				"label": "新的文件名"
+				"label": "new name"
 			}
 		}
 	}, true)

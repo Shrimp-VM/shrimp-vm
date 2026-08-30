@@ -4,7 +4,7 @@ class_name VirtualFile
 
 signal opened()
 
-@export_tool_button("重建") var rebuilder = rebuild
+@export_tool_button("Rebuild") var rebuilder = rebuild
 @export var fileName: StringName = "File.sst"
 @export_multiline var content: String = ""
 

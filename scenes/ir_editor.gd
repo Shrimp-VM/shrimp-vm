@@ -2,9 +2,14 @@
 extends CanvasLayer
 class_name ShrimpIREditor
 
+signal compilation_start()
+signal compilation_stage(namx: String)
 signal compilation_warn(type: ShrimpOptimizer.WarnType, message: String)
+signal compilation_finished()
+signal script_run_start()
+signal script_run_finihsed()
 
-@export_tool_button("重建") var rebuilder = rebuild
+@export_tool_button("Rebuild") var rebuilder = rebuild
 @export var treeData: Dictionary = {
 	"type": "root",
 	"body": []
@@ -48,20 +53,18 @@ func _ready() -> void:
 	)
 	runBtn.pressed.connect(
 		func():
+			compilation_start.emit()
+			compilationWarns = []
 			fileManager.save(save_data())
 			if !has_root_node():
-				modal("编译失败：没有创建根节点")
+				compilation_warn.emit(ShrimpOptimizer.WarnType.NULL_ROOT, "Cannot run null script.")
 				return
-			print("正在编译IR ", JSON.stringify(treeData, "    "))
-			compilationWarns = []
+			compilation_stage.emit("Building IR-Trees: %s" % JSON.stringify(treeData, "    "))
 			var ir = ShrimpCompiler.compile(treeData, true, compilation_warn)
-			print("编译完成 ", ir)
-			if !compilationWarns.is_empty():
-				print(compilationWarns)
-				modal("编译失败：脚本中有%d个[color=red]红色棍母[/color]，请检查节点树" % len(compilationWarns))
-				return
+			compilation_finished.emit()
+			script_run_start.emit()
 			await vm.execute(ir, debugContext)
-			modal("脚本运行完成")
+			script_run_finihsed.emit()
 	)
 	newFileBtn.pressed.connect(
 		func():
@@ -84,6 +87,8 @@ func _ready() -> void:
 	)
 	modalPanel.clicked.connect(modal)
 	compilation_warn.connect(func(t, m): compilationWarns.append([t, m]))
+	if Engine.is_editor_hint():
+		treeData = {}
 	fileTip.show()
 	fileManager.inarchive()
 	rebuild()

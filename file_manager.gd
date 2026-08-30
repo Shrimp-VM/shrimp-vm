@@ -5,6 +5,8 @@ class_name ShrimpFileManager
 signal open_file(file: VirtualFile)
 signal add_file(file: VirtualFile)
 
+@export_global_file var archiveFile = "user://virtuals.json"
+
 var files: Array[VirtualFile] = []
 var currentOpening: VirtualFile = null
 
@@ -38,13 +40,13 @@ func decompile(src: String) -> Array:
 		return []
 	return json.data
 func archive():
-	var fa = FileAccess.open("user://virtuals.json", FileAccess.ModeFlags.WRITE)
+	var fa = FileAccess.open(archiveFile, FileAccess.ModeFlags.WRITE)
 	if fa == null:
 		return
 	fa.store_string(compile())
 	fa.close()
 func inarchive():
-	var fa = FileAccess.open("user://virtuals.json", FileAccess.ModeFlags.READ)
+	var fa = FileAccess.open(archiveFile, FileAccess.ModeFlags.READ)
 	if fa == null:
 		return
 	for data in decompile(fa.get_as_text()):

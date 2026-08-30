@@ -12,20 +12,27 @@ content_margin_top = 10.0
 content_margin_right = 10.0
 content_margin_bottom = 10.0
 bg_color = Color(0, 0, 0, 1)
-border_width_bottom = 10
+border_width_bottom = 3
 border_color = Color(1, 1, 1, 1)
-border_blend = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glela"]
 content_margin_left = 20.0
 content_margin_top = 20.0
 content_margin_right = 20.0
 content_margin_bottom = 20.0
-bg_color = Color(0, 0, 0, 0.70000005)
+bg_color = Color(0, 0, 0, 1)
 border_color = Color(1, 1, 1, 1)
 border_blend = true
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_05f5v"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nc1qr"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_iejdg"]
+font_size = 25
+font_color = Color(0.59, 0.59, 0.59, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_fjp0f"]
 font_size = 20
@@ -57,11 +64,11 @@ font_size = 25
 outline_size = 1
 
 [sub_resource type="LabelSettings" id="LabelSettings_nc1qr"]
-font_size = 20
+font_size = 25
 outline_size = 1
 
 [sub_resource type="LabelSettings" id="LabelSettings_0kp88"]
-font_size = 15
+font_size = 12
 font_color = Color(1, 0, 0, 1)
 outline_size = 1
 outline_color = Color(1, 0, 0, 1)
@@ -87,69 +94,7 @@ corner_radius_bottom_left = 15
 
 [node name="IR-Editor" type="CanvasLayer" unique_id=1041740263]
 script = ExtResource("1_iyhou")
-treeData = {
-"body": [{
-"body": [],
-"invalid": true,
-"type": "root"
-}, {
-"invalid": true,
-"type": "get_current_entity"
-}, {
-"invalid": true,
-"type": "get_current_entity"
-}, {
-"invalid": true,
-"type": "get_current_entity"
-}, {
-"invalid": true,
-"target": null,
-"type": "get_health"
-}, {
-"condition": {
-"left": {
-"target": {
-"type": "get_current_entity"
-},
-"type": "get_health"
-},
-"method": 0.0,
-"right": {
-"target": {
-"type": "get_target_entity"
-},
-"type": "get_health"
-},
-"type": "compare"
-},
-"elses": [],
-"thens": [{
-"amount": {
-"a": {
-"target": {
-"type": "get_current_entity"
-},
-"type": "get_health"
-},
-"b": {
-"content": 0.5,
-"type": "number"
-},
-"method": 2.0,
-"type": "multiply"
-},
-"entity_launcher": {
-"type": "get_current_entity"
-},
-"entity_target": {
-"type": "get_target_entity"
-},
-"type": "take_damage"
-}],
-"type": "if"
-}],
-"type": "root"
-}
+treeData = {}
 
 [node name="vm" type="Node" parent="." unique_id=1396633106]
 unique_name_in_owner = true
@@ -199,7 +144,7 @@ theme_override_constants/separation = 20
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
-text = "从电脑打开"
+text = "Load from computer"
 
 [node name="fileOpener" type="FileDialog" parent="root/layout/nav/wrapper/openBtn" unique_id=594379426]
 unique_name_in_owner = true
@@ -214,7 +159,7 @@ filters = PackedStringArray("*.sst")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
-text = "保存到电脑"
+text = "Save to computer"
 
 [node name="fileSaver" type="FileDialog" parent="root/layout/nav/wrapper/saveBtn" unique_id=594606514]
 unique_name_in_owner = true
@@ -227,13 +172,13 @@ filters = PackedStringArray("*.sst")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
-text = "运行脚本"
+text = "Run script"
 
 [node name="newBtn" type="Button" parent="root/layout/nav/wrapper" unique_id=806747857]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
-text = "新建脚本"
+text = "Create virtual script"
 
 [node name="layout" type="HBoxContainer" parent="root/layout" unique_id=2005437578]
 layout_mode = 2
@@ -260,6 +205,19 @@ size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_05f5v")
 script = ExtResource("3_ohykq")
 
+[node name="wrapper2" type="PanelContainer" parent="root/layout/layout/workspace" unique_id=1835959688]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_nc1qr")
+
+[node name="decoration" type="Label" parent="root/layout/layout/workspace/wrapper2" unique_id=30092913]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+text = "Workspace"
+label_settings = SubResource("LabelSettings_iejdg")
+
 [node name="wrapper" type="ScrollContainer" parent="root/layout/layout/workspace" unique_id=1722816101]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -272,10 +230,9 @@ size_flags_vertical = 3
 
 [node name="treeTip" type="Label" parent="root/layout/layout/workspace/wrapper/center" unique_id=287250670]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
-text = "没有根节点。
-建议点一下“根节点”创建一个，或者其他节点也行"
+text = "No root node.
+Create one with clicking the \"Root Node\" !"
 label_settings = SubResource("LabelSettings_fjp0f")
 horizontal_alignment = 1
 
@@ -286,7 +243,6 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_ohykq")
 
 [node name="inspector" type="PanelContainer" parent="root/layout/layout/workspace/margins" unique_id=815968616]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_styles/panel = SubResource("StyleBoxFlat_ohykq")
@@ -322,7 +278,7 @@ theme_override_constants/separation = 10
 [node name="title" type="Label" parent="root/layout/layout/fileManager/wrapper" unique_id=1322068035]
 layout_mode = 2
 size_flags_horizontal = 8
-text = "脚本管理"
+text = "Scripts"
 label_settings = SubResource("LabelSettings_nc1qr")
 
 [node name="wrapper" type="ScrollContainer" parent="root/layout/layout/fileManager/wrapper" unique_id=683617047]
@@ -338,10 +294,9 @@ size_flags_vertical = 3
 
 [node name="fileTip" type="Label" parent="root/layout/layout/fileManager/wrapper/wrapper/files" unique_id=156850020]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
-text = "没有脚本
-请点击“新建脚本”创建一个"
+text = "No scripts.
+Create one with the button above !"
 label_settings = SubResource("LabelSettings_0kp88")
 horizontal_alignment = 2
 

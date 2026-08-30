@@ -40,7 +40,7 @@ static func compile(from: Variant, optimize: bool = false, warnSignal = null) ->
 		push_error("Cannot compile null to IR-Node.")
 		return null
 	if from.get("invalid", false):
-		# 这是个棍母，直接跳过
+		# deleted by user, skip
 		return null
 	for node in ShrimpVMUtil.get_ir_nodes():
 		if node == null:

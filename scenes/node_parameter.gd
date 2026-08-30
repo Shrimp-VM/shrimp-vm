@@ -45,7 +45,7 @@ func rebuild(schemx: Dictionary, value: Variant, nodx: NodeBlock):
 				for item in value:
 					arrayWrapper.add_child(create_showbox(schemx, item, nodx))
 		else:
-			push_error("array参数的值不是Array")
+			push_error("The array parameter's wrapper value is not an Array[Variant].")
 	else:
 		emptyTip.hide()
 		valueWrapper.add_child(create_showbox(schemx, value, nodx))
@@ -79,7 +79,7 @@ func create_showbox(schemx: Dictionary, value: Variant, nodx: NodeBlock) -> Cont
 				return instance
 			else:
 				var label = Label.new()
-				label.text = "棍母"
+				label.text = str(null)
 				label.label_settings = LabelSettings.new()
 				label.label_settings.font_color = Color.RED
 				return label
@@ -131,7 +131,7 @@ static func create_initial_value(schemx: Dictionary) -> Variant:
 		return 0
 	match schemx.type:
 		TYPE_STRING:
-			return "棍母"
+			return "Empty string"
 		TYPE_FLOAT:
 			return 0
 		TYPE_BOOL:
