@@ -38,6 +38,8 @@ func execute(node: ShrimpIR, path: String) -> void:
 			TYPE_ARRAY:
 				if value is Array:
 					value.assign(value.filter(func(item): return item != null && !(item is Dictionary && item.get("invalid", false))))
+					var i = 0
 					for item in value:
 						if item is ShrimpIR:
-							execute(item, "%s.%s" % [path, prop.name])
+							execute(item, "%s.%s[%d]" % [path, prop.name, i])
+						i += 1
