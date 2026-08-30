@@ -3,6 +3,19 @@
 extends Resource
 class_name ShrimpIR
 
+class Model:
+	static func wrapper_schema(name: String, attributes: Dictionary):
+		return {
+			"name": name,
+			"attributes": attributes
+		}
+	static func attribute_schema(type: Variant, label: String, array: bool = false, default: Variant = null):
+		return {
+			"type": type,
+			"label": label,
+			"array": array
+		}.merged({"default": default} if default != null else {})
+
 const ERR_NOT_IMPLEMENTED = "Not Implemented"
 const TYPE_ENUM = -1
 
@@ -19,6 +32,20 @@ static func get_category_tag() -> String:
 static func get_node_type() -> String:
 	assert(false, ERR_NOT_IMPLEMENTED)
 	return "unknown_node"
+## Fake type script:
+##
+## interface Wrapper {
+##     name: string;
+## 	attributes: Record<
+## 	    string,
+## 		{
+## 		    type: int | string[],
+## 			label: string,
+## 			array?: boolean=false,
+## 			default?: any=null
+## 		}
+## 	>;
+## }
 static func get_wrapper_schema() -> Dictionary[String, Variant]:
 	return {
 		"name": "Unnamed IR-Node",
