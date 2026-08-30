@@ -24,7 +24,7 @@ static func create_from(wrapper: Dictionary) -> ShrimpFileChangeNameNode:
 	return result
 static func get_wrapper_schema() -> Dictionary[String, Variant]:
 	return super.get_wrapper_schema().merged({
-		"name": "Rename the script",
+		"name": "Rename the Script",
 		"attributes": {
 			"new_name": {
 				"type": TYPE_STRING,

@@ -25,7 +25,7 @@ static func get_wrapper_schema() -> Dictionary[String, Variant]:
 		"attributes": {
 			"body": {
 				"type": ShrimpIR.TYPE_ENUM,
-				"label": "Body",
+				"label": "body",
 				"array": true
 			}
 		}

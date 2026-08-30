@@ -1,75 +1,148 @@
-# Shrimp VM
+# ShrimpVM
 
-一个 Godot 4 编辑器插件，提供一套**可视化积木式 IR（中间表示）脚本系统**：在编辑器内用积木块搭建逻辑树，编译为 IR 节点树后由虚拟机异步执行。
+A visual block-based scripting virtual machine for **Godot 4**. ShrimpVM lets your *players* create and run little programs inside your game through a friendly, in-game block editor — perfect for programmable computers, modding sandboxes, puzzle games, or any game where the player writes the logic.
 
-## 核心原理
+- **Runtime, in-game editor** — a ready-made `CanvasLayer` scene with a block palette, tree view, parameter inspector, and file management.
+- **Compile & run player scripts** — JSON block graphs are compiled into executable IR trees and interpreted with full `async/await` support.
+- **Extensible node system** — define your own instruction set by writing small GDScript node classes; the editor picks them up automatically.
+- **Persistence built-in** — player scripts are managed as virtual files and archived to `user://virtuals.json`.
+- **Editor-side import** — `.sst` script files import into your project as regular `ShrimpIR` resources via a custom importer.
 
-### 数据流
+## How It Works
 
 ```plain
-积木编辑器 (treeData: Dictionary)
-        │  JSON 序列化 (.sst 文件 / virtual_file)
-        ▼
-ShrimpCompiler.compile()   ← 按 type 匹配节点脚本，调用 create_from()
-        ▼
-ShrimpIR 节点树 (Resource)  ← ShrimpOptimizer 清除无效/空节点
-        ▼
-ShrimpVM.execute()          ← await 递归执行，返回 Variant
+.sst (JSON) ──► ShrimpCompiler ──► ShrimpIR tree ──► ShrimpVM.execute()
+     ▲                                                   │
+     │                                                   ▼
+ ShrimpIREditor (in-game block editor)          Your game's behaviour
 ```
 
-### 核心类
+1. **Blocks are data.** Every instruction is a `ShrimpIR` resource subclass that describes itself with a *wrapper schema* (a JSON schema dictionary). The editor renders the palette and tree purely from these schemas — no scene setup needed for new node types.
+2. **Compilation.** `ShrimpCompiler` converts wrapper dictionaries into IR node trees. `ShrimpOptimizer` strips deleted nodes and warns about broken references.
+3. **Execution.** `ShrimpVM.execute()` awaits each node's `execute()` method, so nodes can `await` freely (timers, animations, physics waits) without blocking the game.
+4. **Scoping.** Each execution runs inside an `ExecutionContext` with a chain of `ExecutionEnvironment` symbol tables (lexical parent scoping), which nodes use to read and write variables.
 
-| 类                                                                                  | 职责                                                                                                                                              |
-|-------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------|
-| [shrimp_vm.gd](shrimp_vm.gd)                                                        | 虚拟机入口（Node）。`execute(node, context)` 递归 `await node.execute()`，天然支持异步（如 SleepNode）。游戏运行时若设置了 `root_node` 会自动执行 |
-| [shrimp_ir.gd](shrimp_ir.gd)                                                        | IR 节点抽象基类（Resource）。定义 `execute` / `decompile` / `create_from` / `get_wrapper_schema` / `get_node_type` / `get_category_tag` 接口      |
-| [shrimp_compiler.gd](shrimp_compiler.gd)                                            | 编译器（纯静态类）。JSON wrapper 字典 ↔ IR 节点树 的双向转换（compile / decompile）                                                               |
-| [shrimp_optimizer.gd](shrimp_optimizer.gd)                                          | 优化器。递归遍历属性，过滤 `null` 节点和被标记 `invalid` 的节点（编辑器中删除积木即打此标记，即"红色棍母"），并发出警告                           |
-| [execution_context.gd](execution_context.gd) / [execution_env.gd](execution_env.gd) | 执行上下文 + 词法作用域符号表。子节点创建子 Context，`read_symbol` 沿 parent 链向上查找（如 `filemgr` 由编辑器注入）                              |
-| [sst_importer.gd](sst_importer.gd)                                                  | 编辑器导入插件。将 `.sst`（JSON 文本）导入为 `ShrimpIR` 资源（`.tres`），导入选项 `ir_script_dir` 指定自定义节点目录                              |
-| [file_manager.gd](file_manager.gd)                                                  | 虚拟文件管理器。管理多份 IR 脚本（VirtualFile），持久化到 `user://virtuals.json`                                                                  |
+## Installation
 
-### Wrapper 格式与 Schema
+1. Copy the `addons/shrimpvm` folder into your project (or install via the Asset Library).
+2. Enable the **ShrimpVM** plugin in *Project Settings → Plugins*. This registers the `.sst` importer.
 
-每个节点在编辑器/文件中是一个"wrapper"字典：`{"type": "compare", "left": {...}, "right": {...}, "method": 0}`。节点类通过 `get_wrapper_schema()` 声明自身结构，伪类型定义：
+## Quick Start
 
-```ts
-{
-  name: string,                          // 编辑器显示名
-  attributes: Record<string, {
-    type: int | string[],                // 类型枚举；字符串数组 = 下拉枚举；TYPE_ENUM(-1) = 可嵌套子 IR 节点
-    label: string,
-    array?: boolean,                     // 值是否为数组，适用于任意 type（TYPE_ENUM/TYPE_STRING/TYPE_FLOAT/字符串枚举）
-    default?: any
-  }>
-}
+1. Add the in-game editor scene to your UI (e.g. as a hidden layer you toggle with a key):
+
+```gdscript
+var editor := preload("res://addons/shrimpvm/scenes/ir_editor.tscn").instantiate()
+add_child(editor)
 ```
 
-`type: TYPE_ENUM` 的属性可以在编辑器里继续挂子积木，从而构成表达式树（如 CompareNode 的 left/right 是任意返回值的节点）。`array: true` 时编辑器会将属性渲染为元素列表（TYPE_ENUM 数组会自动过滤无效子节点），初始值为空数组。
+The editor boots a `ShrimpVM` and `ShrimpFileManager` of its own. Players can:
 
-## 编辑器（scenes/ir_editor.tscn）
+- Create new scripts and open/delete/rename existing ones (archived in `user://virtuals.json`).
+- Drag blocks from the palette (grouped by category) into the tree, select nodes to edit parameters in the inspector.
+- Save/load scripts as `.sst` (JSON) files.
+- Hit **Run** to compile and execute the script inside the editor.
 
-`ShrimpIREditor`（CanvasLayer）是完整的可视化脚本工作台：
+1. Run a script from your own code:
 
-- **左侧积木桌**：按 `get_category_tag()` 分类展示所有可用节点（[node_block.gd](scenes/node_block.gd)），点击积木将其追加到当前选中的参数位（数组属性追加、单值属性替换）
-- **中央节点树**：从根节点开始逐层展示，点击节点在**检查器**（[parameter_inspector.gd](scenes/parameter_inspector.gd)）中编辑属性
-- **虚拟文件系统**：上方文件标签页（[virtual_file.gd](scenes/virtual_file.gd)），可新建/打开/重命名脚本，内容即 wrapper JSON，自动存档
-- **运行**：点击运行按钮 → 保存当前文件 → `ShrimpCompiler.compile(treeData, true)`（带优化）→ 在注入了 `filemgr` 符号的调试上下文中执行
+```gdscript
+@onready var vm: ShrimpVM = $ShrimpVM
 
-## 使用方式
+func run_script() -> void:
+    var ir: ShrimpIR = ShrimpCompiler.import_file("res://scripts/player_prog.sst")
+    if ir:
+        await vm.execute(ir, ExecutionContext.new())
+```
 
-1. 在项目设置中启用 `ShrimpVM` 插件。
-2. 实例化 `scenes/ir_editor.tscn`，用积木搭建脚本（详见上方编辑器说明）。
-3. 运行方式二选一：
-   - **编辑器内**：直接点编辑器的运行按钮；
-   - **游戏中**：将 `.sst` 导入后的 `ShrimpIR` 资源赋给场景中 `ShrimpVM` 节点的 `root_node`，运行时自动执行。
-4. 需要 VM 与游戏对象交互时，构造 `ExecutionContext` 并向 `env` 写入符号（如 `filemgr`），节点内用 `context.env.read_symbol()` 取用。
+`ShrimpVM` can also run a root node automatically when the game starts — just assign `root_node` in the inspector.
 
-## 扩展节点
+## Writing Custom Nodes
 
-项目内置节点位于 `nodes/`（root、file_change_name）；游戏逻辑节点（If、While、Compare、Print 等 15 个）在项目侧的 `scripts/Content/IR-Nodes/`。自定义新节点只需：
+Any script extending `ShrimpIR` inside `res://addons/shrimpvm/nodes/` (or in the directory set by the importer's *IR-Scripts directory* option) is discovered automatically and appears in the editor palette.
 
-1. 新建脚本 `extends ShrimpIR`，设置 `class_name`；
-2. 实现 `execute(vm, context)`（可 `await`，返回值可被父节点当表达式用）；
-3. 实现 `get_node_type()`（唯一类型字符串）、`create_from(wrapper)`（反序列化）、`get_wrapper_schema()`（编辑器 schema）、可选 `get_category_tag()`（分类标签）；
-4. 将脚本放入某个目录，并在 `.sst` 导入预设的 `ir_script_dir` 选项中填入该目录——编辑器积木桌和编译器会自动发现它。
+```gdscript
+# nodes/my_print_node.gd
+@tool
+extends ShrimpIR
+class_name ShrimpPrintNode
+
+@export var message: String
+
+func execute(_vm: ShrimpVM, context: ExecutionContext) -> Variant:
+    print(context.env.read_symbol(&"some_var"))
+    print(message)
+    return
+
+func decompile() -> Dictionary:
+    return { "message": message }
+
+static func get_node_type() -> String:
+    return "my_print"
+
+static func create_from(wrapper: Dictionary) -> ShrimpPrintNode:
+    var result := new()
+    result.message = wrapper.message
+    return result
+
+static func get_wrapper_schema() -> Dictionary[String, Variant]:
+    return super.get_wrapper_schema().merged({
+        "name": "Print",
+        "attributes": {
+            "message": { "type": TYPE_STRING, "label": "message" }
+        }
+    }, true)
+```
+
+### Wrapper Schema Reference
+
+| Field                  | Type                    | Description                                                                                    |
+|------------------------|-------------------------|------------------------------------------------------------------------------------------------|
+| `name`                 | `String`                | Display name shown on the block.                                                               |
+| `attributes`           | `Dictionary`            | Attribute key → attribute schema.                                                              |
+| `attributes.*.type`    | `int` / `Array[String]` | A Godot `TYPE_*` constant, `ShrimpIR.TYPE_ENUM` for a nested IR node, or an enum option array. |
+| `attributes.*.label`   | `String`                | Label shown in the inspector.                                                                  |
+| `attributes.*.array`   | `bool`                  | If `true`, the attribute holds a list of values / nested nodes.                                |
+| `attributes.*.default` | `Variant`               | Optional initial value.                                                                        |
+
+Attribute types map to editor widgets automatically: `TYPE_STRING` → text box, `TYPE_FLOAT` → number input, `TYPE_BOOL` → toggle, enum array → dropdown, `TYPE_ENUM` → "click a palette block to attach a child node here".
+
+### Compile/Decompile Contract
+
+- `create_from(wrapper)` is the **compile** direction: wrapper `Dictionary` → typed node. Nested nodes arrive as dictionaries (pass them through `ShrimpCompiler.compile_body()` if needed).
+- `decompile()` is the reverse: node → wrapper `Dictionary`. `ShrimpCompiler.decompile()` adds the `"type"` field for you.
+- The serialized tree must start with a node whose type is `ShrimpRootNode.get_node_type()` (`"root"`).
+
+### Execution Context
+
+Nodes receive an `ExecutionContext` whose `env` is a scoped symbol table. Child scopes are created automatically by nesting (e.g. `ShrimpRootNode.execute()` wraps its body in a child context), and reads fall through to parent scopes. Use `read_symbol` / `write_symbol` / `delete_symbol` to share data between nodes.
+
+## Built-in Nodes
+
+| Node              | Type string        | Description                                                         |
+|-------------------|--------------------|---------------------------------------------------------------------|
+| Root              | `root`             | Script entry point; holds the `body` block list.                    |
+| Rename the script | `file_change_name` | Renames the currently opened virtual file via the `filemgr` symbol. |
+
+More nodes ship in the demo project — check the `nodes/` directory.
+
+## API Overview
+
+| Class                                       | Purpose                                                          |
+|---------------------------------------------|------------------------------------------------------------------|
+| `ShrimpVM`                                  | Node that executes IR trees (`execute`, `execute_all`).          |
+| `ShrimpIR`                                  | Abstract base class for all instruction nodes.                   |
+| `ShrimpCompiler`                            | Static compile/decompile/import entry points.                    |
+| `ShrimpOptimizer`                           | Cleans up deleted/null nodes; emits warnings.                    |
+| `ExecutionContext` / `ExecutionEnvironment` | Scoped symbol tables during execution.                           |
+| `ShrimpIREditor`                            | The in-game visual editor scene (open/save/run/file management). |
+| `ShrimpFileManager` / `VirtualFile`         | Virtual script files with JSON archiving.                        |
+| `SSTImporter`                               | Editor import plugin for `.sst` files.                           |
+| `ShrimpVMUtil`                              | Node discovery and category listing helpers.                     |
+
+## Requirements
+
+- Godot **4.6+** (uses `@abstract` and `@export_tool_button`).
+
+## License
+
+MIT — see `LICENSE`. Contributions are welcome!
