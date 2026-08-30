@@ -25,14 +25,6 @@ border_blend = true
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_05f5v"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nc1qr"]
-content_margin_left = 20.0
-content_margin_top = 20.0
-
-[sub_resource type="LabelSettings" id="LabelSettings_iejdg"]
-font_size = 25
-font_color = Color(0.59, 0.59, 0.59, 1)
-
 [sub_resource type="LabelSettings" id="LabelSettings_fjp0f"]
 font_size = 20
 font_color = Color(1, 0, 0, 1)
@@ -61,6 +53,15 @@ border_blend = true
 [sub_resource type="LabelSettings" id="LabelSettings_ohykq"]
 font_size = 25
 outline_size = 1
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nc1qr"]
+content_margin_left = 20.0
+content_margin_top = 0.0
+content_margin_bottom = 20.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_iejdg"]
+font_size = 14
+font_color = Color(0.59, 0.59, 0.59, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_nc1qr"]
 font_size = 25
@@ -217,30 +218,6 @@ size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_05f5v")
 script = ExtResource("3_ohykq")
 
-[node name="workspace" type="PanelContainer" parent="root/layout/layout/workspace" unique_id=1835959688]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxEmpty_nc1qr")
-
-[node name="wrapper" type="HBoxContainer" parent="root/layout/layout/workspace/workspace" unique_id=171671562]
-layout_mode = 2
-
-[node name="decoration" type="Label" parent="root/layout/layout/workspace/workspace/wrapper" unique_id=30092913]
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-text = "Workspace:"
-label_settings = SubResource("LabelSettings_iejdg")
-
-[node name="scriptName" type="Label" parent="root/layout/layout/workspace/workspace/wrapper" unique_id=699603676]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 0
-size_flags_vertical = 0
-text = "* Untitled"
-label_settings = SubResource("LabelSettings_iejdg")
-
 [node name="wrapper" type="ScrollContainer" parent="root/layout/layout/workspace" unique_id=1722816101]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -288,6 +265,36 @@ size_flags_vertical = 3
 unique_name_in_owner = true
 layout_mode = 2
 text = "Delete Node"
+
+[node name="workspace" type="PanelContainer" parent="root/layout/layout/workspace" unique_id=1835959688]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 8
+mouse_filter = 2
+mouse_behavior_recursive = 1
+theme_override_styles/panel = SubResource("StyleBoxEmpty_nc1qr")
+
+[node name="wrapper" type="HBoxContainer" parent="root/layout/layout/workspace/workspace" unique_id=171671562]
+layout_mode = 2
+mouse_filter = 2
+mouse_behavior_recursive = 1
+
+[node name="decoration" type="Label" parent="root/layout/layout/workspace/workspace/wrapper" unique_id=30092913]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_behavior_recursive = 1
+text = "Workspace:"
+label_settings = SubResource("LabelSettings_iejdg")
+
+[node name="scriptName" type="Label" parent="root/layout/layout/workspace/workspace/wrapper" unique_id=699603676]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+mouse_behavior_recursive = 1
+text = "* Untitled"
+label_settings = SubResource("LabelSettings_iejdg")
 
 [node name="fileManager" type="PanelContainer" parent="root/layout/layout" unique_id=533633626]
 layout_mode = 2

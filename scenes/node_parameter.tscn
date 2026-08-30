@@ -43,7 +43,7 @@ font_size = 13
 font_color = Color(0.5591886, 0.5591886, 0.5591886, 1)
 
 [node name="NodeParameter" type="PanelContainer" unique_id=527761297]
-offset_right = 167.0
+offset_right = 109.0
 offset_bottom = 33.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_y6t73")
 script = ExtResource("1_y6t73")
@@ -118,7 +118,7 @@ theme_override_constants/separation = 0
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 6
-text = "棍母"
+text = " Empty "
 label_settings = SubResource("LabelSettings_y6t73")
 horizontal_alignment = 1
 
