@@ -8,6 +8,7 @@ signal compilation_warn(type: ShrimpOptimizer.WarnType, message: String)
 signal compilation_finished()
 signal script_run_start()
 signal script_run_finihsed()
+signal modal_finished()
 
 @export_tool_button("Rebuild") var rebuilder = rebuild
 @export var treeData: Dictionary = {
@@ -61,7 +62,6 @@ func _ready() -> void:
 			save_current_file()
 			if !has_root_node():
 				compilation_warn.emit(ShrimpOptimizer.WarnType.NULL_ROOT, "Cannot run null script.")
-				return
 			compilation_stage.emit("Building IR-Trees: %s" % JSON.stringify(treeData, "    "))
 			var ir = ShrimpCompiler.compile(treeData, true, compilation_warn)
 			compilation_finished.emit()
@@ -227,5 +227,7 @@ func modal(content: String = ""):
 	if content:
 		modalLabel.text = content
 		modalPanel.show()
+		await modal_finished
 	else:
 		modalPanel.hide()
+		modal_finished.emit()
