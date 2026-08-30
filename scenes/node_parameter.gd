@@ -53,12 +53,12 @@ func select():
 	selectionBar.show()
 func unselect():
 	selectionBar.hide()
-func create_showbox(schema: Dictionary, value: Variant, node: NodeBlock) -> Control:
-	if schema.type is Array:
+func create_showbox(schemx: Dictionary, value: Variant, nodx: NodeBlock) -> Control:
+	if schemx.type is Array:
 		var label = Label.new()
-		label.text = str(schema.type[value])
+		label.text = str(schemx.type[value])
 		return label
-	match schema.type:
+	match schemx.type:
 		TYPE_STRING, TYPE_FLOAT:
 			var label = Label.new()
 			label.text = "%s" % (value)
@@ -72,7 +72,7 @@ func create_showbox(schema: Dictionary, value: Variant, node: NodeBlock) -> Cont
 			if value is Dictionary && !value.get("invalid", false):
 				var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
 				instance.inDesk = false
-				instance.parent = node
+				instance.parent = nodx
 				add_child(instance)
 				instance.rebuild(ShrimpVMUtil.find_ir_node(value.type).get_wrapper_schema(), value)
 				remove_child(instance)
@@ -85,15 +85,15 @@ func create_showbox(schema: Dictionary, value: Variant, node: NodeBlock) -> Cont
 				return label
 		_:
 			return Control.new()
-func create_editbox(schema: Dictionary, value: Variant) -> Control:
-	if schema.type is Array:
+func create_editbox(schemx: Dictionary, value: Variant) -> Control:
+	if schemx.type is Array:
 		var btn = OptionButton.new()
-		for item in schema.type:
+		for item in schemx.type:
 			btn.add_item(str(item))
 		btn.item_selected.connect(eventEmitter.event.emit)
 		btn.selected = value
 		return btn
-	match schema.type:
+	match schemx.type:
 		TYPE_STRING:
 			var input = TextEdit.new()
 			input.custom_minimum_size = Vector2i(200, 100)
@@ -122,14 +122,14 @@ func create_editbox(schema: Dictionary, value: Variant) -> Control:
 		_:
 			return null
 
-static func create_initial_value(schema: Dictionary) -> Variant:
-	if schema.has("default"):
-		return schema.default
-	if schema.get("array", false):
+static func create_initial_value(schemx: Dictionary) -> Variant:
+	if schemx.has("default"):
+		return schemx.default
+	if schemx.get("array", false):
 		return []
-	if schema.type is Array:
+	if schemx.type is Array:
 		return 0
-	match schema.type:
+	match schemx.type:
 		TYPE_STRING:
 			return "棍母"
 		TYPE_FLOAT:

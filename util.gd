@@ -3,6 +3,9 @@ class_name ShrimpVMUtil
 class EventEmitter extends RefCounted:
 	signal event()
 
+	func emit(data):
+		event.emit(data)
+
 static func hide_keys(dic: Dictionary, keys: Array[StringName]) -> Dictionary:
 	var result = dic.duplicate()
 	for key in keys:
@@ -37,7 +40,6 @@ static func get_categoried_irs() -> Dictionary[String, Array]:
 		result[category].append(ir)
 	return result
 static func get_ir_nodes() -> Array[ShrimpIR]:
-	var base: String = get_importer_setting().ir_script_dir
 	var result: Array[ShrimpIR] = []
 	for i in ShrimpVMUtil.concat_array(
 		list_dir("res://addons/shrimpvm/nodes"),

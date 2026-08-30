@@ -25,6 +25,6 @@ static func get_wrapper_schema() -> Dictionary[String, Variant]:
 		"name": "Unnamed IR-Node",
 		"attributes": {}
 	}
-static func create_from(wrapper: Dictionary) -> ShrimpIR:
+static func create_from(_wrapper: Dictionary) -> ShrimpIR:
 	assert(false, ERR_NOT_IMPLEMENTED)
 	return null
