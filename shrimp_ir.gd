@@ -33,18 +33,17 @@ static func get_node_type() -> String:
 	assert(false, ERR_NOT_IMPLEMENTED)
 	return "unknown_node"
 ## Fake type script:
-##
 ## interface Wrapper {
 ##     name: string;
-## 	attributes: Record<
-## 	    string,
-## 		{
-## 		    type: int | string[],
-## 			label: string,
-## 			array?: boolean=false,
-## 			default?: any=null
-## 		}
-## 	>;
+## 	   attributes: Record<
+## 	      string,
+## 		  {
+## 		      type: int | string[],
+## 			  label: string,
+## 			  array?: boolean=false,
+## 			  default?: any=null
+## 		  }
+## 	  >;
 ## }
 static func get_wrapper_schema() -> Dictionary[String, Variant]:
 	return {
