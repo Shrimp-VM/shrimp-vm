@@ -95,7 +95,12 @@ func _ready() -> void:
 			deleteFileBtn.show()
 	)
 	fileManager.close_file.connect(func(_f): close_current_file())
-	fileManager.delete_file.connect(func(_f): close_current_file())
+	fileManager.delete_file.connect(
+		func(_f):
+			close_current_file()
+			if fileManager.files.is_empty():
+				fileTip.show()
+	)
 	fileManager.rebuilding.connect(
 		func(file: VirtualFile):
 			if is_instance_valid(file):

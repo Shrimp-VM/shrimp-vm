@@ -29,12 +29,12 @@ func close():
 	close_file.emit(currentOpening)
 	currentOpening = null
 func delete():
-	delete_file.emit(currentOpening)
 	if is_instance_valid(currentOpening):
 		if currentOpening in files:
 			files.erase(currentOpening)
 		currentOpening.queue_free()
 	currentOpening = null
+	delete_file.emit(currentOpening)
 	archive()
 func rename(fn: StringName):
 	if !is_instance_valid(currentOpening): return

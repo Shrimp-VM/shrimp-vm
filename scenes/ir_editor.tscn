@@ -189,6 +189,7 @@ text = "Close"
 
 [node name="deleteFileBtn" type="Button" parent="root/layout/nav/wrapper" unique_id=1440390961]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 text = "Delete"
@@ -243,6 +244,7 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_ohykq")
 
 [node name="inspector" type="PanelContainer" parent="root/layout/layout/workspace/margins" unique_id=815968616]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_styles/panel = SubResource("StyleBoxFlat_ohykq")
