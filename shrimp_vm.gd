@@ -19,15 +19,10 @@ func execute(node: ShrimpIR, context: ExecutionContext) -> Variant:
 	return await context.execute(node, self)
 func execute_all(nodes: Array[ShrimpIR], context: ExecutionContext) -> Variant:
 	return await context.execute_body(nodes, self)
-func poll_event():
+func poll_event(context: ExecutionContext):
 	var irs = ShrimpVMUtil.get_ir_nodes()
 	for ir in irs:
 		if ir.get_wrapper_schema().trigger != ShrimpIR.NodeTrigger.EVENT_POLL: return
-		for script in scripts:
-			if script.node_type != ir.get_node_type(): return
-			#
-func emit_polling(emitter: Signal):
-	if is_instance_valid(poll_emitter):
-		poll_emitter.disconnect(poll_event)
-	emitter.connect(poll_event)
-	poll_emitter = emitter
+		for headNode in scripts:
+			if headNode.node_type != ir.get_node_type(): return
+			execute(headNode, context)
