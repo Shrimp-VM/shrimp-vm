@@ -19,6 +19,7 @@ class Model:
 
 const ERR_NOT_IMPLEMENTED = "Not Implemented"
 const TYPE_ENUM = -1
+const TYPE_EXTERNAL_PARAMETER = -2
 
 enum NodeTrigger {
 	EXECUTION,

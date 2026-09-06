@@ -28,3 +28,18 @@ func poll_event(scripts: Array[ShrimpIR], context: ExecutionContext):
 				if await execute(headNode, context):
 					await headNode.event_emit(self, context)
 			headTest.call()
+func trigger_event(node: String, scripts: Array[ShrimpIR], context: ExecutionContext, parameters: Dictionary = {}):
+	var irs = ShrimpVMUtil.get_ir_nodes()
+	for ir in irs:
+		var schema = ir.get_wrapper_schema()
+		if schema.trigger != ShrimpIR.NodeTrigger.EVENT_TRIGGER: return
+		if ir.get_node_type() != node: return
+		for headNode in scripts:
+			if headNode.node_type != ir.get_node_type(): return
+			var headRun = func():
+				var runContext = ExecutionContext.new(context)
+				for attributeKey in schema.attributes:
+					if schema.attributes[attributeKey].type == ShrimpIR.TYPE_EXTERNAL_PARAMETER:
+						runContext.env.write_symbol("EVENT_%s" % attributeKey, parameters.get(attributeKey))
+				await execute(headNode, runContext)
+			headRun.call()

@@ -47,6 +47,7 @@ func rebuild(schemx: Dictionary, datx: Dictionary):
 	ShrimpVMUtil.disconnect_children(parameterWrapper)
 	if !inDesk:
 		for attributeKey in schemx.attributes:
+			if schemx.attributes[attributeKey].type == ShrimpIR.TYPE_EXTERNAL_PARAMETER: continue
 			var instance = load("res://addons/shrimpvm/scenes/node_parameter.tscn").instantiate() as NodeParameter
 			parameterWrapper.add_child(instance)
 			instance.name = attributeKey
