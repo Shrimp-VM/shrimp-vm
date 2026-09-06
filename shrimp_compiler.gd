@@ -23,7 +23,7 @@ static func import_data(data: Variant) -> ShrimpIR:
 	if data is Dictionary:
 		var first = compile(data)
 		if !first:
-			push_error("IR-Node compilation failed.")
+			push_error("ShrimpIR compilation failed.")
 			return null
 		if first.get_node_type() != ShrimpRootNode.get_node_type():
 			push_error("Must start with a root node.")
@@ -34,10 +34,10 @@ static func import_data(data: Variant) -> ShrimpIR:
 		return null
 static func compile(from: Variant, optimize: bool = false, warnSignal = null) -> ShrimpIR:
 	if from is not Dictionary:
-		push_error("Can only compile #wrapper dictionary# to IR-Node.")
+		push_error("Can only compile #wrapper dictionary# to ShrimpIR.")
 		return null
 	if !from:
-		push_error("Cannot compile null to IR-Node.")
+		push_error("Cannot compile null to ShrimpIR.")
 		return null
 	if from.get("invalid", false):
 		# deleted by user, skip
@@ -49,7 +49,7 @@ static func compile(from: Variant, optimize: bool = false, warnSignal = null) ->
 		if node.get_node_type() == from.type:
 			var result = node.create_from(from)
 			if result is not ShrimpIR:
-				push_error("Broken node %s: not created an IR-Node." % node)
+				push_error("Broken node %s: not created an ShrimpIR." % node)
 				return null
 			if optimize:
 				var optimizer = ShrimpOptimizer.new(result)
@@ -58,7 +58,7 @@ static func compile(from: Variant, optimize: bool = false, warnSignal = null) ->
 				return optimizer.optimize()
 			else:
 				return result
-	push_error("Unknown IR-Node type: %s." % from.type)
+	push_error("Unknown ShrimpIR type: %s." % from.type)
 	return null
 static func compile_body(from: Array, optimize: bool = true) -> Array[ShrimpIR]:
 	var result: Array[ShrimpIR] = []

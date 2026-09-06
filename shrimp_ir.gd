@@ -4,10 +4,11 @@ extends Resource
 class_name ShrimpIR
 
 class Model:
-	static func wrapper_schema(name: String, attributes: Dictionary):
+	static func wrapper_schema(name: String, attributes: Dictionary, trigger: NodeTrigger = NodeTrigger.EXECUTION):
 		return {
 			"name": name,
-			"attributes": attributes
+			"attributes": attributes,
+			"trigger": trigger
 		}
 	static func attribute_schema(type: Variant, label: String, array: bool = false, default: Variant = null):
 		return {
@@ -19,11 +20,20 @@ class Model:
 const ERR_NOT_IMPLEMENTED = "Not Implemented"
 const TYPE_ENUM = -1
 
+enum NodeTrigger {
+	EXECUTION,
+	EVENT_POLL,
+	EVENT_TRIGGER,
+	TERMINAL
+}
+
 @export var node_type: String
 
+## EXECUTION=Orderly run, EVENT=event test, returns a bool, TERMINAL=stop, can't connect next sibling
 @abstract func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant
 func decompile() -> Dictionary:
 	return {}
+
 func get_keys_type(attribute: String):
 	return get_wrapper_schema().attributes[attribute].type
 
@@ -44,12 +54,10 @@ static func get_node_type() -> String:
 ## 			  default?: any=null
 ## 		  }
 ## 	  >;
+##    trigger: NodeTrigger;
 ## }
 static func get_wrapper_schema() -> Dictionary[String, Variant]:
-	return {
-		"name": "Unnamed IR-Node",
-		"attributes": {}
-	}
+	return Model.wrapper_schema("Unnamed ShrimpIR", {})
 static func create_from(_wrapper: Dictionary) -> ShrimpIR:
 	assert(false, ERR_NOT_IMPLEMENTED)
 	return null

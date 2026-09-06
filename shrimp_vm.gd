@@ -2,24 +2,32 @@
 extends Node
 class_name ShrimpVM
 
-@export_tool_button("Run") var run = execute_root_node
-@export var root_node: ShrimpIR
+@export_tool_button("Run") var run = execute_autorun
+@export var auto_run: ShrimpIR
+@export var scripts: Array[ShrimpIR]
+
+var poll_emitter: Signal
 
 func _ready() -> void:
 	if !Engine.is_editor_hint():
-		if root_node:
-			execute_root_node()
+		if auto_run is ShrimpIR:
+			execute_autorun()
 
-func execute_root_node():
-	await execute(root_node, ExecutionContext.new())
+func execute_autorun():
+	await execute(auto_run, ExecutionContext.new())
 func execute(node: ShrimpIR, context: ExecutionContext) -> Variant:
-	if !is_instance_valid(node):
-		push_warning("%s is not a IR-Node, skipping execution." % node)
-		return null
-	if !is_instance_valid(context):
-		context = ExecutionContext.new()
-	return await node.execute(self, context)
+	return await context.execute(node, self)
 func execute_all(nodes: Array[ShrimpIR], context: ExecutionContext) -> Variant:
-	for node in nodes:
-		await execute(node, context)
-	return
+	return await context.execute_body(nodes, self)
+func poll_event():
+	var irs = ShrimpVMUtil.get_ir_nodes()
+	for ir in irs:
+		if ir.get_wrapper_schema().trigger != ShrimpIR.NodeTrigger.EVENT_POLL: return
+		for script in scripts:
+			if script.node_type != ir.get_node_type(): return
+			#
+func emit_polling(emitter: Signal):
+	if is_instance_valid(poll_emitter):
+		poll_emitter.disconnect(poll_event)
+	emitter.connect(poll_event)
+	poll_emitter = emitter
