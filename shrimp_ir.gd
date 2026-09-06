@@ -31,6 +31,8 @@ enum NodeTrigger {
 
 ## EXECUTION=Orderly run, EVENT=event test, returns a bool, TERMINAL=stop, can't connect next sibling
 @abstract func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant
+func event_emit(_vm: ShrimpVM, _context: ExecutionContext):
+	pass
 func decompile() -> Dictionary:
 	return {}
 

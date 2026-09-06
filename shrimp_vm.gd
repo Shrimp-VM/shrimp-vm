@@ -4,7 +4,6 @@ class_name ShrimpVM
 
 @export_tool_button("Run") var run = execute_autorun
 @export var auto_run: ShrimpIR
-@export var scripts: Array[ShrimpIR]
 
 var poll_emitter: Signal
 
@@ -19,10 +18,13 @@ func execute(node: ShrimpIR, context: ExecutionContext) -> Variant:
 	return await context.execute(node, self)
 func execute_all(nodes: Array[ShrimpIR], context: ExecutionContext) -> Variant:
 	return await context.execute_body(nodes, self)
-func poll_event(context: ExecutionContext):
+func poll_event(scripts: Array[ShrimpIR], context: ExecutionContext):
 	var irs = ShrimpVMUtil.get_ir_nodes()
 	for ir in irs:
 		if ir.get_wrapper_schema().trigger != ShrimpIR.NodeTrigger.EVENT_POLL: return
 		for headNode in scripts:
 			if headNode.node_type != ir.get_node_type(): return
-			execute(headNode, context)
+			var headTest = func():
+				if await execute(headNode, context):
+					await headNode.event_emit(self, context)
+			headTest.call()
