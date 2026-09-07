@@ -41,6 +41,7 @@ signal modal_finished()
 var debugContext: ExecutionContext
 var nodePointer: NodeBlock = null
 var compilationWarns: Array[Array] = []
+var currentIRs: Array[ShrimpIR] = []
 
 func _ready() -> void:
 	debugContext = ExecutionContext.new()
@@ -114,9 +115,10 @@ func _ready() -> void:
 	rebuild()
 	modal()
 
-func rebuild():
+func build_desk(irs: Array[ShrimpIR]):
+	currentIRs = irs
+	var categories = ShrimpVMUtil.category_desk(irs)
 	ShrimpVMUtil.disconnect_children(deskWrapper)
-	var categories = ShrimpVMUtil.get_categoried_irs()
 	for category in categories:
 		var title = Label.new()
 		title.text = category
@@ -144,6 +146,7 @@ func rebuild():
 					save_current_file()
 					rebuild()
 			)
+func rebuild():
 	ShrimpVMUtil.disconnect_children(treeCenter, [treeTip])
 	if treeData.get("invalid", false):
 		treeData = {}

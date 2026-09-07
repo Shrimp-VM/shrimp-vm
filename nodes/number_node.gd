@@ -1,0 +1,24 @@
+@tool
+extends ShrimpIR
+class_name NumberNode
+
+@export var content: float
+
+func execute(_vm: ShrimpVM, _context: ExecutionContext) -> Variant:
+	return content
+
+static func get_category_tag() -> String:
+	return "Literals"
+static func create_from(wrapper: Dictionary) -> NumberNode:
+	var result = new()
+	result.content = wrapper.content
+	return result
+static func get_node_type() -> String:
+	return "number_literal"
+static func get_wrapper_schema() -> Dictionary:
+	return Model.wrapper_schema("Any number", {
+		"content": Model.attribute_schema(
+			TYPE_FLOAT,
+			"Content"
+		)
+	})

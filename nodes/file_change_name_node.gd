@@ -16,15 +16,17 @@ func decompile() -> Dictionary:
 		"new_name": newName
 	}
 
+static func get_category_tag() -> String:
+	return "File System"
 static func get_node_type() -> String:
 	return "file_change_name"
 static func create_from(wrapper: Dictionary) -> ShrimpFileChangeNameNode:
 	var result = new()
 	result.newName = wrapper.new_name
 	return result
-static func get_wrapper_schema() -> Dictionary[String, Variant]:
+static func get_wrapper_schema() -> Dictionary:
 	return super.get_wrapper_schema().merged({
-		"name": "Rename the Script",
+		"name": "Rename the script",
 		"attributes": {
 			"new_name": {
 				"type": TYPE_STRING,

@@ -19,9 +19,9 @@ static func create_from(wrapper: Dictionary) -> ShrimpRootNode:
 	var result = ShrimpRootNode.new()
 	result.body = ShrimpCompiler.compile_body(wrapper.body)
 	return result
-static func get_wrapper_schema() -> Dictionary[String, Variant]:
+static func get_wrapper_schema() -> Dictionary:
 	return super.get_wrapper_schema().merged({
-		"name": "Root Node",
+		"name": "ROOT NODE",
 		"attributes": {
 			"body": {
 				"type": ShrimpIR.TYPE_ENUM,

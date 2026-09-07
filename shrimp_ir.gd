@@ -59,7 +59,7 @@ static func get_node_type() -> String:
 ## 	  >;
 ##    trigger: NodeTrigger;
 ## }
-static func get_wrapper_schema() -> Dictionary[String, Variant]:
+static func get_wrapper_schema() -> Dictionary:
 	return Model.wrapper_schema("Unnamed ShrimpIR", {})
 static func create_from(_wrapper: Dictionary) -> ShrimpIR:
 	assert(false, ERR_NOT_IMPLEMENTED)

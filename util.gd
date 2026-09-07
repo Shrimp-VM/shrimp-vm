@@ -24,14 +24,13 @@ static func disconnect_children(node: Node, excludes: Array = []):
 			node.remove_child(child)
 static func get_importer_setting():
 	return ProjectSettings.get_setting("importer_defaults/%s" % ShrimpCompiler.IMPORTER_ID)
-static func list_dir(base: String):
+static func list_scripts(baseDir: String):
 	return Array(
-		Array(ResourceLoader.list_directory(base))
+		Array(ResourceLoader.list_directory(baseDir))
 			.filter(func(e: String): return e.ends_with(".gd"))
-			.map(func(e: String): return base.path_join(e))
+			.map(func(e: String): return baseDir.path_join(e))
 	)
-static func get_categoried_irs() -> Dictionary[String, Array]:
-	var irs = get_ir_nodes()
+static func category_desk(irs: Array[ShrimpIR]) -> Dictionary[String, Array]:
 	var result: Dictionary[String, Array] = {}
 	for ir in irs:
 		var category = ir.get_category_tag()
@@ -39,16 +38,23 @@ static func get_categoried_irs() -> Dictionary[String, Array]:
 			result[category] = []
 		result[category].append(ir)
 	return result
-static func get_ir_nodes() -> Array[ShrimpIR]:
+static func scan_ir_nodes(baseDirs: Array[String]) -> Array[ShrimpIR]:
 	var result: Array[ShrimpIR] = []
-	for i in ShrimpVMUtil.concat_array(
-		list_dir("res://addons/shrimpvm/nodes"),
-		list_dir(get_importer_setting().ir_script_dir),
-	):
-		result.append((load(i) as GDScript).new())
+	for dir in baseDirs:
+		for fp in list_scripts(dir):
+			var script = load(fp)
+			if script is Script:
+				var instance = script.new()
+				if instance is ShrimpIR:
+					result.append(instance)
 	return result
+static func get_configured_ir_nodes() -> Array[ShrimpIR]:
+	return scan_ir_nodes([
+		"res://addons/shrimpvm/nodes",
+		get_importer_setting().ir_script_dir
+	])
 static func find_ir_node(type: String) -> ShrimpIR:
-	return get_ir_nodes().filter(func(e): return e.get_node_type() == type)[0]
+	return get_configured_ir_nodes().filter(func(e): return e.get_node_type() == type)[0]
 static func concat_array(a: Array, b: Array):
 	var result = a.duplicate()
 	result.append_array(b)

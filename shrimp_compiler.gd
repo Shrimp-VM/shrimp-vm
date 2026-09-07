@@ -42,7 +42,7 @@ static func compile(from: Variant, optimize: bool = false, warnSignal = null) ->
 	if from.get("invalid", false):
 		# deleted by user, skip
 		return null
-	for node in ShrimpVMUtil.get_ir_nodes():
+	for node in ShrimpVMUtil.get_configured_ir_nodes():
 		if node == null:
 			push_warning("Failed to load node script: %s." % node)
 			continue
