@@ -87,10 +87,15 @@ visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="name" type="Label" parent="wrapper/frame/wrapper" unique_id=1731801596]
+[node name="name" type="RichTextLabel" parent="wrapper/frame/wrapper" unique_id=139600988]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Root Node"
+size_flags_horizontal = 3
+mouse_filter = 1
+bbcode_enabled = true
+text = "Unnamed Node"
+fit_content = true
+autowrap_mode = 0
 
 [node name="parameters" type="PanelContainer" parent="wrapper" unique_id=1293641701]
 unique_name_in_owner = true

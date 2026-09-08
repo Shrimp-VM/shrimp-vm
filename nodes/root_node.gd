@@ -21,7 +21,7 @@ static func create_from(wrapper: Dictionary) -> ShrimpRootNode:
 	return result
 static func get_wrapper_schema() -> Dictionary:
 	return super.get_wrapper_schema().merged({
-		"name": "ROOT NODE",
+		"name": "[color=red]Root Node[/color]",
 		"attributes": {
 			"body": {
 				"type": ShrimpIR.TYPE_ENUM,

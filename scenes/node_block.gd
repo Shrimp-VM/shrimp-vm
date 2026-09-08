@@ -8,7 +8,7 @@ signal mark_selection(node: NodeBlock)
 
 @onready var selectionBar: Control = $%selection
 @onready var frameBar: ClickableWrapper = $%frame
-@onready var nameLabel: Label = $%name
+@onready var nameLabel: RichTextLabel = $%name
 @onready var parameterPanel: Control = $%parameters
 @onready var parameterWrapper: Control = $%wrapper
 var inDesk: bool = false

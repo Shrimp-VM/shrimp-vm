@@ -19,6 +19,6 @@ static func get_wrapper_schema() -> Dictionary:
 	return Model.wrapper_schema("Any text", {
 		"content": Model.attribute_schema(
 			TYPE_STRING,
-			"Content"
+			"text"
 		)
 	})
