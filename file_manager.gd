@@ -44,6 +44,12 @@ func save(content: String):
 	if !is_instance_valid(currentOpening): return
 	currentOpening.content = content
 	archive()
+func search(fn: String) -> VirtualFile:
+	var index = files.find_custom(func(e: VirtualFile): return e.fileName == fn)
+	if index >= 0:
+		return files[index]
+	else:
+		return null
 func rebuild():
 	rebuilding.emit(currentOpening)
 	if is_instance_valid(currentOpening):
