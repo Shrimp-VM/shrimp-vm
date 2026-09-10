@@ -1,11 +1,21 @@
 extends RefCounted
 class_name ExecutionContext
 
+signal exit(data: Variant)
+
+enum LifeMode {
+	STOP,
+	PASS,
+	IGNORE
+}
+
+var lifeMode: LifeMode
 var parent: ExecutionContext
 var env: ExecutionEnvironment
 var running: bool = true
 
-func _init(parenx: ExecutionContext = null, enx: ExecutionEnvironment = null) -> void:
+func _init(parenx: ExecutionContext = null, lifeModx: LifeMode = LifeMode.PASS, enx: ExecutionEnvironment = null) -> void:
+	lifeMode = lifeModx
 	if !is_instance_valid(enx):
 		enx = ExecutionEnvironment.new()
 	env = enx
@@ -24,5 +34,19 @@ func execute_body(body: Array[ShrimpIR], vm: ShrimpVM):
 		if !running: return
 		await execute(node, vm)
 	return
-func stop():
+func exit_with(data: Variant):
 	running = false
+	exit.emit(data)
+func stop_parent(data: Variant):
+	if is_instance_valid(parent):
+		if parent is ExecutionContext:
+			parent.stop(data)
+func stop(data: Variant):
+	match lifeMode:
+		LifeMode.STOP:
+			exit_with(data)
+		LifeMode.PASS:
+			exit_with(data)
+			stop_parent(data)
+		LifeMode.IGNORE:
+			stop_parent(data)
