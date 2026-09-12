@@ -15,6 +15,7 @@ signal modal_finished()
 	"type": "root",
 	"body": []
 }
+@export var finiteBlockCount: bool = false
 
 @onready var vm: ShrimpVM = $%vm
 @onready var fileManager: ShrimpFileManager = $%fileManager
@@ -41,7 +42,7 @@ signal modal_finished()
 var debugContext: ExecutionContext
 var nodePointer: NodeBlock = null
 var compilationWarns: Array[Array] = []
-var currentIRs: Array[ShrimpIR] = []
+var blockCounts: Dictionary[ShrimpIR, float] = {}
 
 func _ready() -> void:
 	debugContext = ExecutionContext.new()
@@ -80,8 +81,10 @@ func _ready() -> void:
 	deleteNodeBtn.pressed.connect(
 		func():
 			nodePointer.data.invalid = true
+			blockCounts[nodePointer.irPointer] += 1
 			save_current_file()
 			rebuild()
+			rebuild_desk()
 	)
 	fileManager.add_file.connect(
 		func(f: VirtualFile):
@@ -115,9 +118,8 @@ func _ready() -> void:
 	rebuild()
 	modal()
 
-func build_desk(irs: Array[ShrimpIR]):
-	currentIRs = irs
-	var categories = ShrimpVMUtil.category_desk(irs)
+func rebuild_desk():
+	var categories = ShrimpVMUtil.category_desk(blockCounts.keys())
 	ShrimpVMUtil.disconnect_children(deskWrapper)
 	for category in categories:
 		var title = Label.new()
@@ -126,6 +128,7 @@ func build_desk(irs: Array[ShrimpIR]):
 		for ir in categories[category]:
 			var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
 			instance.inDesk = true
+			instance.count = blockCounts[ir] if finiteBlockCount else INF
 			node_join(instance, true)
 			instance.rebuild(ir.get_wrapper_schema(), {"type": ir.get_node_type()})
 			instance.clicked.connect(
@@ -143,6 +146,7 @@ func build_desk(irs: Array[ShrimpIR]):
 							nodePointer.data[attributeKey] = newNode
 					else:
 						treeData = instance.create_wrapper()
+					blockCounts[ir] -= 1
 					save_current_file()
 					rebuild()
 			)
@@ -154,15 +158,26 @@ func rebuild():
 		rebuild()
 		return
 	if has_root_node():
-		var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
-		instance.inDesk = false
-		node_join(instance, false)
-		instance.rebuild(ShrimpVMUtil.find_ir_node(treeData.type).get_wrapper_schema(), treeData)
-		select(null)
-		treeTip.hide()
-	else:
-		select(null)
+		var ir = find_ir_typed(treeData.type)
+		if ir:
+			var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
+			instance.inDesk = false
+			instance.irPointer = ir
+			node_join(instance, false)
+			instance.rebuild(ir.get_wrapper_schema(), treeData)
+			treeTip.hide()
+		else:
+			push_warning("Tree build failed, uncognized node %s" % treeData.type)
+	select(null)
+	if !has_root_node():
 		treeTip.show()
+func find_ir_typed(type: String) -> ShrimpIR:
+	var irs = blockCounts.keys()
+	var index = irs.find_custom(func(x: ShrimpIR): return x.get_node_type() == type)
+	if index >= 0:
+		return irs[index]
+	else:
+		return null
 func save_current_file():
 	fileManager.save(save_data())
 func close_current_file():

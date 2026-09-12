@@ -48,6 +48,8 @@ static func scan_ir_nodes(baseDirs: Array) -> Array[ShrimpIR]:
 				if instance is ShrimpIR:
 					result.append(instance)
 	return result
+static func create_count_map(irs: Array[ShrimpIR], count: float = INF) -> Dictionary[ShrimpIR, float]:
+	return irs.reduce(func(current: Dictionary, ir): return current.merged({ir: count}, true), {} as Dictionary[ShrimpIR, float])
 static func get_configured_irs() -> Array[ShrimpIR]:
 	return scan_ir_nodes(
 		concat_array(

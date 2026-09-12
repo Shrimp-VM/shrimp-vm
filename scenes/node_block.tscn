@@ -15,6 +15,8 @@ border_width_bottom = 10
 border_color = Color(1, 0, 0, 1)
 border_blend = true
 
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y5sfv"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_05f5v"]
 content_margin_left = 10.0
 content_margin_top = 5.0
@@ -26,6 +28,17 @@ border_width_top = 3
 border_width_right = 3
 border_width_bottom = 3
 border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b3635"]
+content_margin_left = 5.0
+content_margin_right = 2.0
+bg_color = Color(0.36189318, 0.36189318, 0.36189318, 1)
+corner_radius_top_left = 1000
+corner_radius_bottom_left = 1000
+
+[sub_resource type="LabelSettings" id="LabelSettings_in0f3"]
+resource_local_to_scene = true
+font_size = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5xh4d"]
 content_margin_left = 10.0
@@ -44,6 +57,7 @@ offset_right = 102.0
 offset_bottom = 43.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_0pwqf")
 script = ExtResource("1_0pwqf")
+count = null
 
 [node name="anchor" type="Control" parent="." unique_id=212837457]
 layout_mode = 2
@@ -72,22 +86,27 @@ layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 0
 
-[node name="frame" type="PanelContainer" parent="wrapper" unique_id=488213655]
+[node name="frame" type="PanelContainer" parent="wrapper" unique_id=680720069]
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxEmpty_y5sfv")
+
+[node name="frame" type="PanelContainer" parent="wrapper/frame" unique_id=488213655]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_05f5v")
 script = ExtResource("2_y5sfv")
 
-[node name="wrapper" type="HBoxContainer" parent="wrapper/frame" unique_id=1574956757]
+[node name="wrapper" type="HBoxContainer" parent="wrapper/frame/frame" unique_id=1574956757]
 layout_mode = 2
 
-[node name="debug" type="Button" parent="wrapper/frame/wrapper" unique_id=2098564548]
+[node name="debug" type="Button" parent="wrapper/frame/frame/wrapper" unique_id=2098564548]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 
-[node name="name" type="RichTextLabel" parent="wrapper/frame/wrapper" unique_id=139600988]
+[node name="name" type="RichTextLabel" parent="wrapper/frame/frame/wrapper" unique_id=139600988]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -96,6 +115,35 @@ bbcode_enabled = true
 text = "Unnamed Node"
 fit_content = true
 autowrap_mode = 0
+
+[node name="anchor" type="Control" parent="wrapper/frame" unique_id=1217769265]
+layout_mode = 2
+mouse_filter = 1
+
+[node name="countBar" type="PanelContainer" parent="wrapper/frame/anchor" unique_id=1694097726]
+unique_name_in_owner = true
+z_index = 1
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -17.0
+offset_top = -9.0
+offset_bottom = 5.0
+grow_horizontal = 0
+grow_vertical = 0
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_b3635")
+
+[node name="count" type="Label" parent="wrapper/frame/anchor/countBar" unique_id=1795051555]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 1
+text = "×1"
+label_settings = SubResource("LabelSettings_in0f3")
 
 [node name="parameters" type="PanelContainer" parent="wrapper" unique_id=1293641701]
 unique_name_in_owner = true
