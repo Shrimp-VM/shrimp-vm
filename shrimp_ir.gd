@@ -30,7 +30,7 @@ enum NodeTrigger {
 
 @export var node_type: String
 
-## EXECUTION=Orderly run, EVENT=event test, returns a bool, TERMINAL=stop, can't connect next sibling
+## EXECUTION=Orderly run, EVENT_*=event test, returns a bool, TERMINAL=stop, can't connect next sibling
 @abstract func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant
 func event_emit(_vm: ShrimpVM, _context: ExecutionContext):
 	pass
@@ -41,7 +41,7 @@ func get_keys_type(attribute: String):
 	return get_wrapper_schema().attributes[attribute].type
 
 static func get_category_tag() -> String:
-	return "Base Nodes"
+	return "Nodes"
 static func get_node_type() -> String:
 	assert(false, ERR_NOT_IMPLEMENTED)
 	return "unknown_node"

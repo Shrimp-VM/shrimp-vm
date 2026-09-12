@@ -93,6 +93,7 @@ corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
 
 [node name="IR-Editor" type="CanvasLayer" unique_id=1041740263]
+process_mode = 3
 script = ExtResource("1_iyhou")
 treeData = {}
 
@@ -326,6 +327,7 @@ size_flags_vertical = 3
 
 [node name="fileTip" type="Label" parent="root/layout/layout/fileManager/wrapper/wrapper/files" unique_id=156850020]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 text = "No scripts.
 Create one with the button aobve !"

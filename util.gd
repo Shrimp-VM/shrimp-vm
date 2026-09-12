@@ -48,13 +48,22 @@ static func scan_ir_nodes(baseDirs: Array[String]) -> Array[ShrimpIR]:
 				if instance is ShrimpIR:
 					result.append(instance)
 	return result
-static func get_configured_ir_nodes() -> Array[ShrimpIR]:
+static func get_configured_irs() -> Array[ShrimpIR]:
 	return scan_ir_nodes([
-		"res://addons/shrimpvm/nodes",
-		get_importer_setting().ir_script_dir
+		get_importer_setting().ir_script_dir,
+		get_builtins_dir("base"),
+		get_builtins_dir("functions"),
+		get_builtins_dir("literals")
 	])
+static func get_builtins_dir(path: String):
+	return "res://addons/shrimpvm/nodes/".path_join(path)
 static func find_ir_node(type: String) -> ShrimpIR:
-	return get_configured_ir_nodes().filter(func(e): return e.get_node_type() == type)[0]
+	var irs = get_configured_irs()
+	var index = irs.find_custom(func(e): return e.get_node_type() == type)
+	if index >= 0:
+		return irs[index]
+	else:
+		return null
 static func concat_array(a: Array, b: Array):
 	var result = a.duplicate()
 	result.append_array(b)

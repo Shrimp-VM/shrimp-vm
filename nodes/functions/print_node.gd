@@ -9,7 +9,7 @@ func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
 	return
 
 static func get_category_tag() -> String:
-	return "Standard Output"
+	return "Functions"
 static func create_from(wrapper: Dictionary) -> PrintNode:
 	var result = new()
 	result.content = ShrimpCompiler.compile(wrapper.content)

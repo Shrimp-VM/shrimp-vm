@@ -17,7 +17,7 @@ func decompile() -> Dictionary:
 	}
 
 static func get_category_tag() -> String:
-	return "File System"
+	return "Functions"
 static func get_node_type() -> String:
 	return "file_change_name"
 static func create_from(wrapper: Dictionary) -> ShrimpFileChangeNameNode:

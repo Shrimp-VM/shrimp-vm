@@ -19,7 +19,7 @@ func execute(node: ShrimpIR, context: ExecutionContext) -> Variant:
 func execute_all(nodes: Array[ShrimpIR], context: ExecutionContext) -> Variant:
 	return await context.execute_body(nodes, self)
 func poll_event(scripts: Array[ShrimpIR], context: ExecutionContext):
-	var irs = ShrimpVMUtil.get_configured_ir_nodes()
+	var irs = ShrimpVMUtil.get_configured_irs()
 	for ir in irs:
 		if ir.get_wrapper_schema().trigger != ShrimpIR.NodeTrigger.EVENT_POLL: return
 		for headNode in scripts:
@@ -29,7 +29,7 @@ func poll_event(scripts: Array[ShrimpIR], context: ExecutionContext):
 					await headNode.event_emit(self, context)
 			headTest.call()
 func trigger_event(node: String, scripts: Array[ShrimpIR], context: ExecutionContext, parameters: Dictionary = {}):
-	var irs = ShrimpVMUtil.get_configured_ir_nodes()
+	var irs = ShrimpVMUtil.get_configured_irs()
 	for ir in irs:
 		var schema = ir.get_wrapper_schema()
 		if schema.trigger != ShrimpIR.NodeTrigger.EVENT_TRIGGER: return
