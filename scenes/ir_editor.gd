@@ -171,6 +171,10 @@ func rebuild():
 	select(null)
 	if !has_root_node():
 		treeTip.show()
+func store_block(type: String, count: int = 1):
+	blockCounts[find_ir_typed(type)] += count
+func consume_block(type: String):
+	store_block(type, -1)
 func find_ir_typed(type: String) -> ShrimpIR:
 	var irs = blockCounts.keys()
 	var index = irs.find_custom(func(x: ShrimpIR): return x.get_node_type() == type)

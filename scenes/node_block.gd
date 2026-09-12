@@ -58,7 +58,7 @@ func rebuild_count():
 			countLabel.text = "×%d" % count
 			countLabel.label_settings.font_color = Color.WHITE
 		else:
-			countLabel.text = "ENHAUSTED"
+			countLabel.text = "EXHAUSTED"
 			countLabel.label_settings.font_color = Color.RED
 		countBar.show()
 	else:
