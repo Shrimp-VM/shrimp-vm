@@ -96,8 +96,15 @@ corner_radius_top_right = 15
 corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
 
-[node name="IR-Editor" type="CanvasLayer" unique_id=1041740263]
-process_mode = 3
+[node name="IR-Editor" type="Control" unique_id=2000783686]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1_iyhou")
 treeData = {}
 
@@ -111,15 +118,7 @@ unique_name_in_owner = true
 script = ExtResource("3_fjp0f")
 metadata/_custom_type_script = "uid://6uypkkt4063e"
 
-[node name="root" type="Control" parent="." unique_id=2000783686]
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="bg" type="ColorRect" parent="root" unique_id=481410875]
+[node name="bg" type="ColorRect" parent="." unique_id=481410875]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -128,7 +127,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.6)
 
-[node name="layout" type="VBoxContainer" parent="root" unique_id=29901121]
+[node name="layout" type="VBoxContainer" parent="." unique_id=29901121]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -137,21 +136,21 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 0
 
-[node name="nav" type="PanelContainer" parent="root/layout" unique_id=30026888]
+[node name="nav" type="PanelContainer" parent="layout" unique_id=30026888]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_05f5v")
 
-[node name="wrapper" type="HBoxContainer" parent="root/layout/nav" unique_id=119838587]
+[node name="wrapper" type="HBoxContainer" parent="layout/nav" unique_id=119838587]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="openBtn" type="Button" parent="root/layout/nav/wrapper" unique_id=1580073565]
+[node name="openBtn" type="Button" parent="layout/nav/wrapper" unique_id=1580073565]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Load from computer"
 
-[node name="fileOpener" type="FileDialog" parent="root/layout/nav/wrapper/openBtn" unique_id=594379426]
+[node name="fileOpener" type="FileDialog" parent="layout/nav/wrapper/openBtn" unique_id=594379426]
 unique_name_in_owner = true
 oversampling_override = 1.0
 title = "Open a File"
@@ -160,81 +159,81 @@ size = Vector2i(739, 360)
 file_mode = 0
 filters = PackedStringArray("*.sst")
 
-[node name="saveBtn" type="Button" parent="root/layout/nav/wrapper" unique_id=942157068]
+[node name="saveBtn" type="Button" parent="layout/nav/wrapper" unique_id=942157068]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Save to computer"
 
-[node name="fileSaver" type="FileDialog" parent="root/layout/nav/wrapper/saveBtn" unique_id=594606514]
+[node name="fileSaver" type="FileDialog" parent="layout/nav/wrapper/saveBtn" unique_id=594606514]
 unique_name_in_owner = true
 oversampling_override = 1.0
 position = Vector2i(0, 36)
 size = Vector2i(739, 360)
 filters = PackedStringArray("*.sst")
 
-[node name="runBtn" type="Button" parent="root/layout/nav/wrapper" unique_id=98607733]
+[node name="runBtn" type="Button" parent="layout/nav/wrapper" unique_id=98607733]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 text = "Run script"
 
-[node name="newFileBtn" type="Button" parent="root/layout/nav/wrapper" unique_id=806747857]
+[node name="newFileBtn" type="Button" parent="layout/nav/wrapper" unique_id=806747857]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
 text = "Create new script"
 
-[node name="closeFileBtn" type="Button" parent="root/layout/nav/wrapper" unique_id=901052568]
+[node name="closeFileBtn" type="Button" parent="layout/nav/wrapper" unique_id=901052568]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 text = "Close"
 
-[node name="deleteFileBtn" type="Button" parent="root/layout/nav/wrapper" unique_id=1440390961]
+[node name="deleteFileBtn" type="Button" parent="layout/nav/wrapper" unique_id=1440390961]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 text = "Delete"
 
-[node name="layout" type="HBoxContainer" parent="root/layout" unique_id=2005437578]
+[node name="layout" type="HBoxContainer" parent="layout" unique_id=2005437578]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 0
 
-[node name="desk" type="PanelContainer" parent="root/layout/layout" unique_id=921050149]
+[node name="desk" type="PanelContainer" parent="layout/layout" unique_id=921050149]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_glela")
 
-[node name="wrapper" type="ScrollContainer" parent="root/layout/layout/desk" unique_id=601822105]
+[node name="wrapper" type="ScrollContainer" parent="layout/layout/desk" unique_id=601822105]
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="wrapper" type="VBoxContainer" parent="root/layout/layout/desk/wrapper" unique_id=1487999515]
+[node name="wrapper" type="VBoxContainer" parent="layout/layout/desk/wrapper" unique_id=1487999515]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="workspace" type="PanelContainer" parent="root/layout/layout" unique_id=1939912592]
+[node name="workspace" type="PanelContainer" parent="layout/layout" unique_id=1939912592]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_05f5v")
 script = ExtResource("3_ohykq")
 
-[node name="wrapper" type="ScrollContainer" parent="root/layout/layout/workspace" unique_id=1722816101]
+[node name="wrapper" type="ScrollContainer" parent="layout/layout/workspace" unique_id=1722816101]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="center" type="CenterContainer" parent="root/layout/layout/workspace/wrapper" unique_id=1266214890]
+[node name="center" type="CenterContainer" parent="layout/layout/workspace/wrapper" unique_id=1266214890]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="treeTip" type="Label" parent="root/layout/layout/workspace/wrapper/center" unique_id=287250670]
+[node name="treeTip" type="Label" parent="layout/layout/workspace/wrapper/center" unique_id=287250670]
 unique_name_in_owner = true
 layout_mode = 2
 text = "No root node.
@@ -242,44 +241,45 @@ Create one with clicking \"Root Node\" !"
 label_settings = SubResource("LabelSettings_fjp0f")
 horizontal_alignment = 1
 
-[node name="margins" type="PanelContainer" parent="root/layout/layout/workspace" unique_id=963820862]
+[node name="margins" type="PanelContainer" parent="layout/layout/workspace" unique_id=963820862]
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_styles/panel = SubResource("StyleBoxEmpty_ohykq")
 
-[node name="inspector" type="PanelContainer" parent="root/layout/layout/workspace/margins" unique_id=815968616]
+[node name="inspector" type="PanelContainer" parent="layout/layout/workspace/margins" unique_id=815968616]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_styles/panel = SubResource("StyleBoxFlat_ohykq")
 
-[node name="wrapper" type="VBoxContainer" parent="root/layout/layout/workspace/margins/inspector" unique_id=743684548]
+[node name="wrapper" type="VBoxContainer" parent="layout/layout/workspace/margins/inspector" unique_id=743684548]
 layout_mode = 2
 
-[node name="title" type="Label" parent="root/layout/layout/workspace/margins/inspector/wrapper" unique_id=1672490136]
+[node name="title" type="Label" parent="layout/layout/workspace/margins/inspector/wrapper" unique_id=1672490136]
 layout_mode = 2
 text = "Inspector"
 label_settings = SubResource("LabelSettings_ohykq")
 horizontal_alignment = 1
 
-[node name="nodeDescription" type="Label" parent="root/layout/layout/workspace/margins/inspector/wrapper" unique_id=2134998890]
+[node name="nodeDescription" type="Label" parent="layout/layout/workspace/margins/inspector/wrapper" unique_id=2134998890]
 unique_name_in_owner = true
 layout_mode = 2
 text = "description."
 label_settings = SubResource("LabelSettings_xrwol")
 horizontal_alignment = 1
 
-[node name="attributes" type="VBoxContainer" parent="root/layout/layout/workspace/margins/inspector/wrapper" unique_id=150692367]
+[node name="attributes" type="VBoxContainer" parent="layout/layout/workspace/margins/inspector/wrapper" unique_id=150692367]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="deleteNode" type="Button" parent="root/layout/layout/workspace/margins/inspector/wrapper" unique_id=1007425784]
+[node name="deleteNode" type="Button" parent="layout/layout/workspace/margins/inspector/wrapper" unique_id=1007425784]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Delete Node"
 
-[node name="workspace" type="PanelContainer" parent="root/layout/layout/workspace" unique_id=1835959688]
+[node name="workspace" type="PanelContainer" parent="layout/layout/workspace" unique_id=1835959688]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
@@ -287,12 +287,12 @@ mouse_filter = 2
 mouse_behavior_recursive = 1
 theme_override_styles/panel = SubResource("StyleBoxEmpty_nc1qr")
 
-[node name="wrapper" type="HBoxContainer" parent="root/layout/layout/workspace/workspace" unique_id=171671562]
+[node name="wrapper" type="HBoxContainer" parent="layout/layout/workspace/workspace" unique_id=171671562]
 layout_mode = 2
 mouse_filter = 2
 mouse_behavior_recursive = 1
 
-[node name="decoration" type="Label" parent="root/layout/layout/workspace/workspace/wrapper" unique_id=30092913]
+[node name="decoration" type="Label" parent="layout/layout/workspace/workspace/wrapper" unique_id=30092913]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -300,7 +300,7 @@ mouse_behavior_recursive = 1
 text = "Workspace:"
 label_settings = SubResource("LabelSettings_iejdg")
 
-[node name="scriptName" type="Label" parent="root/layout/layout/workspace/workspace/wrapper" unique_id=699603676]
+[node name="scriptName" type="Label" parent="layout/layout/workspace/workspace/wrapper" unique_id=699603676]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
@@ -309,33 +309,33 @@ mouse_behavior_recursive = 1
 text = "* Untitled"
 label_settings = SubResource("LabelSettings_iejdg")
 
-[node name="fileManager" type="PanelContainer" parent="root/layout/layout" unique_id=533633626]
+[node name="fileManager" type="PanelContainer" parent="layout/layout" unique_id=533633626]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_glela")
 script = ExtResource("3_ohykq")
 
-[node name="wrapper" type="VBoxContainer" parent="root/layout/layout/fileManager" unique_id=442025681]
+[node name="wrapper" type="VBoxContainer" parent="layout/layout/fileManager" unique_id=442025681]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="title" type="Label" parent="root/layout/layout/fileManager/wrapper" unique_id=1322068035]
+[node name="title" type="Label" parent="layout/layout/fileManager/wrapper" unique_id=1322068035]
 layout_mode = 2
 size_flags_horizontal = 8
 text = "Scripts"
 label_settings = SubResource("LabelSettings_nc1qr")
 
-[node name="wrapper" type="ScrollContainer" parent="root/layout/layout/fileManager/wrapper" unique_id=683617047]
+[node name="wrapper" type="ScrollContainer" parent="layout/layout/fileManager/wrapper" unique_id=683617047]
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="files" type="VBoxContainer" parent="root/layout/layout/fileManager/wrapper/wrapper" unique_id=210109251]
+[node name="files" type="VBoxContainer" parent="layout/layout/fileManager/wrapper/wrapper" unique_id=210109251]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="fileTip" type="Label" parent="root/layout/layout/fileManager/wrapper/wrapper/files" unique_id=156850020]
+[node name="fileTip" type="Label" parent="layout/layout/fileManager/wrapper/wrapper/files" unique_id=156850020]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -344,7 +344,7 @@ Create one with the button aobve !"
 label_settings = SubResource("LabelSettings_0kp88")
 horizontal_alignment = 2
 
-[node name="modalPanel" type="PanelContainer" parent="root" unique_id=1078647368]
+[node name="modalPanel" type="PanelContainer" parent="." unique_id=1078647368]
 unique_name_in_owner = true
 visible = false
 layout_mode = 1
@@ -356,13 +356,13 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_fjp0f")
 script = ExtResource("5_nc1qr")
 
-[node name="modal" type="PanelContainer" parent="root/modalPanel" unique_id=933523188]
+[node name="modal" type="PanelContainer" parent="modalPanel" unique_id=933523188]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_styles/panel = SubResource("StyleBoxFlat_nc1qr")
 
-[node name="modalTip" type="RichTextLabel" parent="root/modalPanel/modal" unique_id=2065829977]
+[node name="modalTip" type="RichTextLabel" parent="modalPanel/modal" unique_id=2065829977]
 unique_name_in_owner = true
 layout_mode = 2
 bbcode_enabled = true

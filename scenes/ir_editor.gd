@@ -1,5 +1,5 @@
 @tool
-extends CanvasLayer
+extends Control
 class_name ShrimpIREditor
 
 signal compilation_start()
@@ -16,6 +16,7 @@ signal modal_finished()
 	"body": []
 }
 @export var finiteBlockCount: bool = false
+@export var deskIRs: Array[ShrimpIR] = []
 
 @onready var vm: ShrimpVM = $%vm
 @onready var fileManager: ShrimpFileManager = $%fileManager
@@ -111,10 +112,13 @@ func _ready() -> void:
 	modalPanel.clicked.connect(modal)
 	compilation_warn.connect(func(t, m): compilationWarns.append([t, m]))
 	fileTip.show()
-	fileManager.inarchive()
-	fileManager.close()
+	if !Engine.is_editor_hint():
+		fileManager.inarchive()
+		fileManager.close()
 	rebuild()
 	modal()
+	blockCounts = ShrimpVMUtil.create_count_map(deskIRs)
+	rebuild_desk()
 
 func rebuild_desk():
 	var categories = ShrimpVMUtil.category_desk(blockCounts.keys())
@@ -178,6 +182,8 @@ func rebuild():
 	select(null)
 	if !has_root_node():
 		treeTip.show()
+	if Engine.is_editor_hint():
+		rebuild_desk()
 func delete_node(block: NodeBlock):
 	for parameter in block.parameterWrapper.get_children():
 		if parameter is NodeParameter:
