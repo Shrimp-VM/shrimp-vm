@@ -38,7 +38,7 @@ static func category_desk(irs: Array[ShrimpIR]) -> Dictionary[String, Array]:
 			result[category] = []
 		result[category].append(ir)
 	return result
-static func scan_ir_nodes(baseDirs: Array[String]) -> Array[ShrimpIR]:
+static func scan_ir_nodes(baseDirs: Array) -> Array[ShrimpIR]:
 	var result: Array[ShrimpIR] = []
 	for dir in baseDirs:
 		for fp in list_scripts(dir):
@@ -57,7 +57,7 @@ static func get_configured_irs() -> Array[ShrimpIR]:
 	)
 static func get_builtin_subdir(path: String):
 	return "res://addons/shrimpvm/nodes/".path_join(path)
-static func get_builtins() -> Array[String]:
+static func get_builtins():
 	return ["base", "functions", "literals"].map(get_builtin_subdir)
 static func find_ir_node(type: String) -> ShrimpIR:
 	var irs = get_configured_irs()
