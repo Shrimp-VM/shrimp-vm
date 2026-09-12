@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://01lhy4c4wwsh" path="res://addons/shrimpvm/scenes/node_block.gd" id="1_0pwqf"]
 [ext_resource type="Script" uid="uid://2bp5i42dylnd" path="res://addons/shrimpvm/clickable_wrapper.gd" id="2_y5sfv"]
+[ext_resource type="StyleBox" uid="uid://cdspxw4ys7xge" path="res://addons/shrimpvm/themes/next_sibling.tres" id="3_b3635"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0pwqf"]
 
@@ -9,11 +10,14 @@
 bg_color = Color(0.60038817, 0.60038817, 0.60038817, 0)
 draw_center = false
 border_width_left = 10
-border_width_top = 10
 border_width_right = 10
-border_width_bottom = 10
 border_color = Color(1, 0, 0, 1)
 border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 1
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y5sfv"]
 
@@ -40,7 +44,7 @@ corner_radius_bottom_left = 1000
 resource_local_to_scene = true
 font_size = 10
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5xh4d"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_in0f3"]
 content_margin_left = 10.0
 content_margin_top = 10.0
 content_margin_right = 10.0
@@ -57,7 +61,6 @@ offset_right = 102.0
 offset_bottom = 43.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_0pwqf")
 script = ExtResource("1_0pwqf")
-count = null
 
 [node name="anchor" type="Control" parent="." unique_id=212837457]
 layout_mode = 2
@@ -65,7 +68,6 @@ mouse_filter = 2
 
 [node name="selection" type="Panel" parent="anchor" unique_id=451766274]
 unique_name_in_owner = true
-visible = false
 z_index = 10
 z_as_relative = false
 layout_mode = 1
@@ -80,6 +82,18 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_0pwqf")
+
+[node name="nextSiblingTip" type="Panel" parent="anchor" unique_id=797337134]
+unique_name_in_owner = true
+z_index = 11
+layout_mode = 1
+anchors_preset = -1
+anchor_top = -1.0
+anchor_right = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("3_b3635")
 
 [node name="wrapper" type="VBoxContainer" parent="." unique_id=79488617]
 layout_mode = 2
@@ -149,7 +163,7 @@ label_settings = SubResource("LabelSettings_in0f3")
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_5xh4d")
+theme_override_styles/panel = SubResource("StyleBoxFlat_in0f3")
 
 [node name="wrapper" type="VBoxContainer" parent="wrapper/parameters" unique_id=274422648]
 unique_name_in_owner = true

@@ -10,6 +10,7 @@ signal selected(parameter: NodeParameter)
 @onready var arrayWrapper: Control = $%array
 @onready var valueWrapper: Control = $%value
 @onready var emptyTip: Control = $%emptyTip
+@onready var addChildTip: Control = $%addChildTip
 var eventEmitter: ShrimpVMUtil.EventEmitter
 var node: NodeBlock
 var schema: Dictionary
@@ -17,6 +18,7 @@ var schema: Dictionary
 func _ready() -> void:
 	unselect()
 	templateWrapper.hide()
+	addChildTip.hide()
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index != MouseButton.MOUSE_BUTTON_LEFT: return
@@ -51,8 +53,11 @@ func rebuild(schemx: Dictionary, value: Variant, nodx: NodeBlock):
 		valueWrapper.add_child(create_showbox(schemx, value, nodx))
 func select():
 	selectionBar.show()
+	if schema.array:
+		addChildTip.show()
 func unselect():
 	selectionBar.hide()
+	addChildTip.hide()
 func create_showbox(schemx: Dictionary, value: Variant, nodx: NodeBlock) -> Control:
 	if schemx.type is Array:
 		var label = Label.new()
@@ -72,7 +77,9 @@ func create_showbox(schemx: Dictionary, value: Variant, nodx: NodeBlock) -> Cont
 			if value is Dictionary && !value.get("invalid", false):
 				var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
 				instance.inDesk = false
-				instance.parent = nodx
+				instance.parentBlock = nodx
+				instance.parentSchema = schemx
+				instance.parentAttribute = name
 				add_child(instance)
 				instance.rebuild(ShrimpVMUtil.find_ir_node(value.type).get_wrapper_schema(), value)
 				remove_child(instance)

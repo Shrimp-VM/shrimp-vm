@@ -133,15 +133,25 @@ func rebuild_desk():
 				func():
 					if has_root_node():
 						if !is_instance_valid(nodePointer): return
-						if !is_instance_valid(nodePointer.paramPointer): return
-						if nodePointer.paramPointer.schema.type != ShrimpIR.TYPE_ENUM: return
-						var attributeKey = nodePointer.paramPointer.name
-						var newNode = instance.create_wrapper()
-						if nodePointer.paramPointer.schema.get("array", false):
-							var datas = nodePointer.data[attributeKey] as Array
-							datas.append(newNode)
+						var wrapper = instance.create_wrapper()
+						var childrenList: Array = []
+						var insertIndex = 0
+						if is_instance_valid(nodePointer.paramPointer):
+							if nodePointer.paramPointer.schema.type != ShrimpIR.TYPE_ENUM: return
+							var attributeKey = nodePointer.paramPointer.name
+							if nodePointer.paramPointer.schema.get("array", false):
+								childrenList = nodePointer.data[attributeKey]
+								insertIndex = -1
+							else:
+								nodePointer.data[attributeKey] = wrapper
 						else:
-							nodePointer.data[attributeKey] = newNode
+							childrenList = nodePointer.parentBlock.data[nodePointer.parentAttribute]
+							insertIndex = nodePointer.get_index() - 1
+						print(childrenList, insertIndex)
+						if insertIndex < 0:
+							childrenList.append(wrapper)
+						else:
+							childrenList.insert(insertIndex, wrapper)
 					else:
 						treeData = instance.create_wrapper()
 					blockCounts[ir] -= 1

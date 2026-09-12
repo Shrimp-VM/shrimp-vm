@@ -17,9 +17,12 @@ signal exhausted()
 @onready var parameterWrapper: Control = $%wrapper
 @onready var countBar: Control = $%countBar
 @onready var countLabel: Label = $%count
+@onready var nextSiblingTip: Control = $%nextSiblingTip
 var schema: Dictionary
 var data: Dictionary
-var parent: NodeBlock
+var parentBlock: NodeBlock
+var parentSchema: Dictionary
+var parentAttribute: String
 var paramPointer: NodeParameter
 
 func _ready() -> void:
@@ -31,8 +34,8 @@ func _ready() -> void:
 	)
 	mark_selection.connect(
 		func(node: NodeBlock):
-			if is_instance_valid(parent):
-				parent.mark_selection.emit(node)
+			if is_instance_valid(parentBlock):
+				parentBlock.mark_selection.emit(node)
 	)
 	mark_selection.emit(self)
 func _gui_input(event: InputEvent) -> void:
@@ -88,10 +91,14 @@ func select():
 	selectionBar.show()
 	if is_instance_valid(paramPointer):
 		paramPointer.select()
+	else:
+		if is_instance_valid(parentBlock) && parentSchema.array:
+			nextSiblingTip.show()
 func unselect():
 	selectionBar.hide()
 	if is_instance_valid(paramPointer):
 		paramPointer.unselect()
+	nextSiblingTip.hide()
 func create_wrapper() -> Dictionary:
 	var result = {}
 	result.type = data.type
