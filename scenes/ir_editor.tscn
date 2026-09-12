@@ -2,10 +2,33 @@
 
 [ext_resource type="Script" uid="uid://bismlewml5ugm" path="res://addons/shrimpvm/scenes/ir_editor.gd" id="1_iyhou"]
 [ext_resource type="Script" uid="uid://drxoblkew75eu" path="res://addons/shrimpvm/shrimp_vm.gd" id="2_iyhou"]
+[ext_resource type="Script" uid="uid://qq17orpp58tj" path="res://addons/shrimpvm/shrimp_ir.gd" id="2_xrwol"]
 [ext_resource type="Script" uid="uid://6uypkkt4063e" path="res://addons/shrimpvm/file_manager.gd" id="3_fjp0f"]
 [ext_resource type="Script" uid="uid://chc23i883u687" path="res://addons/shrimpvm/scenes/editor_workspace.gd" id="3_ohykq"]
+[ext_resource type="Script" uid="uid://uw4oee4tvks" path="res://addons/shrimpvm/nodes/base/root_node.gd" id="3_ypfex"]
 [ext_resource type="Texture2D" uid="uid://cfx1oikjukn4e" path="res://addons/shrimpvm/icons/run.svg" id="4_0kp88"]
+[ext_resource type="Script" uid="uid://wcx6kruoo167" path="res://addons/shrimpvm/nodes/literals/string_node.gd" id="4_5sj3v"]
 [ext_resource type="Script" uid="uid://2bp5i42dylnd" path="res://addons/shrimpvm/clickable_wrapper.gd" id="5_nc1qr"]
+[ext_resource type="Script" uid="uid://da63e86ydg0o" path="res://addons/shrimpvm/nodes/functions/print_node.gd" id="5_p0jkk"]
+
+[sub_resource type="Resource" id="Resource_5sj3v"]
+script = ExtResource("3_ypfex")
+metadata/_custom_type_script = "uid://uw4oee4tvks"
+
+[sub_resource type="Resource" id="Resource_1fc1t"]
+script = ExtResource("4_5sj3v")
+content = "Hello World!"
+metadata/_custom_type_script = "uid://wcx6kruoo167"
+
+[sub_resource type="Resource" id="Resource_iu8n6"]
+script = ExtResource("5_p0jkk")
+content = SubResource("Resource_1fc1t")
+metadata/_custom_type_script = "uid://da63e86ydg0o"
+
+[sub_resource type="Resource" id="Resource_t82hj"]
+script = ExtResource("3_ypfex")
+body = Array[ExtResource("2_xrwol")]([SubResource("Resource_iu8n6")])
+metadata/_custom_type_script = "uid://uw4oee4tvks"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_05f5v"]
 content_margin_left = 10.0
@@ -108,6 +131,10 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_iyhou")
 treeData = {}
+initialDesk = Array[ExtResource("2_xrwol")]([SubResource("Resource_5sj3v")])
+defaultFileSystem = Dictionary[StringName, ExtResource("2_xrwol")]({
+&"HelloWorld.sst": SubResource("Resource_t82hj")
+})
 
 [node name="vm" type="Node" parent="." unique_id=1396633106]
 unique_name_in_owner = true

@@ -1,0 +1,19 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://cs3nnoenrsg3t"
+
+[deps]
+
+files=["res://addons/shrimpvm/l10n/translations.en.translation", "res://addons/shrimpvm/l10n/translations.en.translation"]
+
+source_file="res://addons/shrimpvm/l10n/translations.csv"
+dest_files=["res://addons/shrimpvm/l10n/translations.en.translation", "res://addons/shrimpvm/l10n/translations.en.translation"]
+
+[params]
+
+compress=1
+delimiter=0
+unescape_keys=false
+unescape_translations=true
