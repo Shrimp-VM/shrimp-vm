@@ -39,7 +39,7 @@ func rebuild(schemx: Dictionary, value: Variant, nodx: NodeBlock):
 	if schemx.get("array", false):
 		if value is Array:
 			if typeof(schemx.type) == TYPE_INT && schemx.type == ShrimpIR.TYPE_ENUM:
-					value = value.filter(func(e): return !e.get("invalid", false))
+				value = ShrimpVMUtil.erase_gunmu(value)
 			if value.is_empty():
 				emptyTip.show()
 			else:

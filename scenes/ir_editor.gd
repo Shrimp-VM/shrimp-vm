@@ -147,7 +147,7 @@ func rebuild_desk():
 						else:
 							childrenList = nodePointer.parentBlock.data[nodePointer.parentAttribute]
 							insertIndex = nodePointer.get_index() - 1
-						print(childrenList, insertIndex)
+						childrenList.assign(ShrimpVMUtil.erase_gunmu(childrenList))
 						if insertIndex < 0:
 							childrenList.append(wrapper)
 						else:

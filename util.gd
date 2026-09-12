@@ -72,3 +72,8 @@ static func concat_array(a: Array, b: Array):
 	var result = a.duplicate()
 	result.append_array(b)
 	return result
+static func erase_gunmu(nodes: Array) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	result.assign(nodes.filter(func(e): return !e.get("invalid", false)))
+	print(result.get_typed_script())
+	return result
