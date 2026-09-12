@@ -173,29 +173,20 @@ position = Vector2i(0, 36)
 size = Vector2i(739, 360)
 filters = PackedStringArray("*.sst")
 
-[node name="runBtn" type="Button" parent="layout/nav/wrapper" unique_id=98607733]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 6
-icon = ExtResource("4_0kp88")
-icon_alignment = 2
-
 [node name="newFileBtn" type="Button" parent="layout/nav/wrapper" unique_id=806747857]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 8
+size_flags_horizontal = 10
 text = "Create new script"
 
 [node name="closeFileBtn" type="Button" parent="layout/nav/wrapper" unique_id=901052568]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 text = "Close"
 
 [node name="deleteFileBtn" type="Button" parent="layout/nav/wrapper" unique_id=1440390961]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 text = "Delete"
@@ -248,35 +239,48 @@ layout_mode = 2
 size_flags_horizontal = 8
 theme_override_styles/panel = SubResource("StyleBoxEmpty_ohykq")
 
-[node name="inspector" type="PanelContainer" parent="layout/layout/workspace/margins" unique_id=815968616]
+[node name="wrapper" type="HBoxContainer" parent="layout/layout/workspace/margins" unique_id=1156634532]
+layout_mode = 2
+
+[node name="wrapper" type="VBoxContainer" parent="layout/layout/workspace/margins/wrapper" unique_id=556257705]
+layout_mode = 2
+
+[node name="runBtn" type="Button" parent="layout/layout/workspace/margins/wrapper/wrapper" unique_id=98607733]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 6
+text = "Run"
+icon = ExtResource("4_0kp88")
+
+[node name="inspector" type="PanelContainer" parent="layout/layout/workspace/margins/wrapper" unique_id=815968616]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_styles/panel = SubResource("StyleBoxFlat_ohykq")
 
-[node name="wrapper" type="VBoxContainer" parent="layout/layout/workspace/margins/inspector" unique_id=743684548]
+[node name="wrapper" type="VBoxContainer" parent="layout/layout/workspace/margins/wrapper/inspector" unique_id=743684548]
 layout_mode = 2
 
-[node name="title" type="Label" parent="layout/layout/workspace/margins/inspector/wrapper" unique_id=1672490136]
+[node name="title" type="Label" parent="layout/layout/workspace/margins/wrapper/inspector/wrapper" unique_id=1672490136]
 layout_mode = 2
 text = "Inspector"
 label_settings = SubResource("LabelSettings_ohykq")
 horizontal_alignment = 1
 
-[node name="nodeDescription" type="Label" parent="layout/layout/workspace/margins/inspector/wrapper" unique_id=2134998890]
+[node name="nodeDescription" type="Label" parent="layout/layout/workspace/margins/wrapper/inspector/wrapper" unique_id=2134998890]
 unique_name_in_owner = true
 layout_mode = 2
 text = "description."
 label_settings = SubResource("LabelSettings_xrwol")
 horizontal_alignment = 1
 
-[node name="attributes" type="VBoxContainer" parent="layout/layout/workspace/margins/inspector/wrapper" unique_id=150692367]
+[node name="attributes" type="VBoxContainer" parent="layout/layout/workspace/margins/wrapper/inspector/wrapper" unique_id=150692367]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="deleteNode" type="Button" parent="layout/layout/workspace/margins/inspector/wrapper" unique_id=1007425784]
+[node name="deleteNode" type="Button" parent="layout/layout/workspace/margins/wrapper/inspector/wrapper" unique_id=1007425784]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Delete Node"

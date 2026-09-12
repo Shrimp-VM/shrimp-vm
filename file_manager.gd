@@ -23,12 +23,14 @@ func add(fn: StringName, content: String):
 	open(file)
 	archive()
 func open(file: VirtualFile):
+	close()
 	open_file.emit(file)
 	currentOpening = file
 	file.opening = true
 func close():
 	close_file.emit(currentOpening)
-	currentOpening.opening = false
+	if is_instance_valid(currentOpening):
+		currentOpening.opening = false
 	currentOpening = null
 func delete():
 	if is_instance_valid(currentOpening):
