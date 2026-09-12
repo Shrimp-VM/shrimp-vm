@@ -181,7 +181,6 @@ func rebuild():
 func delete_node(block: NodeBlock):
 	for parameter in block.parameterWrapper.get_children():
 		if parameter is NodeParameter:
-			print(parameter.schema)
 			if typeof(parameter.schema.type) != TYPE_INT || parameter.schema.type != ShrimpIR.TYPE_ENUM: continue
 			if parameter.schema.array:
 				for child in parameter.arrayWrapper.get_children():
