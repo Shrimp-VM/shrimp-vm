@@ -16,7 +16,8 @@ signal modal_finished()
 	"body": []
 }
 @export var finiteBlockCount: bool = false
-@export var deskIRs: Array[ShrimpIR] = []
+@export var initialDesk: Array[ShrimpIR] = []
+@export var defaultFileSystem: Dictionary[StringName, ShrimpIR] = {}
 
 @onready var vm: ShrimpVM = $%vm
 @onready var fileManager: ShrimpFileManager = $%fileManager
@@ -112,12 +113,14 @@ func _ready() -> void:
 	modalPanel.clicked.connect(modal)
 	compilation_warn.connect(func(t, m): compilationWarns.append([t, m]))
 	fileTip.show()
+	for fp in defaultFileSystem:
+		fileManager.add(fp, ShrimpCompiler.export_json(defaultFileSystem[fp]))
 	if !Engine.is_editor_hint():
 		fileManager.inarchive()
 		fileManager.close()
 	rebuild()
 	modal()
-	blockCounts = ShrimpVMUtil.create_count_map(deskIRs)
+	blockCounts = ShrimpVMUtil.create_count_map(initialDesk)
 	rebuild_desk()
 
 func rebuild_desk():

@@ -7,6 +7,10 @@ class_name PrintNode
 func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
 	print(await vm.execute(content, context))
 	return
+func decompile() -> Dictionary:
+	return {
+		"content": ShrimpCompiler.decompile(content)
+	}
 
 static func get_category_tag() -> String:
 	return "Functions"

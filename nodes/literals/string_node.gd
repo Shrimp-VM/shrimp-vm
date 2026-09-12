@@ -6,6 +6,10 @@ class_name StringNode
 
 func execute(_vm: ShrimpVM, _context: ExecutionContext) -> Variant:
 	return content
+func decompile() -> Dictionary:
+	return {
+		"content": content
+	}
 
 static func get_category_tag() -> String:
 	return "Literals"
