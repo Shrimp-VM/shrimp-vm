@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://djlu0xf1suhk"]
 
 [ext_resource type="Script" uid="uid://bpvmao6jthoeh" path="res://addons/shrimpvm/scenes/virtual_file.gd" id="1_rsdkj"]
+[ext_resource type="PackedScene" uid="uid://cwjvn21pj3cv0" path="res://addons/shrimpvm/scenes/triangle.tscn" id="2_0auy1"]
 [ext_resource type="Texture2D" uid="uid://7xnb1dpko6q1" path="res://addons/shrimpvm/icons/file.png" id="2_kafmh"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rsdkj"]
@@ -13,6 +14,68 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(1, 1, 1, 1)
+
+[sub_resource type="Animation" id="Animation_0auy1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("wrapper/indicator/triangle:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("wrapper/indicator/triangle:scale:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1.0]
+}
+
+[sub_resource type="Animation" id="Animation_0amhk"]
+resource_name = "loop"
+length = 0.5
+loop_mode = 2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("wrapper/indicator/triangle:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [1.0, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("wrapper/indicator/triangle:scale:y")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 2.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1xwb8"]
+_data = {
+&"RESET": SubResource("Animation_0auy1"),
+&"loop": SubResource("Animation_0amhk")
+}
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_kafmh"]
 color = Color(1, 1, 1, 0.5)
@@ -28,9 +91,34 @@ size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_rsdkj")
 script = ExtResource("1_rsdkj")
 
+[node name="animator" type="AnimationPlayer" parent="." unique_id=67258707]
+libraries/ = SubResource("AnimationLibrary_1xwb8")
+autoplay = &"loop"
+
 [node name="wrapper" type="HBoxContainer" parent="." unique_id=1190472104]
 layout_mode = 2
 size_flags_horizontal = 0
+
+[node name="indicator" type="Control" parent="wrapper" unique_id=599488136]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(5, 5)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+
+[node name="triangle" parent="wrapper/indicator" unique_id=567482577 instance=ExtResource("2_0auy1")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0, 0.5)
+size_flags_horizontal = 0
+size_flags_vertical = 4
 
 [node name="icon" type="TextureRect" parent="wrapper" unique_id=1117093036]
 custom_minimum_size = Vector2(15, 15)
