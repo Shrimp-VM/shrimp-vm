@@ -73,3 +73,15 @@ static func decompile_body(from: Array) -> Array[Dictionary]:
 		if ir is ShrimpIR:
 			result.append(decompile(ir))
 	return result
+static func export_data(ir: ShrimpIR) -> Dictionary:
+	return decompile(ir)
+static func export_json(ir: ShrimpIR) -> String:
+	var json = JSON.new()
+	return json.stringify(export_data(ir))
+static func export_file(ir: ShrimpIR, path: String) -> Error:
+	var file = FileAccess.open(path, FileAccess.ModeFlags.WRITE)
+	if !file:
+		return file.get_open_error()
+	file.store_string(export_json(ir))
+	file.close()
+	return OK

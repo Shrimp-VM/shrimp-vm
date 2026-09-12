@@ -76,3 +76,10 @@ static func erase_gunmu(nodes: Array) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	result.assign(nodes.filter(func(e): return !e.get("invalid", false)))
 	return result
+static func flatten(array: Array, result: Array = []) -> Array:
+	for item in array:
+		if item is Array:
+			flatten(item, result)
+		else:
+			result.append(item)
+	return result

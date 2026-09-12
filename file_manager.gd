@@ -10,9 +10,16 @@ signal rebuilding(file: VirtualFile)
 
 @export_global_file var archiveFile = "user://virtuals.json"
 @export var allowArchive: bool = true
+@export var defaultFileSystem: Dictionary[StringName, ShrimpIR] = {}
 
 var files: Array[VirtualFile] = []
 var currentOpening: VirtualFile = null
+
+func _ready() -> void:
+	for fp in defaultFileSystem:
+		var instance = preload("res://addons/shrimpvm/scenes/virtual_file.tscn").instantiate() as VirtualFile
+		instance.fileName = fp
+		instance.content = ShrimpCompiler.export_json(defaultFileSystem[fp])
 
 func add(fn: StringName, content: String):
 	var file = load("res://addons/shrimpvm/scenes/virtual_file.tscn").instantiate() as VirtualFile
