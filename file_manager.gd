@@ -9,6 +9,7 @@ signal delete_file(file: VirtualFile)
 signal rebuilding(file: VirtualFile)
 
 @export_global_file var archiveFile = "user://virtuals.json"
+@export var allowArchive: bool = true
 
 var files: Array[VirtualFile] = []
 var currentOpening: VirtualFile = null
@@ -66,12 +67,14 @@ func decompile(src: String) -> Array:
 		return []
 	return json.data
 func archive():
+	if !allowArchive: return
 	var fa = FileAccess.open(archiveFile, FileAccess.ModeFlags.WRITE)
 	if fa == null:
 		return
 	fa.store_string(compile())
 	fa.close()
 func inarchive():
+	if !allowArchive: return
 	var fa = FileAccess.open(archiveFile, FileAccess.ModeFlags.READ)
 	if fa == null:
 		return
