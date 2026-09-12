@@ -6,12 +6,13 @@ signal clicked()
 signal selected(node: NodeBlock)
 signal mark_selection(node: NodeBlock)
 
+@export var inDesk: bool = false
+
 @onready var selectionBar: Control = $%selection
 @onready var frameBar: ClickableWrapper = $%frame
 @onready var nameLabel: RichTextLabel = $%name
 @onready var parameterPanel: Control = $%parameters
 @onready var parameterWrapper: Control = $%wrapper
-var inDesk: bool = false
 var schema: Dictionary
 var data: Dictionary
 var parent: NodeBlock

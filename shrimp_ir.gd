@@ -4,11 +4,12 @@ extends Resource
 class_name ShrimpIR
 
 class Model:
-	static func wrapper_schema(name: String, attributes: Dictionary, trigger: NodeTrigger = NodeTrigger.EXECUTION):
+	static func wrapper_schema(name: String, attributes: Dictionary, trigger: NodeTrigger = NodeTrigger.EXECUTION, description: String = "No descritpion."):
 		return {
 			"name": name,
 			"attributes": attributes,
-			"trigger": trigger
+			"trigger": trigger,
+			"description": description
 		}
 	static func attribute_schema(type: Variant, label: String, array: bool = false, default: Variant = null):
 		return {
@@ -58,6 +59,7 @@ static func get_node_type() -> String:
 ## 		  }
 ## 	  >;
 ##    trigger: NodeTrigger;
+##    description: string;
 ## }
 static func get_wrapper_schema() -> Dictionary:
 	return Model.wrapper_schema("Unnamed ShrimpIR", {})
