@@ -21,7 +21,6 @@ var schema: Dictionary
 var data: Dictionary
 var parent: NodeBlock
 var paramPointer: NodeParameter
-var irPointer: ShrimpIR
 
 func _ready() -> void:
 	unselect()

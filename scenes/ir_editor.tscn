@@ -54,6 +54,10 @@ border_blend = true
 font_size = 25
 outline_size = 1
 
+[sub_resource type="LabelSettings" id="LabelSettings_xrwol"]
+font_size = 12
+font_color = Color(0.5854947, 0.5854947, 0.5854947, 1)
+
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_nc1qr"]
 content_margin_left = 20.0
 content_margin_top = 0.0
@@ -245,7 +249,6 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_ohykq")
 
 [node name="inspector" type="PanelContainer" parent="root/layout/layout/workspace/margins" unique_id=815968616]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 theme_override_styles/panel = SubResource("StyleBoxFlat_ohykq")
@@ -257,6 +260,13 @@ layout_mode = 2
 layout_mode = 2
 text = "Inspector"
 label_settings = SubResource("LabelSettings_ohykq")
+horizontal_alignment = 1
+
+[node name="nodeDescription" type="Label" parent="root/layout/layout/workspace/margins/inspector/wrapper" unique_id=2134998890]
+unique_name_in_owner = true
+layout_mode = 2
+text = "description."
+label_settings = SubResource("LabelSettings_xrwol")
 horizontal_alignment = 1
 
 [node name="attributes" type="VBoxContainer" parent="root/layout/layout/workspace/margins/inspector/wrapper" unique_id=150692367]

@@ -21,7 +21,7 @@ static func create_from(wrapper: Dictionary) -> ShrimpRootNode:
 	return result
 static func get_wrapper_schema() -> Dictionary:
 	return Model.wrapper_schema(
-		"[color=red]Root Node[/color]",
+		"[color=#fffd99]Root Node[/color]",
 		{
 			"body": Model.attribute_schema(ShrimpIR.TYPE_ENUM, "body", true)
 		},

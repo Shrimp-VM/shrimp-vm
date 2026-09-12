@@ -39,6 +39,7 @@ signal modal_finished()
 @onready var filesWrapper: Control = $%files
 @onready var modalPanel: ClickableWrapper = $%modalPanel
 @onready var modalLabel: RichTextLabel = $%modalTip
+@onready var nodeDescriptionLabel: Label = $%nodeDescription
 var debugContext: ExecutionContext
 var nodePointer: NodeBlock = null
 var compilationWarns: Array[Array] = []
@@ -80,11 +81,8 @@ func _ready() -> void:
 	workspace.clicked.connect(func(): select(null))
 	deleteNodeBtn.pressed.connect(
 		func():
-			nodePointer.data.invalid = true
-			blockCounts[nodePointer.irPointer] += 1
+			delete_node(nodePointer)
 			save_current_file()
-			rebuild()
-			rebuild_desk()
 	)
 	fileManager.add_file.connect(
 		func(f: VirtualFile):
@@ -162,17 +160,33 @@ func rebuild():
 		if ir:
 			var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
 			instance.inDesk = false
-			instance.irPointer = ir
 			node_join(instance, false)
 			instance.rebuild(ir.get_wrapper_schema(), treeData)
 			treeTip.hide()
 		else:
-			push_warning("Tree build failed, uncognized node %s" % treeData.type)
+			push_warning("Tree build failed, unrecognized node %s" % treeData.type)
 	select(null)
 	if !has_root_node():
 		treeTip.show()
+func delete_node(block: NodeBlock):
+	for parameter in block.parameterWrapper.get_children():
+		if parameter is NodeParameter:
+			print(parameter.schema)
+			if typeof(parameter.schema.type) != TYPE_INT || parameter.schema.type != ShrimpIR.TYPE_ENUM: continue
+			if parameter.schema.array:
+				for child in parameter.arrayWrapper.get_children():
+					if child is NodeBlock:
+						delete_node(child)
+			else:
+				for child in parameter.valueWrapper.get_children():
+					if child is NodeBlock:
+						delete_node(child)
+	block.data.invalid = true
+	store_block(block.data.type)
+	rebuild()
 func store_block(type: String, count: int = 1):
 	blockCounts[find_ir_typed(type)] += count
+	rebuild_desk()
 func consume_block(type: String):
 	store_block(type, -1)
 func find_ir_typed(type: String) -> ShrimpIR:
@@ -247,6 +261,7 @@ func select(node: NodeBlock):
 			var instance = load("res://addons/shrimpvm/scenes/parameter_inspector.tscn").instantiate() as ParameterInspector
 			attributeWrapper.add_child(instance)
 			instance.rebuild(attribute.label, editor)
+		nodeDescriptionLabel.text = node.schema.description
 		inspector.show()
 	else:
 		inspector.hide()
