@@ -22,4 +22,4 @@ static func get_wrapper_schema() -> Dictionary:
 			ShrimpIR.TYPE_ENUM,
 			"Content"
 		)
-	})
+	}, "Hello World!!!")

@@ -25,12 +25,10 @@ static func create_from(wrapper: Dictionary) -> ShrimpFileChangeNameNode:
 	result.newName = wrapper.new_name
 	return result
 static func get_wrapper_schema() -> Dictionary:
-	return super.get_wrapper_schema().merged({
-		"name": "Rename the script",
-		"attributes": {
-			"new_name": {
-				"type": TYPE_STRING,
-				"label": "new name"
-			}
-		}
-	}, true)
+	return Model.wrapper_schema(
+		"Rename the script",
+		{
+			"new_name": Model.attribute_schema(TYPE_STRING, "new name")
+		},
+		"Rename current script. Must in a filemgr context."
+	)

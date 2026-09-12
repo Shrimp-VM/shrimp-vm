@@ -21,4 +21,4 @@ static func get_wrapper_schema() -> Dictionary:
 			TYPE_STRING,
 			"text"
 		)
-	})
+	}, "Just a literal")

@@ -4,7 +4,7 @@ extends Resource
 class_name ShrimpIR
 
 class Model:
-	static func wrapper_schema(name: String, attributes: Dictionary, trigger: NodeTrigger = NodeTrigger.EXECUTION, description: String = "No descritpion."):
+	static func wrapper_schema(name: String, attributes: Dictionary, description: String = "No descritpion.", trigger: NodeTrigger = NodeTrigger.EXECUTION):
 		return {
 			"name": name,
 			"attributes": attributes,

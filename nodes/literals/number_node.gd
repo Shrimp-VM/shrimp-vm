@@ -21,4 +21,4 @@ static func get_wrapper_schema() -> Dictionary:
 			TYPE_FLOAT,
 			"value"
 		)
-	})
+	}, "Just a literal")

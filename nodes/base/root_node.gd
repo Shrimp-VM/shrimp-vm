@@ -20,13 +20,10 @@ static func create_from(wrapper: Dictionary) -> ShrimpRootNode:
 	result.body = ShrimpCompiler.compile_body(wrapper.body)
 	return result
 static func get_wrapper_schema() -> Dictionary:
-	return super.get_wrapper_schema().merged({
-		"name": "[color=red]Root Node[/color]",
-		"attributes": {
-			"body": {
-				"type": ShrimpIR.TYPE_ENUM,
-				"label": "body",
-				"array": true
-			}
-		}
-	}, true)
+	return Model.wrapper_schema(
+		"[color=red]Root Node[/color]",
+		{
+			"body": Model.attribute_schema(ShrimpIR.TYPE_ENUM, "body", true)
+		},
+		"Execute all codes in body."
+	)
