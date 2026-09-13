@@ -34,7 +34,7 @@ func start(nodes: Array[ShrimpIR], vm: ShrimpVM):
 	statementIndex = 0
 	lastResult = null
 	while statementIndex < len(body):
-		if !running: break
+		if !running: return lastResult
 		var node = body[statementIndex]
 		if is_instance_valid(node) && node is ShrimpIR:
 			lastResult = await node.execute(vm, self)
@@ -43,19 +43,20 @@ func start(nodes: Array[ShrimpIR], vm: ShrimpVM):
 		statementIndex += 1
 	return exit_with(lastResult)
 func exit_with(data: Variant):
-	running = false
+	lastResult = data
 	exit.emit(data)
+	running = false
 	return data
 func stop_parent(data: Variant):
 	if is_instance_valid(parent):
 		if parent is ExecutionContext:
 			parent.stop(data)
-func stop(data: Variant):
+func stop(data: Variant, spread: bool = false):
 	match lifeMode:
 		LifeMode.STOP:
 			exit_with(data)
 		LifeMode.PASS:
 			exit_with(data)
-			stop_parent(data)
+			if spread: stop_parent(data)
 		LifeMode.IGNORE:
-			stop_parent(data)
+			if spread: stop_parent(data)

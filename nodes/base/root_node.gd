@@ -16,7 +16,7 @@ func decompile() -> Dictionary:
 static func get_node_type() -> String:
 	return "root"
 static func create_from(wrapper: Dictionary) -> ShrimpRootNode:
-	var result = ShrimpRootNode.new()
+	var result = new()
 	result.body = ShrimpCompiler.compile_body(wrapper.body)
 	return result
 static func get_wrapper_schema() -> Dictionary:
