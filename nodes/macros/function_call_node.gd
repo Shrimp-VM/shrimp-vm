@@ -28,13 +28,13 @@ static func get_node_type() -> String:
 static func create_from(wrapper: Dictionary) -> FunctionCallNode:
 	var result = new()
 	result.functionName = wrapper.name
-	result.paramIRs = wrapper.params
+	result.paramIRs = ShrimpCompiler.compile_body(wrapper.params)
 	return result
 static func get_wrapper_schema() -> Dictionary:
 	return Model.wrapper_schema(
 		"Call function",
 		{
-			"name": Model.attribute_schema(TYPE_STRING, "function name"),
+			"name": Model.attribute_schema(TYPE_STRING_NAME, "function name"),
 			"params": Model.attribute_schema(ShrimpIR.TYPE_ENUM, "parameters", true)
 		},
 		"Run a function symbol in current context."

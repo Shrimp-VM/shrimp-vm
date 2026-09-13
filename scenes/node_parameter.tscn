@@ -51,6 +51,8 @@ font_color = Color(0.5591886, 0.5591886, 0.5591886, 1)
 [node name="NodeParameter" type="PanelContainer" unique_id=527761297]
 offset_right = 109.0
 offset_bottom = 33.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_y6t73")
 script = ExtResource("1_y6t73")
 

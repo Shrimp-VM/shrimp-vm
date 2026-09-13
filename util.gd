@@ -55,7 +55,7 @@ static func get_configured_irs() -> Array[ShrimpIR]:
 static func get_builtin_subdir(path: String):
 	return "res://addons/shrimpvm/nodes/".path_join(path)
 static func get_builtins():
-	return scan_ir_nodes(["base", "functions", "literals", "macros"].map(get_builtin_subdir))
+	return scan_ir_nodes(["base", "functions", "literals", "macros", "maths"].map(get_builtin_subdir))
 static func find_ir_node(type: String) -> ShrimpIR:
 	var irs = get_configured_irs()
 	var index = irs.find_custom(func(e): return e.get_node_type() == type)

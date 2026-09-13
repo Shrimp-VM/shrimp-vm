@@ -18,7 +18,7 @@ static func create_from(wrapper: Dictionary) -> ReadSymbolNode:
 static func get_node_type() -> String:
 	return "read_symbol"
 static func get_wrapper_schema() -> Dictionary:
-	return Model.wrapper_schema("Any text", {
+	return Model.wrapper_schema("Read symbol", {
 		"symbol": Model.attribute_schema(
 			TYPE_STRING,
 			"symbol name"

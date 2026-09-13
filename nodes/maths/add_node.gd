@@ -19,8 +19,8 @@ static func get_node_type() -> String:
 	return "add"
 static func create_from(wrapper: Dictionary) -> AddNode:
 	var result = new()
-	result.a = wrapper.a
-	result.b = wrapper.b
+	result.a = ShrimpCompiler.compile(wrapper.a)
+	result.b = ShrimpCompiler.compile(wrapper.b)
 	return result
 static func get_wrapper_schema() -> Dictionary:
 	return Model.wrapper_schema("Add", {

@@ -3,7 +3,7 @@ extends ShrimpIR
 class_name FunctionDefinitionNode
 
 @export var functionName: String
-@export var params: Array[String]
+@export var params: Array
 @export var body: Array[ShrimpIR]
 
 func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
@@ -40,8 +40,8 @@ static func get_wrapper_schema() -> Dictionary:
 	return Model.wrapper_schema(
 		"Define function",
 		{
-			"name": Model.attribute_schema(TYPE_STRING, "function name"),
-			"params": Model.attribute_schema(TYPE_STRING, "parameters", true),
+			"name": Model.attribute_schema(TYPE_STRING_NAME, "function name"),
+			"params": Model.attribute_schema(TYPE_STRING_NAME, "parameters", true),
 			"body": Model.attribute_schema(ShrimpIR.TYPE_ENUM, "body", true)
 		},
 		"Write a function symbol in current context."

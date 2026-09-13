@@ -52,10 +52,11 @@ func update_emit():
 
 static func extract_value(type: Variant.Type, node: Control) -> Variant:
 	match type:
-		TYPE_STRING, TYPE_STRING_NAME:
+		TYPE_STRING:
 			if node is TextEdit:
 				return node.text
-			elif node is LineEdit:
+		TYPE_STRING_NAME:
+			if node is LineEdit:
 				return node.text
 		TYPE_FLOAT:
 			if node is LineEdit:
@@ -100,8 +101,10 @@ static func create_editbox(type: Variant.Type, value: Variant, update: Callable 
 			return null
 static func create_initial_value(type: Variant.Type):
 	match type:
-		TYPE_STRING, TYPE_STRING_NAME:
-			return "Empty string"
+		TYPE_STRING:
+			return "Empty text"
+		TYPE_STRING_NAME:
+			return "Unnamed"
 		TYPE_FLOAT:
 			return 0
 		TYPE_BOOL:
