@@ -76,6 +76,10 @@ static func erase_gunmu(nodes: Array) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []
 	result.assign(nodes.filter(func(e): return !e.get("invalid", false)))
 	return result
+static func erase_nonir(array: Array) -> Array[ShrimpIR]:
+	var result: Array[ShrimpIR] = []
+	result.assign(array.filter(func(e): return is_instance_valid(e) && e is ShrimpIR))
+	return result
 static func flatten(array: Array, result: Array = []) -> Array:
 	for item in array:
 		if item is Array:

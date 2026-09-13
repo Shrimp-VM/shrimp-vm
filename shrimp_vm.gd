@@ -15,9 +15,9 @@ func _ready() -> void:
 func execute_autorun():
 	await execute(auto_run, ExecutionContext.new())
 func execute(node: ShrimpIR, context: ExecutionContext) -> Variant:
-	return await context.execute(node, self)
+	return await execute_all([node], context)
 func execute_all(nodes: Array[ShrimpIR], context: ExecutionContext) -> Variant:
-	return await context.execute_body(nodes, self)
+	return await context.start(nodes, self)
 func poll_event(scripts: Array[ShrimpIR], context: ExecutionContext):
 	var irs = ShrimpVMUtil.get_configured_irs()
 	for ir in irs:

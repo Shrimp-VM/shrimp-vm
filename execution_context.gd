@@ -12,7 +12,10 @@ enum LifeMode {
 var lifeMode: LifeMode
 var parent: ExecutionContext
 var env: ExecutionEnvironment
-var running: bool = true
+var running: bool = false
+var lastResult: Variant
+var body: Array[ShrimpIR] = []
+var statementIndex: int = 0
 
 func _init(parenx: ExecutionContext = null, lifeModx: LifeMode = LifeMode.PASS, enx: ExecutionEnvironment = null) -> void:
 	lifeMode = lifeModx
@@ -23,20 +26,27 @@ func _init(parenx: ExecutionContext = null, lifeModx: LifeMode = LifeMode.PASS, 
 	if is_instance_valid(parent):
 		env.parent = parent.env
 
+func start(nodes: Array[ShrimpIR], vm: ShrimpVM):
+	if running: return
+	body = ShrimpVMUtil.erase_nonir(nodes)
+	running = true
+	statementIndex = 0
+	lastResult = null
+	while statementIndex < len(body):
+		if !running: break
+		var node = body[statementIndex]
+		lastResult = await execute(node, vm)
+		statementIndex += 1
+	return exit_with(lastResult)
 func execute(node: ShrimpIR, vm: ShrimpVM):
-	if !running: return
-	if !is_instance_valid(node):
+	if !is_instance_valid(node) || node is not ShrimpIR:
 		push_warning("%s is not a ShrimpIR, skipping execution." % node)
 		return null
 	return await node.execute(vm, self)
-func execute_body(body: Array[ShrimpIR], vm: ShrimpVM):
-	for node in body:
-		if !running: return
-		await execute(node, vm)
-	return
 func exit_with(data: Variant):
 	running = false
 	exit.emit(data)
+	return data
 func stop_parent(data: Variant):
 	if is_instance_valid(parent):
 		if parent is ExecutionContext:
