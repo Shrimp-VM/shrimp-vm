@@ -2,28 +2,60 @@
 extends Control
 class_name ItemEditor
 
+signal updated(newData: Array)
+
 @export var itemType: Variant.Type = TYPE_FLOAT
 
 @onready var addBtn: Button = $%addBtn
 @onready var itemsWrapper: Control = $%wrapper
-var selectedItem: Control = null
+var bannedItem: EditableItem
 
 func _ready() -> void:
-	addBtn.pressed.connect(
-		func():
-			var instance = preload("res://addons/shrimpvm/scenes/editable_item.tscn").instantiate() as EditableItem
-			itemsWrapper.add_child(instance)
-			instance.set_content(create_editbox(itemType, create_initial_value(itemType)))
-			instance.delete.connect(func(): instance.queue_free())
-	)
+	addBtn.pressed.connect(func(): add_item(create_initial_value(itemType)))
 
+func add_item(value):
+	var instance = preload("res://addons/shrimpvm/scenes/editable_item.tscn").instantiate() as EditableItem
+	if !is_instance_valid(itemsWrapper):
+		itemsWrapper = get_node("%wrapper")
+	itemsWrapper.add_child(instance)
+	instance.set_content(itemType, value)
+	instance.deleted.connect(
+		func():
+			bannedItem = instance
+			instance.queue_free()
+			update_emit()
+			bannedItem = null
+	)
+	instance.updated.connect(func(_d): update_emit())
+	update_emit()
+func set_data(items: Array):
+	for item in items:
+		add_item(item)
 func get_data() -> Array:
-	return itemsWrapper.get_children().map(func(e: EditableItem): return extract_value(itemType, e.get_content()))
+	return (
+		itemsWrapper
+		.get_children()
+		.filter(func(e): return e != bannedItem)
+		.map(func(e: EditableItem): return extract_value(itemType, e.get_content()))
+	)
+func rebuild():
+	var i = 0
+	for child in itemsWrapper.get_children():
+		if child == bannedItem: continue
+		if child is EditableItem:
+			child.index = i
+			child.rebuild()
+			i += 1
+func update_emit():
+	updated.emit(get_data())
+	rebuild()
 
 static func extract_value(type: Variant.Type, node: Control) -> Variant:
 	match type:
-		TYPE_STRING:
+		TYPE_STRING, TYPE_STRING_NAME:
 			if node is TextEdit:
+				return node.text
+			elif node is LineEdit:
 				return node.text
 		TYPE_FLOAT:
 			if node is LineEdit:
@@ -42,6 +74,12 @@ static func create_editbox(type: Variant.Type, value: Variant, update: Callable 
 			input.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 			input.text = str(value)
 			input.text_changed.connect(func(): update.call(input.text))
+			return input
+		TYPE_STRING_NAME:
+			var input = LineEdit.new()
+			input.custom_minimum_size.x = 100
+			input.text = str(value)
+			input.text_changed.connect(update)
 			return input
 		TYPE_FLOAT:
 			var input = LineEdit.new()
@@ -62,7 +100,7 @@ static func create_editbox(type: Variant.Type, value: Variant, update: Callable 
 			return null
 static func create_initial_value(type: Variant.Type):
 	match type:
-		TYPE_STRING:
+		TYPE_STRING, TYPE_STRING_NAME:
 			return "Empty string"
 		TYPE_FLOAT:
 			return 0

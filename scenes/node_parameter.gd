@@ -64,7 +64,7 @@ func create_showbox(schemx: Dictionary, value: Variant, nodx: NodeBlock) -> Cont
 		label.text = str(schemx.type[value])
 		return label
 	match schemx.type:
-		TYPE_STRING, TYPE_FLOAT:
+		TYPE_STRING, TYPE_FLOAT, TYPE_STRING_NAME:
 			var label = Label.new()
 			label.text = str(value)
 			return label
@@ -101,7 +101,13 @@ func create_editbox(schemx: Dictionary, value: Variant) -> Control:
 		btn.selected = value
 		return btn
 	if schemx.array:
-		return Control.new()
+		if ShrimpVMUtil.schema_typeis_ir(schemx): return null
+		else:
+			var editor = preload("res://addons/shrimpvm/scenes/item_editor.tscn").instantiate() as ItemEditor
+			editor.itemType = schemx.type
+			editor.updated.connect(eventEmitter.event.emit)
+			editor.set_data(value)
+			return editor
 	else:
 		return ItemEditor.create_editbox(schemx.type, value, eventEmitter.event.emit)
 

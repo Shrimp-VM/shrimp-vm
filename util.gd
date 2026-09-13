@@ -82,3 +82,5 @@ static func flatten(array: Array, result: Array = []) -> Array:
 		else:
 			result.append(item)
 	return result
+static func schema_typeis_ir(schema: Dictionary) -> bool:
+	return typeof(schema.type) == TYPE_INT && schema.type == ShrimpIR.TYPE_ENUM
