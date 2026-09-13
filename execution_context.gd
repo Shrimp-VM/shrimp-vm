@@ -26,6 +26,7 @@ func _init(parenx: ExecutionContext = null, lifeModx: LifeMode = LifeMode.PASS, 
 	if is_instance_valid(parent):
 		env.parent = parent.env
 
+# Every context can only run 1 task the same time
 func start(nodes: Array[ShrimpIR], vm: ShrimpVM):
 	if running: return
 	body = ShrimpVMUtil.erase_nonir(nodes)
@@ -35,14 +36,12 @@ func start(nodes: Array[ShrimpIR], vm: ShrimpVM):
 	while statementIndex < len(body):
 		if !running: break
 		var node = body[statementIndex]
-		lastResult = await execute(node, vm)
+		if is_instance_valid(node) && node is ShrimpIR:
+			lastResult = await node.execute(vm, self)
+		else:
+			push_warning("%s is not a ShrimpIR, skipping execution." % node)
 		statementIndex += 1
 	return exit_with(lastResult)
-func execute(node: ShrimpIR, vm: ShrimpVM):
-	if !is_instance_valid(node) || node is not ShrimpIR:
-		push_warning("%s is not a ShrimpIR, skipping execution." % node)
-		return null
-	return await node.execute(vm, self)
 func exit_with(data: Variant):
 	running = false
 	exit.emit(data)
