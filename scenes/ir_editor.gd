@@ -18,6 +18,7 @@ signal modal_finished()
 @export var finiteBlockCount: bool = false
 @export var initialDesk: Array[ShrimpIR] = []
 @export var defaultFileSystem: Dictionary[StringName, ShrimpIR] = {}
+@export var loadBuiltins: bool = false
 
 @onready var vm: ShrimpVM = $%vm
 @onready var fileManager: ShrimpFileManager = $%fileManager
@@ -120,7 +121,10 @@ func _ready() -> void:
 		fileManager.close()
 	rebuild()
 	modal()
-	blockCounts = ShrimpVMUtil.create_count_map(initialDesk)
+	var desk = initialDesk
+	if loadBuiltins:
+		desk += ShrimpVMUtil.get_builtins()
+	blockCounts = ShrimpVMUtil.create_count_map(desk)
 	rebuild_desk()
 
 func rebuild_desk():

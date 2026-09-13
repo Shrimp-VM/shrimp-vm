@@ -51,16 +51,11 @@ static func scan_ir_nodes(baseDirs: Array) -> Array[ShrimpIR]:
 static func create_count_map(irs: Array[ShrimpIR], count: float = INF) -> Dictionary[ShrimpIR, float]:
 	return irs.reduce(func(current: Dictionary, ir): return current.merged({ir: count}, true), {} as Dictionary[ShrimpIR, float])
 static func get_configured_irs() -> Array[ShrimpIR]:
-	return scan_ir_nodes(
-		concat_array(
-			[get_importer_setting().ir_script_dir],
-			get_builtins()
-		)
-	)
+	return scan_ir_nodes([get_importer_setting().ir_script_dir]) + get_builtins()
 static func get_builtin_subdir(path: String):
 	return "res://addons/shrimpvm/nodes/".path_join(path)
 static func get_builtins():
-	return ["base", "functions", "literals"].map(get_builtin_subdir)
+	return scan_ir_nodes(["base", "functions", "literals", "macros"].map(get_builtin_subdir))
 static func find_ir_node(type: String) -> ShrimpIR:
 	var irs = get_configured_irs()
 	var index = irs.find_custom(func(e): return e.get_node_type() == type)

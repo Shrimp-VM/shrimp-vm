@@ -1,0 +1,72 @@
+@tool
+extends Control
+class_name ItemEditor
+
+@export var itemType: Variant.Type = TYPE_FLOAT
+
+@onready var addBtn: Button = $%addBtn
+@onready var itemsWrapper: Control = $%wrapper
+var selectedItem: Control = null
+
+func _ready() -> void:
+	addBtn.pressed.connect(
+		func():
+			var instance = preload("res://addons/shrimpvm/scenes/editable_item.tscn").instantiate() as EditableItem
+			itemsWrapper.add_child(instance)
+			instance.set_content(create_editbox(itemType, create_initial_value(itemType)))
+			instance.delete.connect(func(): instance.queue_free())
+	)
+
+func get_data() -> Array:
+	return itemsWrapper.get_children().map(func(e: EditableItem): return extract_value(itemType, e.get_content()))
+
+static func extract_value(type: Variant.Type, node: Control) -> Variant:
+	match type:
+		TYPE_STRING:
+			if node is TextEdit:
+				return node.text
+		TYPE_FLOAT:
+			if node is LineEdit:
+				if node.text.is_valid_float():
+					return node.text.to_float()
+		TYPE_BOOL:
+			if node is CheckButton:
+				return node.button_pressed
+	return null
+static func create_editbox(type: Variant.Type, value: Variant, update: Callable = func(_e): return ) -> Control:
+	match type:
+		TYPE_STRING:
+			var input = TextEdit.new()
+			input.custom_minimum_size = Vector2i(200, 100)
+			input.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
+			input.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+			input.text = str(value)
+			input.text_changed.connect(func(): update.call(input.text))
+			return input
+		TYPE_FLOAT:
+			var input = LineEdit.new()
+			input.custom_minimum_size = Vector2i(300, 30)
+			input.text = "%s" % (value)
+			input.text_changed.connect(
+				func(new: String):
+					if new.is_valid_float():
+						update.call(new.to_float())
+			)
+			return input
+		TYPE_BOOL:
+			var check = CheckButton.new()
+			check.button_pressed = value
+			check.toggled.connect(update)
+			return check
+		_:
+			return null
+static func create_initial_value(type: Variant.Type):
+	match type:
+		TYPE_STRING:
+			return "Empty string"
+		TYPE_FLOAT:
+			return 0
+		TYPE_BOOL:
+			return false
+		_:
+			return null

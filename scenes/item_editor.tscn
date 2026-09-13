@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://da588pkajb50y"]
+
+[ext_resource type="Script" uid="uid://c3d2jdhtbdaqj" path="res://addons/shrimpvm/scenes/item_editor.gd" id="1_fkhx3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0nc27"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fkhx3"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[node name="ItemEditor" type="PanelContainer" unique_id=2080137173]
+offset_right = 8.0
+offset_bottom = 12.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_0nc27")
+script = ExtResource("1_fkhx3")
+
+[node name="wrapper" type="VBoxContainer" parent="." unique_id=571056829]
+layout_mode = 2
+
+[node name="wrapper" type="HBoxContainer" parent="wrapper" unique_id=406158483]
+layout_mode = 2
+
+[node name="addBtn" type="Button" parent="wrapper/wrapper" unique_id=346102999]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Add"
+
+[node name="items" type="PanelContainer" parent="wrapper" unique_id=1289121073]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_fkhx3")
+
+[node name="wrapper" type="VBoxContainer" parent="wrapper/items" unique_id=248468333]
+unique_name_in_owner = true
+layout_mode = 2

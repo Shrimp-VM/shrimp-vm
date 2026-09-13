@@ -11,10 +11,6 @@
 [ext_resource type="Script" uid="uid://2bp5i42dylnd" path="res://addons/shrimpvm/clickable_wrapper.gd" id="5_nc1qr"]
 [ext_resource type="Script" uid="uid://da63e86ydg0o" path="res://addons/shrimpvm/nodes/functions/print_node.gd" id="5_p0jkk"]
 
-[sub_resource type="Resource" id="Resource_5sj3v"]
-script = ExtResource("3_ypfex")
-metadata/_custom_type_script = "uid://uw4oee4tvks"
-
 [sub_resource type="Resource" id="Resource_1fc1t"]
 script = ExtResource("4_5sj3v")
 content = "Hello World!"
@@ -130,8 +126,16 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_iyhou")
-treeData = {}
-initialDesk = Array[ExtResource("2_xrwol")]([SubResource("Resource_5sj3v")])
+treeData = {
+"body": [{
+"content": {
+"content": "Hello World!",
+"type": "string_literal"
+},
+"type": "print"
+}],
+"type": "root"
+}
 defaultFileSystem = Dictionary[StringName, ExtResource("2_xrwol")]({
 &"HelloWorld.sst": SubResource("Resource_t82hj")
 })
@@ -339,7 +343,7 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_behavior_recursive = 1
-text = "* Untitled"
+text = "HelloWorld.sst"
 label_settings = SubResource("LabelSettings_iejdg")
 
 [node name="fileManager" type="PanelContainer" parent="layout/layout" unique_id=533633626]
@@ -370,6 +374,7 @@ size_flags_vertical = 3
 
 [node name="fileTip" type="Label" parent="layout/layout/fileManager/wrapper/wrapper/files" unique_id=156850020]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 text = "No scripts.
 Create one with the button aobve !"

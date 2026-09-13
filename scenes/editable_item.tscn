@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://bq8fry8kwtsi4"]
+
+[ext_resource type="Script" uid="uid://77s3evn880oo" path="res://addons/shrimpvm/scenes/editable_item.gd" id="1_2k3bn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jvgiq"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2k3bn"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 1000
+corner_radius_top_right = 1000
+corner_radius_bottom_right = 1000
+corner_radius_bottom_left = 1000
+
+[sub_resource type="LabelSettings" id="LabelSettings_725sr"]
+font_size = 10
+font_color = Color(0, 0, 0, 1)
+
+[node name="EditableItem" type="PanelContainer" unique_id=1617142792]
+theme_override_styles/panel = SubResource("StyleBoxFlat_jvgiq")
+script = ExtResource("1_2k3bn")
+
+[node name="wrapper" type="HBoxContainer" parent="." unique_id=1280496612]
+layout_mode = 2
+
+[node name="circle" type="Panel" parent="wrapper" unique_id=1573024645]
+custom_minimum_size = Vector2(15, 15)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_2k3bn")
+
+[node name="index" type="Label" parent="wrapper/circle" unique_id=1727068407]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "3"
+label_settings = SubResource("LabelSettings_725sr")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="deleteBtn" type="Button" parent="wrapper" unique_id=1228910797]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Delete"
+
+[node name="content" type="HBoxContainer" parent="wrapper" unique_id=1003349492]
+unique_name_in_owner = true
+layout_mode = 2

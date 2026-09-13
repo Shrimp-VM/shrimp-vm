@@ -18,7 +18,7 @@ func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
 func decompile() -> Dictionary:
 	return {
 		"name": functionName,
-		"params": paramIRs
+		"params": ShrimpCompiler.decompile_body(paramIRs)
 	}
 
 static func get_category_tag() -> String:

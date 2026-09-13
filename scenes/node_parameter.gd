@@ -66,7 +66,7 @@ func create_showbox(schemx: Dictionary, value: Variant, nodx: NodeBlock) -> Cont
 	match schemx.type:
 		TYPE_STRING, TYPE_FLOAT:
 			var label = Label.new()
-			label.text = "%s" % (value)
+			label.text = str(value)
 			return label
 		TYPE_BOOL:
 			var check = CheckButton.new()
@@ -100,34 +100,10 @@ func create_editbox(schemx: Dictionary, value: Variant) -> Control:
 		btn.item_selected.connect(eventEmitter.event.emit)
 		btn.selected = value
 		return btn
-	match schemx.type:
-		TYPE_STRING:
-			var input = TextEdit.new()
-			input.custom_minimum_size = Vector2i(200, 100)
-			input.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
-			input.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-			input.text = "%s" % (value)
-			input.text_changed.connect(func(): eventEmitter.event.emit(input.text))
-			return input
-		TYPE_FLOAT:
-			var input = LineEdit.new()
-			input.custom_minimum_size = Vector2i(300, 30)
-			input.text = "%s" % (value)
-			input.text_changed.connect(
-				func(new: String):
-					if new.is_valid_float():
-						eventEmitter.event.emit(float(new))
-			)
-			return input
-		TYPE_BOOL:
-			var check = CheckButton.new()
-			check.button_pressed = value
-			check.toggled.connect(eventEmitter.event.emit)
-			return check
-		ShrimpIR.TYPE_ENUM:
-			return null
-		_:
-			return null
+	if schemx.array:
+		return Control.new()
+	else:
+		return ItemEditor.create_editbox(schemx.type, value, eventEmitter.event.emit)
 
 static func create_initial_value(schemx: Dictionary) -> Variant:
 	if schemx.has("default"):
@@ -136,14 +112,4 @@ static func create_initial_value(schemx: Dictionary) -> Variant:
 		return []
 	if schemx.type is Array:
 		return 0
-	match schemx.type:
-		TYPE_STRING:
-			return "Empty string"
-		TYPE_FLOAT:
-			return 0
-		TYPE_BOOL:
-			return false
-		ShrimpIR.TYPE_ENUM:
-			return null
-		_:
-			return NAN
+	return ItemEditor.create_initial_value(schemx.type)

@@ -13,7 +13,7 @@ func _ready() -> void:
 			execute_autorun()
 
 func execute_autorun():
-	await execute(auto_run, ExecutionContext.new())
+	return await execute(auto_run, ExecutionContext.new())
 func execute(node: ShrimpIR, context: ExecutionContext) -> Variant:
 	return await execute_all([node], context)
 func execute_all(nodes: Array[ShrimpIR], context: ExecutionContext) -> Variant:
