@@ -18,3 +18,14 @@ func write_symbol(key: StringName, value: Variant):
 	symbols.set(key, value)
 func delete_symbol(key: StringName):
 	symbols.erase(key)
+func has_parent(target: ExecutionEnvironment) -> bool:
+	if is_instance_valid(parent):
+		if self == target:
+			return true
+		else:
+			return parent.has_parent(target)
+	else:
+		return false
+func reparent(new: ExecutionEnvironment):
+	if has_parent(new): return
+	parent = new

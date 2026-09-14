@@ -5,9 +5,7 @@ class_name ReturnNode
 @export var data: ShrimpIR
 
 func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
-	var result = await vm.execute(data, context)
-	context.stop(result)
-	return result
+	return context.stop(await vm.execute(data, context), true)
 
 static func get_category_tag() -> String:
 	return "Macro"

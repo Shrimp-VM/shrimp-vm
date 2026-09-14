@@ -25,20 +25,25 @@ func _init(parenx: ExecutionContext = null, lifeModx: LifeMode = LifeMode.PASS, 
 	env = enx
 	parent = parenx
 	if is_instance_valid(parent):
-		env.parent = parent.env
+		env.reparent(parent.env)
 
 # Every context can only run 1 task the same time
-func start(nodes: Array[ShrimpIR], vm: ShrimpVM):
+func start(nodes: Array[ShrimpIR], vm: ShrimpVM) -> Variant:
+	if running:
+		return await ExecutionContext.new(parent, lifeMode, env).start(nodes, vm)
 	body = ShrimpVMUtil.erase_nonir(nodes)
 	running = true
 	currentIndex = 0
 	lastResult = null
 	while currentIndex < len(body):
-		if !running: return lastResult
+		if !running:
+			return lastResult
 		var node = body[currentIndex]
 		if is_instance_valid(node) && node is ShrimpIR:
 			currentNode = node
-			lastResult = await node.execute(vm, self)
+			var result = await node.execute(vm, self)
+			if running:
+				lastResult = result
 		else:
 			push_warning("%s is not a ShrimpIR, skipping execution." % node)
 		currentIndex += 1
@@ -48,16 +53,17 @@ func exit_with(data: Variant):
 	exit.emit(data)
 	running = false
 	return data
-func stop_parent(data: Variant):
+func stop_parent(data: Variant, spread: bool = false):
 	if is_instance_valid(parent):
 		if parent is ExecutionContext:
-			parent.stop(data)
+			parent.stop(data, spread)
 func stop(data: Variant, spread: bool = false):
 	match lifeMode:
 		LifeMode.STOP:
 			exit_with(data)
 		LifeMode.PASS:
 			exit_with(data)
-			if spread: stop_parent(data)
+			if spread: stop_parent(data, spread)
 		LifeMode.IGNORE:
-			if spread: stop_parent(data)
+			if spread: stop_parent(data, spread)
+	return data
