@@ -1,0 +1,7 @@
+function_definition(name="add",params=["a","b"],body={
+    return(data=add(A=read_symbol(name="a"),B=read_symbol(name="b")))
+})
+print(content=function_call(name="add",params={
+    number_literal(content=123)
+    number_literal(content=123)
+}))
