@@ -1,17 +1,23 @@
 [gd_scene format=3 uid="uid://daf1is503pe2i"]
 
 [ext_resource type="Script" uid="uid://01lhy4c4wwsh" path="res://addons/shrimpvm/scenes/node_block.gd" id="1_0pwqf"]
+[ext_resource type="Script" uid="uid://qq17orpp58tj" path="res://addons/shrimpvm/shrimp_ir.gd" id="2_qlsr3"]
 [ext_resource type="Script" uid="uid://2bp5i42dylnd" path="res://addons/shrimpvm/clickable_wrapper.gd" id="2_y5sfv"]
 [ext_resource type="StyleBox" uid="uid://cdspxw4ys7xge" path="res://addons/shrimpvm/themes/next_sibling.tres" id="3_b3635"]
+[ext_resource type="Script" uid="uid://uw4oee4tvks" path="res://addons/shrimpvm/nodes/base/root_node.gd" id="3_w8yxg"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0pwqf"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_in0f3"]
+
+[sub_resource type="Resource" id="Resource_qlsr3"]
+script = ExtResource("3_w8yxg")
+metadata/_custom_type_script = "uid://uw4oee4tvks"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0pwqf"]
 bg_color = Color(0.60038817, 0.60038817, 0.60038817, 0)
 draw_center = false
 border_width_left = 10
 border_width_right = 10
-border_color = Color(1, 0, 0, 1)
+border_color = Color(1, 1, 1, 1)
 border_blend = true
 corner_radius_top_left = 5
 corner_radius_top_right = 5
@@ -22,16 +28,19 @@ corner_detail = 1
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y5sfv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_05f5v"]
+resource_local_to_scene = true
 content_margin_left = 10.0
 content_margin_top = 5.0
 content_margin_right = 10.0
 content_margin_bottom = 5.0
 bg_color = Color(0, 0, 0, 1)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
+border_width_bottom = 5
 border_color = Color(1, 1, 1, 1)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_b3635"]
 content_margin_left = 5.0
@@ -45,22 +54,29 @@ resource_local_to_scene = true
 font_size = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_in0f3"]
+resource_local_to_scene = true
+bg_color = Color(0, 0, 0, 1)
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qlsr3"]
+bg_color = Color(0, 0, 0, 0.4)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qlsr3"]
 content_margin_left = 10.0
 content_margin_top = 10.0
 content_margin_right = 10.0
 content_margin_bottom = 10.0
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 1, 1, 1)
 
 [node name="NodeBlock" type="PanelContainer" unique_id=1255986660]
 offset_right = 102.0
 offset_bottom = 43.0
-theme_override_styles/panel = SubResource("StyleBoxEmpty_0pwqf")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_in0f3")
 script = ExtResource("1_0pwqf")
+ir = SubResource("Resource_qlsr3")
+wrapper = Dictionary[String, Variant]({
+"body": []
+})
 
 [node name="anchor" type="Control" parent="." unique_id=212837457]
 layout_mode = 2
@@ -68,6 +84,7 @@ mouse_filter = 2
 
 [node name="selection" type="Panel" parent="anchor" unique_id=451766274]
 unique_name_in_owner = true
+visible = false
 z_index = 10
 z_as_relative = false
 layout_mode = 1
@@ -85,6 +102,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_0pwqf")
 
 [node name="nextSiblingTip" type="Panel" parent="anchor" unique_id=797337134]
 unique_name_in_owner = true
+visible = false
 z_index = 11
 layout_mode = 1
 anchors_preset = -1
@@ -126,7 +144,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 bbcode_enabled = true
-text = "Unnamed Node"
+text = "[color=#fffd99]Root Node[/color]"
 fit_content = true
 autowrap_mode = 0
 
@@ -136,6 +154,7 @@ mouse_filter = 1
 
 [node name="countBar" type="PanelContainer" parent="wrapper/frame/anchor" unique_id=1694097726]
 unique_name_in_owner = true
+visible = false
 z_index = 1
 layout_mode = 1
 anchors_preset = -1
@@ -159,14 +178,28 @@ mouse_filter = 1
 text = "×1"
 label_settings = SubResource("LabelSettings_in0f3")
 
-[node name="parameters" type="PanelContainer" parent="wrapper" unique_id=1293641701]
+[node name="MarginContainer" type="MarginContainer" parent="wrapper" unique_id=2020458860]
+layout_mode = 2
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_right = 5
+
+[node name="parameters" type="PanelContainer" parent="wrapper/MarginContainer" unique_id=1293641701]
 unique_name_in_owner = true
+clip_children = 2
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_in0f3")
 
-[node name="wrapper" type="VBoxContainer" parent="wrapper/parameters" unique_id=274422648]
+[node name="gray" type="PanelContainer" parent="wrapper/MarginContainer/parameters" unique_id=485216387]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_qlsr3")
+
+[node name="content" type="PanelContainer" parent="wrapper/MarginContainer/parameters" unique_id=1244050780]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_qlsr3")
+
+[node name="wrapper" type="VBoxContainer" parent="wrapper/MarginContainer/parameters/content" unique_id=274422648]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-theme_override_constants/separation = 0
+theme_override_constants/separation = 5

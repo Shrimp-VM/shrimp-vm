@@ -23,33 +23,36 @@ content_margin_left = 10.0
 content_margin_top = 5.0
 content_margin_right = 10.0
 content_margin_bottom = 5.0
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
+bg_color = Color(0, 0, 0, 0.4)
+border_width_top = 2
+border_width_right = 10
+border_width_bottom = 2
 border_color = Color(1, 1, 1, 1)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_bottom_left = 5
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4jtv5"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lisre"]
+bg_color = Color(0, 0, 0, 0.25)
+border_width_top = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+border_blend = true
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y6t73"]
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lisre"]
 content_margin_left = 5.0
 content_margin_top = 5.0
 content_margin_right = 5.0
 content_margin_bottom = 5.0
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 1, 1, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_y6t73"]
 font_size = 13
 font_color = Color(0.5591886, 0.5591886, 0.5591886, 1)
 
 [node name="NodeParameter" type="PanelContainer" unique_id=527761297]
-offset_right = 109.0
+offset_right = 154.0
 offset_bottom = 33.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -62,6 +65,7 @@ mouse_filter = 1
 
 [node name="selection" type="Panel" parent="anchor" unique_id=871403165]
 unique_name_in_owner = true
+visible = false
 z_index = 15
 z_as_relative = false
 layout_mode = 1
@@ -100,14 +104,15 @@ mouse_filter = 1
 
 [node name="wrapper" type="PanelContainer" parent="wrapper" unique_id=2125223560]
 layout_mode = 2
+size_flags_horizontal = 3
 mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxEmpty_4jtv5")
+theme_override_styles/panel = SubResource("StyleBoxFlat_lisre")
 
 [node name="children" type="PanelContainer" parent="wrapper/wrapper" unique_id=1440198449]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_y6t73")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_lisre")
 
 [node name="templates" type="VBoxContainer" parent="wrapper/wrapper/children" unique_id=318737698]
 unique_name_in_owner = true
@@ -141,6 +146,7 @@ mouse_filter = 2
 
 [node name="addChildTip" type="Panel" parent="wrapper/wrapper" unique_id=112202479]
 unique_name_in_owner = true
+visible = false
 z_index = 1
 layout_mode = 2
 mouse_filter = 2

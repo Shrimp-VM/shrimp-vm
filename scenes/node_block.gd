@@ -7,8 +7,12 @@ signal selected(node: NodeBlock)
 signal mark_selection(node: NodeBlock)
 signal exhausted()
 
+@export_tool_button("Rebuild") var rebuilder = func(): if ir: rebuild(ir.get_wrapper_schema(), wrapper)
 @export var inDesk: bool = false
 @export var count: float = INF
+@export var colorMap: Dictionary[String, Color] = {}
+@export var ir: ShrimpIR
+@export var wrapper: Dictionary[String, Variant]
 
 @onready var selectionBar: Control = $%selection
 @onready var frameBar: ClickableWrapper = $%frame
@@ -24,6 +28,8 @@ var parentBlock: NodeBlock
 var parentSchema: Dictionary
 var parentAttribute: String
 var paramPointer: NodeParameter
+var frameBox: StyleBoxFlat
+var parameterBox: StyleBoxFlat
 
 func _ready() -> void:
 	unselect()
@@ -38,6 +44,9 @@ func _ready() -> void:
 				parentBlock.mark_selection.emit(node)
 	)
 	mark_selection.emit(self)
+	frameBox = frameBar.get_theme_stylebox("panel")
+	parameterBox = parameterPanel.get_theme_stylebox("panel")
+	rebuilder.call()
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index != MouseButton.MOUSE_BUTTON_LEFT: return
@@ -65,9 +74,17 @@ func rebuild_count():
 		countBar.show()
 	else:
 		countBar.hide()
+func get_color() -> Color:
+	var node = ShrimpVMUtil.find_ir_node(data.get("type", ""))
+	if node:
+		return colorMap.get(node.get_category_tag(), Color.BLACK)
+	else:
+		return Color.BLACK
 func rebuild(schemx: Dictionary, datx: Dictionary):
 	schema = schemx
 	data = datx
+	frameBox.bg_color = get_color()
+	parameterBox.bg_color = get_color()
 	parameterPanel.visible = !inDesk && len(schemx.attributes) > 0
 	nameLabel.text = schemx.name
 	rebuild_count()
@@ -78,6 +95,7 @@ func rebuild(schemx: Dictionary, datx: Dictionary):
 			var instance = load("res://addons/shrimpvm/scenes/node_parameter.tscn").instantiate() as NodeParameter
 			parameterWrapper.add_child(instance)
 			instance.name = attributeKey
+			instance.colorMap = colorMap
 			instance.rebuild(schemx.attributes[attributeKey], datx[attributeKey], self)
 			instance.selected.connect(
 				func(e):

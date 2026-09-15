@@ -139,6 +139,15 @@ treeData = {
 defaultFileSystem = Dictionary[StringName, ExtResource("2_xrwol")]({
 &"HelloWorld.sst": SubResource("Resource_t82hj")
 })
+loadBuiltins = true
+categoryColor = Dictionary[String, Color]({
+"Functions": Color(0.46711743, 0.3266056, 0, 1),
+"Literals": Color(0.5, 0.15895915, 0, 1),
+"Macro": Color(0.47369397, 0, 0.31231946, 1),
+"Mathmatics": Color(0, 0.38162273, 0.0018552035, 1),
+"Nodes": Color(0, 0.513153, 0.33054778, 1),
+"Streams": Color(0, 0.28456783, 0.5, 1)
+})
 
 [node name="vm" type="Node" parent="." unique_id=1396633106]
 unique_name_in_owner = true
@@ -259,6 +268,7 @@ size_flags_vertical = 3
 
 [node name="treeTip" type="Label" parent="layout/layout/workspace/wrapper/center" unique_id=287250670]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 text = "No root node.
 Create one with clicking \"Root Node\" !"

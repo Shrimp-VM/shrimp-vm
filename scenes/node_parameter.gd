@@ -14,6 +14,7 @@ signal selected(parameter: NodeParameter)
 var eventEmitter: ShrimpVMUtil.EventEmitter
 var node: NodeBlock
 var schema: Dictionary
+var colorMap: Dictionary[String, Color] = {}
 
 func _ready() -> void:
 	unselect()
@@ -76,6 +77,7 @@ func create_showbox(schemx: Dictionary, value: Variant, nodx: NodeBlock) -> Cont
 		ShrimpIR.TYPE_ENUM:
 			if value is Dictionary && !value.get("invalid", false):
 				var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
+				instance.colorMap = colorMap
 				instance.inDesk = false
 				instance.parentBlock = nodx
 				instance.parentSchema = schemx

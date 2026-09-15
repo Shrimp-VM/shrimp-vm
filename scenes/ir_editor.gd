@@ -19,6 +19,7 @@ signal modal_finished()
 @export var initialDesk: Array[ShrimpIR] = []
 @export var defaultFileSystem: Dictionary[StringName, ShrimpIR] = {}
 @export var loadBuiltins: bool = false
+@export var categoryColor: Dictionary[String, Color] = {}
 
 @onready var vm: ShrimpVM = $%vm
 @onready var fileManager: ShrimpFileManager = $%fileManager
@@ -135,40 +136,43 @@ func rebuild_desk():
 		title.text = category
 		deskWrapper.add_child(title)
 		for ir in categories[category]:
-			var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
-			instance.inDesk = true
-			instance.count = blockCounts[ir] if finiteBlockCount else INF
-			node_join(instance, true)
-			instance.rebuild(ir.get_wrapper_schema(), {"type": ir.get_node_type()})
-			instance.clicked.connect(
-				func():
-					if has_root_node():
-						if !is_instance_valid(nodePointer): return
-						var wrapper = instance.create_wrapper()
-						var childrenList: Array = []
-						var insertIndex = 0
-						if is_instance_valid(nodePointer.paramPointer):
-							if nodePointer.paramPointer.schema.type != ShrimpIR.TYPE_ENUM: return
-							var attributeKey = nodePointer.paramPointer.name
-							if nodePointer.paramPointer.schema.get("array", false):
-								childrenList = nodePointer.data[attributeKey]
-								insertIndex = -1
+			if ir is ShrimpIR:
+				var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
+				instance.data = {"type": ir.get_node_type()}
+				instance.inDesk = true
+				instance.count = blockCounts[ir] if finiteBlockCount else INF
+				instance.colorMap = categoryColor
+				node_join(instance, true)
+				instance.rebuild(ir.get_wrapper_schema(), {"type": ir.get_node_type()})
+				instance.clicked.connect(
+					func():
+						if has_root_node():
+							if !is_instance_valid(nodePointer): return
+							var wrapper = instance.create_wrapper()
+							var childrenList: Array = []
+							var insertIndex = 0
+							if is_instance_valid(nodePointer.paramPointer):
+								if nodePointer.paramPointer.schema.type != ShrimpIR.TYPE_ENUM: return
+								var attributeKey = nodePointer.paramPointer.name
+								if nodePointer.paramPointer.schema.get("array", false):
+									childrenList = nodePointer.data[attributeKey]
+									insertIndex = -1
+								else:
+									nodePointer.data[attributeKey] = wrapper
+							elif nodePointer.parentBlock:
+								childrenList = nodePointer.parentBlock.data[nodePointer.parentAttribute]
+								insertIndex = nodePointer.get_index() - 1
+							childrenList.assign(ShrimpVMUtil.erase_gunmu(childrenList))
+							if insertIndex < 0:
+								childrenList.append(wrapper)
 							else:
-								nodePointer.data[attributeKey] = wrapper
-						elif nodePointer.parentBlock:
-							childrenList = nodePointer.parentBlock.data[nodePointer.parentAttribute]
-							insertIndex = nodePointer.get_index() - 1
-						childrenList.assign(ShrimpVMUtil.erase_gunmu(childrenList))
-						if insertIndex < 0:
-							childrenList.append(wrapper)
+								childrenList.insert(insertIndex, wrapper)
 						else:
-							childrenList.insert(insertIndex, wrapper)
-					else:
-						treeData = instance.create_wrapper()
-					blockCounts[ir] -= 1
-					save_current_file()
-					rebuild()
-			)
+							treeData = instance.create_wrapper()
+						blockCounts[ir] -= 1
+						save_current_file()
+						rebuild()
+				)
 func rebuild():
 	ShrimpVMUtil.disconnect_children(treeCenter, [treeTip])
 	if treeData.get("invalid", false):
@@ -181,6 +185,7 @@ func rebuild():
 		if ir:
 			var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
 			instance.inDesk = false
+			instance.colorMap = categoryColor
 			node_join(instance, false)
 			instance.rebuild(ir.get_wrapper_schema(), treeData)
 			treeTip.hide()
