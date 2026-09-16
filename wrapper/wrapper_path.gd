@@ -10,6 +10,11 @@ var type: PartType = PartType.ATTRIBUTE
 var path = ""
 var next: WrapperPath
 
+func _init(typx: PartType, patx, nexx: WrapperPath = null) -> void:
+	type = typx
+	path = patx
+	next = nexx
+
 func run(data) -> Variant:
 	match type:
 		PartType.ATTRIBUTE:
