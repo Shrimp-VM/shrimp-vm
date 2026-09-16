@@ -194,7 +194,6 @@ theme_override_constants/margin_right = 5
 
 [node name="parameters" type="PanelContainer" parent="wrapper/margin" unique_id=1293641701]
 unique_name_in_owner = true
-clip_children = 2
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_in0f3")
