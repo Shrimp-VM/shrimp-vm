@@ -141,7 +141,7 @@ defaultFileSystem = Dictionary[StringName, ExtResource("2_xrwol")]({
 })
 loadBuiltins = true
 categoryColor = Dictionary[String, Color]({
-"Functions": Color(0.46711743, 0.3266056, 0, 1),
+"Functions": Color(0.4661066, 0.3264042, 0, 0.70000005),
 "Literals": Color(0.5, 0.15895915, 0, 1),
 "Macro": Color(0.47369397, 0, 0.31231946, 1),
 "Mathmatics": Color(0, 0.38162273, 0.0018552035, 1),

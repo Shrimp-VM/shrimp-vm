@@ -34,7 +34,9 @@ content_margin_top = 5.0
 content_margin_right = 10.0
 content_margin_bottom = 5.0
 bg_color = Color(0, 0, 0, 1)
-border_width_bottom = 5
+border_width_left = 1
+border_width_top = 5
+border_width_right = 1
 border_color = Color(1, 1, 1, 1)
 border_blend = true
 corner_radius_top_left = 5
@@ -56,11 +58,18 @@ font_size = 10
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_in0f3"]
 resource_local_to_scene = true
 bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_right = 1
+border_width_bottom = 5
+border_color = Color(1, 1, 1, 1)
+border_blend = true
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qlsr3"]
 bg_color = Color(0, 0, 0, 0.4)
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qlsr3"]
 content_margin_left = 10.0
@@ -178,27 +187,27 @@ mouse_filter = 1
 text = "×1"
 label_settings = SubResource("LabelSettings_in0f3")
 
-[node name="MarginContainer" type="MarginContainer" parent="wrapper" unique_id=2020458860]
+[node name="margin" type="MarginContainer" parent="wrapper" unique_id=2020458860]
 layout_mode = 2
 theme_override_constants/margin_left = 5
 theme_override_constants/margin_right = 5
 
-[node name="parameters" type="PanelContainer" parent="wrapper/MarginContainer" unique_id=1293641701]
+[node name="parameters" type="PanelContainer" parent="wrapper/margin" unique_id=1293641701]
 unique_name_in_owner = true
 clip_children = 2
 layout_mode = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_in0f3")
 
-[node name="gray" type="PanelContainer" parent="wrapper/MarginContainer/parameters" unique_id=485216387]
+[node name="gray" type="PanelContainer" parent="wrapper/margin/parameters" unique_id=485216387]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_qlsr3")
 
-[node name="content" type="PanelContainer" parent="wrapper/MarginContainer/parameters" unique_id=1244050780]
+[node name="content" type="PanelContainer" parent="wrapper/margin/parameters" unique_id=1244050780]
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_qlsr3")
 
-[node name="wrapper" type="VBoxContainer" parent="wrapper/MarginContainer/parameters/content" unique_id=274422648]
+[node name="wrapper" type="VBoxContainer" parent="wrapper/margin/parameters/content" unique_id=274422648]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2

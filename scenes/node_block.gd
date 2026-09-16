@@ -85,11 +85,12 @@ func rebuild(schemx: Dictionary, datx: Dictionary):
 	data = datx
 	frameBox.bg_color = get_color()
 	parameterBox.bg_color = get_color()
-	parameterPanel.visible = !inDesk && len(schemx.attributes) > 0
+	parameterPanel.visible = len(schemx.attributes) > 0
 	nameLabel.text = schemx.name
 	rebuild_count()
 	ShrimpVMUtil.disconnect_children(parameterWrapper)
 	if !inDesk:
+		parameterPanel.hide()
 		for attributeKey in schemx.attributes:
 			if typeof(schemx.attributes[attributeKey].type) == TYPE_INT && schemx.attributes[attributeKey].type == ShrimpIR.TYPE_EXTERNAL_PARAMETER: continue
 			var instance = load("res://addons/shrimpvm/scenes/node_parameter.tscn").instantiate() as NodeParameter

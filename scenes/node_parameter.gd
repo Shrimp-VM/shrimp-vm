@@ -103,7 +103,7 @@ func create_editbox(schemx: Dictionary, value: Variant) -> Control:
 		btn.selected = value
 		return btn
 	if schemx.array:
-		if ShrimpVMUtil.schema_typeis_ir(schemx): return null
+		if ShrimpVMUtil.schema_typeis(schemx, ShrimpIR.TYPE_ENUM): return null
 		else:
 			var editor = preload("res://addons/shrimpvm/scenes/item_editor.tscn").instantiate() as ItemEditor
 			editor.itemType = schemx.type

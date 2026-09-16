@@ -20,6 +20,7 @@ signal modal_finished()
 @export var defaultFileSystem: Dictionary[StringName, ShrimpIR] = {}
 @export var loadBuiltins: bool = false
 @export var categoryColor: Dictionary[String, Color] = {}
+@export_dir var autoScanDirs: Array[String] = []
 
 @onready var vm: ShrimpVM = $%vm
 @onready var fileManager: ShrimpFileManager = $%fileManager
@@ -120,13 +121,14 @@ func _ready() -> void:
 	if !Engine.is_editor_hint():
 		fileManager.inarchive()
 		fileManager.close()
-	rebuild()
-	modal()
 	var desk = initialDesk
 	if loadBuiltins:
 		desk += ShrimpVMUtil.get_builtins()
+	desk += ShrimpVMUtil.scan_ir_nodes(autoScanDirs)
 	blockCounts = ShrimpVMUtil.create_count_map(desk)
+	rebuild()
 	rebuild_desk()
+	modal()
 
 func rebuild_desk():
 	var categories = ShrimpVMUtil.category_desk(blockCounts.keys())
