@@ -3,20 +3,21 @@ extends Node
 class_name ShrimpVM
 
 @export_tool_button("Run") var run = execute_autorun
-@export var auto_run: ShrimpIR
+@export var autoRun: ShrimpIR
 
-var poll_emitter: Signal
+var globalContext: ExecutionContext = null
 
 func _ready() -> void:
 	if !Engine.is_editor_hint():
-		if auto_run is ShrimpIR:
+		if autoRun is ShrimpIR:
 			execute_autorun()
 
 func execute_autorun():
-	return await execute(auto_run, ExecutionContext.new())
+	return await execute(autoRun, ExecutionContext.new())
 func execute(node: ShrimpIR, context: ExecutionContext) -> Variant:
 	return await execute_all([node], context)
 func execute_all(nodes: Array[ShrimpIR], context: ExecutionContext) -> Variant:
+	context.reparent_head(globalContext)
 	return await context.start(nodes, self)
 func poll_event(scripts: Array[ShrimpIR], context: ExecutionContext):
 	var irs = ShrimpVMUtil.get_configured_irs()

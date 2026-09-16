@@ -67,3 +67,23 @@ func stop(data: Variant, spread: bool = false):
 		LifeMode.IGNORE:
 			if spread: stop_parent(data, spread)
 	return data
+func has_parent(target: ExecutionContext) -> bool:
+	if !is_instance_valid(target): return false
+	if is_instance_valid(parent):
+		if self == target:
+			return true
+		else:
+			return parent.has_parent(target)
+	else:
+		return false
+func reparent(new: ExecutionContext):
+	if has_parent(new): return
+	parent = new
+	if is_instance_valid(parent):
+		env.reparent(parent.env)
+func reparent_head(new: ExecutionContext):
+	if has_parent(new): return
+	if is_instance_valid(parent):
+		parent.reparent_head(new)
+	else:
+		reparent(new)
