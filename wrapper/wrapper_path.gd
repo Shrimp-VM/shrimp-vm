@@ -7,7 +7,8 @@ enum PartType {
 	ATTRIBUTE,
 	INDEX,
 	PARENT,
-	SELF
+	SELF,
+	ROOT
 }
 
 var type: PartType = PartType.ATTRIBUTE
@@ -31,6 +32,8 @@ func _to_string() -> String:
 			result = "<"
 		PartType.SELF:
 			result = "#"
+		PartType.ROOT:
+			result = "/"
 	if is_instance_valid(next):
 		return "%s%s%s" % [result, CLASSPATH, next]
 	else:
@@ -54,7 +57,7 @@ func normalize() -> WrapperPath:
 				return parent.parent
 		WrapperPath.PartType.SELF:
 			if is_instance_valid(next):
-				next.reparent(seek_parent([PartType.ATTRIBUTE, PartType.INDEX]))
+				next.reparent(seek_parent([PartType.ATTRIBUTE, PartType.INDEX, PartType.ROOT]))
 				return next
 	return self
 func seek_parent(types: Array[PartType]) -> WrapperPath:
@@ -65,9 +68,16 @@ func seek_parent(types: Array[PartType]) -> WrapperPath:
 			return parent.seek_parent(types)
 	else:
 		return null
+func seek_root() -> WrapperPath:
+	if is_instance_valid(parent):
+		return parent.seek_root()
+	else:
+		return self
 func duplicate(deep: bool = false) -> WrapperPath:
 	return WrapperPath.new(type, path, next.duplicate(deep) if deep else next, parent.duplicate(deep) if deep else parent)
 func concat(child: WrapperPath) -> WrapperPath:
+	if child.type == PartType.ROOT:
+		return child.duplicate()
 	if is_instance_valid(next):
 		return next.concat(child)
 	else:
@@ -79,6 +89,8 @@ static func from(classpath: String) -> WrapperPath:
 	var parts = classpath.split(CLASSPATH)
 	for part in parts:
 		match part:
+			"/":
+				result = WrapperPath.new(PartType.ROOT)
 			"<":
 				result.concat(WrapperPath.new(PartType.PARENT))
 			"#":
