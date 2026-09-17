@@ -74,7 +74,12 @@ func seek_root() -> WrapperPath:
 	else:
 		return self
 func duplicate(deep: bool = false) -> WrapperPath:
-	return WrapperPath.new(type, path, next.duplicate(deep) if deep else next, parent.duplicate(deep) if deep else parent)
+	return WrapperPath.new(
+		type,
+		path,
+		next.duplicate(deep) if deep && is_instance_valid(next) else next,
+		parent
+	)
 func concat(child: WrapperPath) -> WrapperPath:
 	if child.type == PartType.ROOT:
 		return child.duplicate()

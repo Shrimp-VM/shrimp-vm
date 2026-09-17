@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://c4i5myjgeuait"]
+
+[ext_resource type="Script" uid="uid://ci5sjq134kdxj" path="res://addons/shrimpvm/scenes/test_scene.gd" id="1_mwvut"]
+
+[node name="Test" type="Node" unique_id=802212923]
+script = ExtResource("1_mwvut")
