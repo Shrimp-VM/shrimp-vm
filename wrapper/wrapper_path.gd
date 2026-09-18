@@ -67,7 +67,7 @@ func normalize() -> WrapperPath:
 				childrens.append(current)
 	if childrens.is_empty():
 		return WrapperPath.new(PartType.SELF)
-	for i in range(1, childrens.size()):
+	for i in range(1, len(childrens)):
 		childrens[i - 1].renext(childrens[i])
 	childrens[0].parent = null
 	return childrens[0]
