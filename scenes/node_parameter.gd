@@ -12,9 +12,19 @@ signal selected(parameter: NodeParameter)
 @onready var emptyTip: Control = $%emptyTip
 @onready var addChildTip: Control = $%addChildTip
 var eventEmitter: ShrimpVMUtil.EventEmitter
-var node: NodeBlock
-var schema: Dictionary
-var colorMap: Dictionary[String, Color] = {}
+var context: WrapperContext
+var targetIR: ShrimpIR:
+	get:
+		return ShrimpVMUtil.find_ir_node(context.forward(WrapperPath.from("<")).get_pointer().type)
+var schema: Dictionary:
+	get:
+		return targetIR.get_wrapper_schema().attributes[context.pointer.path]
+var value:
+	get:
+		return context.get_pointer()
+var block: NodeBlock:
+	get:
+		return context.get_node()
 
 func _ready() -> void:
 	unselect()
@@ -24,34 +34,30 @@ func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index != MouseButton.MOUSE_BUTTON_LEFT: return
 		if !event.pressed: return
-		if typeof(schema.type) == TYPE_INT && schema.type == ShrimpIR.TYPE_ENUM:
+		if ShrimpVMUtil.schema_typeis(schema, ShrimpIR.TYPE_ENUM):
 			selected.emit(self)
 		else:
-			node.selected.emit(node)
+			block.selected.emit(block)
 
 func make_template(namx: NodePath) -> Control:
 	return templateWrapper.get_node(namx).duplicate()
-func rebuild(schemx: Dictionary, value: Variant, nodx: NodeBlock):
-	schema = schemx
-	node = nodx
-	nameLabel.text = schemx.label
+func rebuild():
+	nameLabel.text = schema.label
 	ShrimpVMUtil.disconnect_children(arrayWrapper, [emptyTip])
 	ShrimpVMUtil.disconnect_children(valueWrapper)
-	if schemx.get("array", false):
+	if schema.array:
 		if value is Array:
-			if typeof(schemx.type) == TYPE_INT && schemx.type == ShrimpIR.TYPE_ENUM:
-				value = ShrimpVMUtil.erase_gunmu(value)
 			if value.is_empty():
 				emptyTip.show()
 			else:
 				emptyTip.hide()
-				for item in value:
-					arrayWrapper.add_child(create_showbox(schemx, item, nodx))
+				for i in len(value):
+					arrayWrapper.add_child(create_showbox(i))
 		else:
-			push_error("The array parameter's wrapper value is not an Array[Variant].")
+			push_error("The array parameter's wrapper value is not an Array.")
 	else:
 		emptyTip.hide()
-		valueWrapper.add_child(create_showbox(schemx, value, nodx))
+		valueWrapper.add_child(create_showbox())
 func select():
 	selectionBar.show()
 	if schema.array:
@@ -59,65 +65,59 @@ func select():
 func unselect():
 	selectionBar.hide()
 	addChildTip.hide()
-func create_showbox(schemx: Dictionary, value: Variant, nodx: NodeBlock) -> Control:
-	if schemx.type is Array:
-		var label = Label.new()
-		label.text = str(schemx.type[value])
-		return label
-	match schemx.type:
-		TYPE_STRING, TYPE_FLOAT, TYPE_STRING_NAME:
-			var label = Label.new()
-			label.text = str(value)
-			return label
-		TYPE_BOOL:
-			var check = CheckButton.new()
-			check.button_pressed = value
-			check.disabled = true
-			return check
+func create_primarybox(type: int, data: Variant, index: int = -1) -> Control:
+	match type:
 		ShrimpIR.TYPE_ENUM:
-			if value is Dictionary && !value.get("invalid", false):
-				var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
-				instance.colorMap = colorMap
-				instance.inDesk = false
-				instance.parentBlock = nodx
-				instance.parentSchema = schemx
-				instance.parentAttribute = name
-				add_child(instance)
-				instance.rebuild(ShrimpVMUtil.find_ir_node(value.type).get_wrapper_schema(), value)
-				remove_child(instance)
-				return instance
+			if ShrimpVMUtil.wrapper_is_valid(data):
+				if value is Array:
+					return NodeBlock.create(context.forward(WrapperPath.from("[%d]" % index)), false).auto_rebuild(self)
+				else:
+					return NodeBlock.create(context, false).auto_rebuild(self)
 			else:
 				var label = Label.new()
-				label.text = str(null)
+				label.text = "NULL"
 				label.label_settings = LabelSettings.new()
 				label.label_settings.font_color = Color.RED
 				return label
 		_:
-			return Control.new()
-func create_editbox(schemx: Dictionary, value: Variant) -> Control:
-	if schemx.type is Array:
+			return ItemEditor.create_showbox(type, data)
+func create_showbox(index: int = -1) -> Control:
+	if schema.type is Array:
+		var label = Label.new()
+		label.text = str(schema.type[value])
+		return label
+	if schema.array:
+		var data
+		if value is Array:
+			data = value[index]
+		else:
+			data = value
+		return create_primarybox(schema.type, data)
+	else:
+		return create_primarybox(schema.type, value)
+func create_editbox() -> Control:
+	if schema.type is Array:
 		var btn = OptionButton.new()
-		for item in schemx.type:
+		for item in schema.type:
 			btn.add_item(str(item))
 		btn.item_selected.connect(eventEmitter.event.emit)
 		btn.selected = value
 		return btn
-	if schemx.array:
-		if ShrimpVMUtil.schema_typeis(schemx, ShrimpIR.TYPE_ENUM): return null
+	if schema.array:
+		if ShrimpVMUtil.schema_typeis(schema, ShrimpIR.TYPE_ENUM): return null
 		else:
 			var editor = preload("res://addons/shrimpvm/scenes/item_editor.tscn").instantiate() as ItemEditor
-			editor.itemType = schemx.type
+			editor.itemType = schema.type
 			editor.updated.connect(eventEmitter.event.emit)
 			editor.set_data(value)
 			return editor
 	else:
-		return ItemEditor.create_editbox(schemx.type, value, eventEmitter.event.emit)
+		return ItemEditor.create_editbox(schema.type, value, eventEmitter.event.emit)
 
-static func create_initial_value(schemx: Dictionary) -> Variant:
-	if schemx.has("default"):
-		return schemx.default
-	if schemx.get("array", false):
-		return []
-	if schemx.type is Array:
-		return 0
-	return ItemEditor.create_initial_value(schemx.type)
+static func create(contexx: WrapperContext, namx: String, root: Node) -> NodeParameter:
+	var instance = preload("res://addons/shrimpvm/scenes/node_parameter.tscn").instantiate() as NodeParameter
+	instance.name = namx
+	instance.context = contexx
+	root.add_child(instance)
+	instance.rebuild()
+	return instance

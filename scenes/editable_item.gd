@@ -29,7 +29,7 @@ func rebuild():
 	if !is_instance_valid(indexLabel):
 		indexLabel = get_node("%index")
 	indexLabel.text = str(index + 1)
-func set_content(type: Variant.Type, value: Variant):
+func set_content(type: int, value: Variant):
 	var editor = ItemEditor.create_editbox(type, value, updated.emit)
 	if !is_instance_valid(contentWrapper):
 		contentWrapper = get_node("%content")

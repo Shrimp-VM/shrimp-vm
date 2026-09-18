@@ -7,32 +7,35 @@ signal selected(node: NodeBlock)
 signal mark_selection(node: NodeBlock)
 signal exhausted()
 
-@export_tool_button("Rebuild") var rebuilder = func(): if ir: rebuild(ir.get_wrapper_schema(), wrapper)
 @export var inDesk: bool = false
 @export var count: float = INF
-@export var colorMap: Dictionary[String, Color] = {}
 @export var ir: ShrimpIR
 @export var wrapper: Dictionary[String, Variant]
 
-@onready var selectionBar: Control = $%selection
 @onready var frameBar: ClickableWrapper = $%frame
 @onready var nameLabel: RichTextLabel = $%name
 @onready var parameterPanel: Control = $%parameters
 @onready var parameterWrapper: Control = $%wrapper
 @onready var countBar: Control = $%countBar
 @onready var countLabel: Label = $%count
-@onready var nextSiblingTip: Control = $%nextSiblingTip
-var schema: Dictionary
-var data: Dictionary
-var parentBlock: NodeBlock
-var parentSchema: Dictionary
-var parentAttribute: String
-var paramPointer: NodeParameter
 var frameBox: StyleBoxFlat
 var parameterBox: StyleBoxFlat
+var context: WrapperContext
+var paramPointer: NodeParameter
+var targetIR: ShrimpIR:
+	get:
+		return ShrimpVMUtil.find_ir_node(data.type)
+var schema: Dictionary:
+	get:
+		return targetIR.get_wrapper_schema()
+var data: Dictionary:
+	get:
+		return context.get_pointer()
+var parentBlock: NodeBlock:
+	get:
+		return null
 
 func _ready() -> void:
-	unselect()
 	frameBar.clicked.connect(
 		func():
 			if !inDesk && !parameterWrapper.get_children().is_empty():
@@ -46,7 +49,6 @@ func _ready() -> void:
 	mark_selection.emit(self)
 	frameBox = frameBar.get_theme_stylebox("panel")
 	parameterBox = parameterPanel.get_theme_stylebox("panel")
-	rebuilder.call()
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index != MouseButton.MOUSE_BUTTON_LEFT: return
@@ -75,28 +77,22 @@ func rebuild_count():
 	else:
 		countBar.hide()
 func get_color() -> Color:
-	var node = ShrimpVMUtil.find_ir_node(data.get("type", ""))
+	var node = ShrimpVMUtil.find_ir_node(context.get_pointer().get("type", ""))
 	if node:
-		return colorMap.get(node.get_category_tag(), Color.BLACK)
+		return ShrimpPlugin.shade_category(node.get_category_tag())
 	else:
 		return Color.BLACK
-func rebuild(schemx: Dictionary, datx: Dictionary):
-	schema = schemx
-	data = datx
+func rebuild():
 	frameBox.bg_color = get_color()
 	parameterBox.bg_color = get_color()
-	parameterPanel.visible = len(schemx.attributes) > 0 && !inDesk
-	nameLabel.text = schemx.name
+	parameterPanel.visible = len(schema.attributes) > 0 && !inDesk
+	nameLabel.text = schema.name
 	rebuild_count()
 	ShrimpVMUtil.disconnect_children(parameterWrapper)
 	if !inDesk:
-		for attributeKey in schemx.attributes:
-			if typeof(schemx.attributes[attributeKey].type) == TYPE_INT && schemx.attributes[attributeKey].type == ShrimpIR.TYPE_EXTERNAL_PARAMETER: continue
-			var instance = load("res://addons/shrimpvm/scenes/node_parameter.tscn").instantiate() as NodeParameter
-			parameterWrapper.add_child(instance)
-			instance.name = attributeKey
-			instance.colorMap = colorMap
-			instance.rebuild(schemx.attributes[attributeKey], datx[attributeKey], self)
+		for key in schema.attributes:
+			if ShrimpVMUtil.schema_typeis(schema, ShrimpIR.TYPE_EXTERNAL_PARAMETER): continue
+			var instance = NodeParameter.create(context.forward(WrapperPath.from(key)), key, parameterWrapper)
 			instance.selected.connect(
 				func(e):
 					if is_instance_valid(paramPointer):
@@ -104,34 +100,21 @@ func rebuild(schemx: Dictionary, datx: Dictionary):
 					paramPointer = e
 					selected.emit(self)
 			)
-func select():
-	unselect()
-	selectionBar.show()
-	if is_instance_valid(paramPointer):
-		paramPointer.select()
-	else:
-		if is_instance_valid(parentBlock) && parentSchema.array:
-			nextSiblingTip.show()
-func unselect():
-	selectionBar.hide()
-	if is_instance_valid(paramPointer):
-		paramPointer.unselect()
-	nextSiblingTip.hide()
 func create_wrapper() -> Dictionary:
 	var result = {}
 	result.type = data.type
 	for key in schema.attributes:
-		result[key] = NodeParameter.create_initial_value(schema.attributes[key])
+		result[key] = ItemEditor.create_initial_value(schema.attributes[key])
 	return result
+func auto_rebuild(node: Node) -> NodeBlock:
+	if get_parent(): return
+	node.add_child(self)
+	rebuild()
+	node.remove_child(self)
+	return self
 
-# static func create(colorMap:Dictionary):
-# 	var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
-# 	instance.colorMap = colorMap
-# 	instance.inDesk = false
-# 	instance.parentBlock = nodx
-# 	instance.parentSchema = schemx
-# 	instance.parentAttribute = name
-# 	add_child(instance)
-# 	instance.rebuild(ShrimpVMUtil.find_ir_node(value.type).get_wrapper_schema(), value)
-# 	remove_child(instance)
-# 	return instance
+static func create(contexx: WrapperContext, inDesx: bool) -> NodeBlock:
+	var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
+	instance.context = contexx
+	instance.inDesk = inDesx
+	return instance

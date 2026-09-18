@@ -4,7 +4,7 @@ class_name ItemEditor
 
 signal updated(newData: Array)
 
-@export var itemType: Variant.Type = TYPE_FLOAT
+@export var itemType: int = TYPE_FLOAT
 
 @onready var addBtn: Button = $%addBtn
 @onready var itemsWrapper: Control = $%wrapper
@@ -50,7 +50,7 @@ func update_emit():
 	updated.emit(get_data())
 	rebuild()
 
-static func extract_value(type: Variant.Type, node: Control) -> Variant:
+static func extract_value(type: int, node: Control) -> Variant:
 	match type:
 		TYPE_STRING:
 			if node is TextEdit:
@@ -66,7 +66,20 @@ static func extract_value(type: Variant.Type, node: Control) -> Variant:
 			if node is CheckButton:
 				return node.button_pressed
 	return null
-static func create_editbox(type: Variant.Type, value: Variant, update: Callable = func(_e): return ) -> Control:
+static func create_showbox(type: int, value: Variant) -> Control:
+	match type:
+		TYPE_STRING, TYPE_FLOAT, TYPE_STRING_NAME:
+			var label = Label.new()
+			label.text = str(value)
+			return label
+		TYPE_BOOL:
+			var check = CheckButton.new()
+			check.button_pressed = value
+			check.disabled = true
+			return check
+		_:
+			return null
+static func create_editbox(type: int, value: Variant, update: Callable = func(_e): return ) -> Control:
 	match type:
 		TYPE_STRING:
 			var input = TextEdit.new()
@@ -99,7 +112,7 @@ static func create_editbox(type: Variant.Type, value: Variant, update: Callable 
 			return check
 		_:
 			return null
-static func create_initial_value(type: Variant.Type):
+static func create_initial_value(type: int):
 	match type:
 		TYPE_STRING:
 			return "Empty text"

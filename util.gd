@@ -84,3 +84,5 @@ static func flatten(array: Array, result: Array = []) -> Array:
 	return result
 static func schema_typeis(schema: Dictionary, type: int) -> bool:
 	return typeof(schema.type) == TYPE_INT && schema.type == type
+static func wrapper_is_valid(wrapper) -> bool:
+	return wrapper is Dictionary && !wrapper.get("invalid", false)
