@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://bgavbblqerqdd"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y3w75"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+draw_center = false
+border_width_left = 10
+border_width_right = 10
+border_color = Color(1, 1, 1, 1)
+border_blend = true
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+corner_detail = 1
+
+[node name="SelectionRect" type="Panel" unique_id=800650172]
+offset_right = 50.0
+offset_bottom = 50.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_y3w75")

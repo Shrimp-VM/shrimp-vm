@@ -24,7 +24,7 @@ var value:
 		return context.get_pointer()
 var block: NodeBlock:
 	get:
-		return context.locate()
+		return context.locate([NodeBlock])
 
 func _ready() -> void:
 	unselect()
@@ -37,7 +37,7 @@ func _gui_input(event: InputEvent) -> void:
 		if ShrimpVMUtil.schema_typeis(schema, ShrimpIR.TYPE_ENUM):
 			selected.emit(self)
 		else:
-			block.selected.emit(block)
+			block.requestSelect()
 
 func make_template(namx: NodePath) -> Control:
 	return templateWrapper.get_node(namx).duplicate()

@@ -21,7 +21,6 @@ signal exhausted()
 var frameBox: StyleBoxFlat
 var parameterBox: StyleBoxFlat
 var context: WrapperContext
-var paramPointer: NodeParameter
 var targetIR: ShrimpIR:
 	get:
 		return ShrimpVMUtil.find_ir_node(data.type)
@@ -58,8 +57,10 @@ func _gui_input(event: InputEvent) -> void:
 				clicked.emit()
 				consume()
 		else:
-			selected.emit(self)
+			requestSelect()
 
+func requestSelect():
+	selected.emit(context.pointer)
 func consume():
 	count -= 1
 	rebuild_count()
@@ -92,16 +93,8 @@ func rebuild():
 	if !inDesk:
 		for key in schema.attributes:
 			if ShrimpVMUtil.schema_typeis(schema.attributes[key], ShrimpIR.TYPE_EXTERNAL_PARAMETER): continue
-			var a = context.forward(WrapperPath.from(key))
-			print(a)
 			var instance = NodeParameter.create(context.forward(WrapperPath.from(key)), parameterWrapper)
-			instance.selected.connect(
-				func(e):
-					if is_instance_valid(paramPointer):
-						paramPointer.unselect()
-					paramPointer = e
-					selected.emit(self)
-			)
+			instance.selected.connect(func(_p): selected.emit(self))
 func create_wrapper() -> Dictionary:
 	var result = {}
 	result.type = data.type
@@ -122,5 +115,7 @@ static func create(contexx: WrapperContext, inDesx: bool, counx: float = INF, ty
 	if inDesx:
 		contexx = WrapperContext.new({"type": type})
 		contexx.nodeTree = instance
+	else:
+		print(contexx)
 	instance.context = contexx
 	return instance

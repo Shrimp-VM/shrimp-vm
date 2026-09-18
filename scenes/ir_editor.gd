@@ -44,14 +44,16 @@ signal modal_finished()
 @onready var modalPanel: ClickableWrapper = $%modalPanel
 @onready var modalLabel: RichTextLabel = $%modalTip
 @onready var nodeDescriptionLabel: Label = $%nodeDescription
+@onready var selectionMgr: SelectionManager = $%selections
 var debugContext: ExecutionContext
-var nodePointer: NodeBlock = null
 var compilationWarns: Array[Array] = []
 var blockCounts: Dictionary[ShrimpIR, float] = {}
-var context: WrapperContext
+var selectingPath: WrapperPath
+var selectingPointer: Node:
+	get:
+		return WrapperContext.new(treeData, selectingPath, get_root_block()).locate()
 
 func _ready() -> void:
-	context = WrapperContext.new(treeData)
 	debugContext = ExecutionContext.new()
 	debugContext.env.write_symbol("filemgr", fileManager)
 	openBtn.pressed.connect(
@@ -87,7 +89,7 @@ func _ready() -> void:
 	workspace.clicked.connect(func(): select(null))
 	deleteNodeBtn.pressed.connect(
 		func():
-			delete_node(nodePointer)
+			delete_node(selectingPointer)
 			save_current_file()
 	)
 	fileManager.add_file.connect(
@@ -146,21 +148,23 @@ func rebuild_desk():
 				instance.clicked.connect(
 					func():
 						if has_root_node():
-							if !is_instance_valid(nodePointer): return
+							if !is_instance_valid(selectingPointer): return
 							var wrapper = instance.create_wrapper()
 							var childrenList: Array = []
 							var insertIndex = 0
-							if is_instance_valid(nodePointer.paramPointer):
-								if nodePointer.paramPointer.schema.type != ShrimpIR.TYPE_ENUM: return
-								var attributeKey = nodePointer.paramPointer.name
-								if nodePointer.paramPointer.schema.get("array", false):
-									childrenList = nodePointer.data[attributeKey]
-									insertIndex = -1
-								else:
-									nodePointer.data[attributeKey] = wrapper
-							elif nodePointer.parentBlock:
-								childrenList = nodePointer.parentBlock.data[nodePointer.parentAttribute]
-								insertIndex = nodePointer.get_index() - 1
+							if is_instance_valid(selectingPointer):
+								if selectingPointer is NodeParameter:
+										if selectingPointer.schema.type != ShrimpIR.TYPE_ENUM: return
+										var attributeKey = selectingPointer.name
+										if selectingPointer.schema.get("array", false):
+											childrenList = selectingPointer.data[attributeKey]
+											insertIndex = -1
+										else:
+											selectingPointer.data[attributeKey] = wrapper
+								elif selectingPointer is NodeBlock:
+									if is_instance_valid(selectingPointer.parentBlock):
+										childrenList = selectingPointer.parentBlock.data[selectingPointer.parentAttribute]
+										insertIndex = selectingPointer.get_index() - 1
 							childrenList.assign(ShrimpVMUtil.erase_gunmu(childrenList))
 							if insertIndex < 0:
 								childrenList.append(wrapper)
@@ -179,9 +183,9 @@ func rebuild():
 	if has_root_node():
 		var ir = find_ir_typed(treeData.type)
 		if ir:
-			context.dataTree = treeData
-			var instance = NodeBlock.create(context, false)
-			context.nodeTree = instance
+			var rootContext = WrapperContext.new(treeData)
+			var instance = NodeBlock.create(rootContext, false)
+			rootContext.nodeTree = instance
 			node_join(instance, false)
 			instance.rebuild()
 			treeTip.hide()
@@ -191,6 +195,12 @@ func rebuild():
 		treeData = {}
 		treeTip.show()
 	select(null)
+func get_root_block() -> NodeBlock:
+	var child = treeCenter.get_child(0)
+	if child is NodeBlock:
+		return child
+	else:
+		return null
 func delete_node(block: NodeBlock):
 	for parameter in block.parameterWrapper.get_children():
 		if parameter is NodeParameter:
@@ -258,34 +268,35 @@ func save_to(filepath: String):
 		return file.get_open_error()
 	file.store_string(save_data())
 	return OK
-func select(node: NodeBlock):
-	if is_instance_valid(nodePointer):
-		nodePointer.unselect()
-		nodePointer.paramPointer = null
-	nodePointer = node
-	if is_instance_valid(node):
-		node.select()
-		ShrimpVMUtil.disconnect_children(attributeWrapper)
-		for attributeKey in node.schema.attributes:
-			var eventEmitter = ShrimpVMUtil.EventEmitter.new()
-			var attribute = node.schema.attributes[attributeKey]
-			var parameter = node.parameterWrapper.get_node(attributeKey) as NodeParameter
-			parameter.eventEmitter = eventEmitter
-			parameter.eventEmitter.event.connect(
-				func(v):
-					node.data[attributeKey] = v
-					save_current_file()
-					parameter.rebuild()
-			)
-			var editor = parameter.create_editbox()
-			if !is_instance_valid(editor):
-				continue
-			var instance = load("res://addons/shrimpvm/scenes/parameter_inspector.tscn").instantiate() as ParameterInspector
-			attributeWrapper.add_child(instance)
-			instance.rebuild(attribute.label, editor)
-		nodeDescriptionLabel.text = node.schema.description
+func select(path: WrapperPath):
+	selectingPath = path
+	if is_instance_valid(selectingPointer):
+		if selectingPointer is NodeBlock:
+			ShrimpVMUtil.disconnect_children(attributeWrapper)
+			for attributeKey in selectingPointer.schema.attributes:
+				var eventEmitter = ShrimpVMUtil.EventEmitter.new()
+				var attribute = selectingPointer.schema.attributes[attributeKey]
+				var parameter = selectingPointer.parameterWrapper.get_node(attributeKey) as NodeParameter
+				parameter.eventEmitter = eventEmitter
+				parameter.eventEmitter.event.connect(
+					func(v):
+						selectingPointer.data[attributeKey] = v
+						save_current_file()
+						parameter.rebuild()
+				)
+				var editor = parameter.create_editbox()
+				if !is_instance_valid(editor):
+					continue
+				var instance = load("res://addons/shrimpvm/scenes/parameter_inspector.tscn").instantiate() as ParameterInspector
+				attributeWrapper.add_child(instance)
+				instance.rebuild(attribute.label, editor)
+			nodeDescriptionLabel.text = selectingPointer.schema.description
+			selectionMgr.move("cyan", selectingPointer.global_position, selectingPointer.size)
+		elif selectingPointer is NodeParameter:
+			pass
 		inspector.show()
 	else:
+		selectionMgr.stop_all()
 		inspector.hide()
 func modal(content: String = ""):
 	if content:
