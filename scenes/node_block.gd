@@ -123,3 +123,15 @@ func create_wrapper() -> Dictionary:
 	for key in schema.attributes:
 		result[key] = NodeParameter.create_initial_value(schema.attributes[key])
 	return result
+
+# static func create(colorMap:Dictionary):
+# 	var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
+# 	instance.colorMap = colorMap
+# 	instance.inDesk = false
+# 	instance.parentBlock = nodx
+# 	instance.parentSchema = schemx
+# 	instance.parentAttribute = name
+# 	add_child(instance)
+# 	instance.rebuild(ShrimpVMUtil.find_ir_node(value.type).get_wrapper_schema(), value)
+# 	remove_child(instance)
+# 	return instance

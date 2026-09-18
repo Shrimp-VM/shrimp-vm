@@ -39,3 +39,5 @@ func seek(distPath: WrapperPath):
 				node = tree
 		part = part.next
 	return node
+func is_root() -> bool:
+	return pointer.is_root()

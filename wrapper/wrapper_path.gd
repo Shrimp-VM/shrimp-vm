@@ -99,6 +99,8 @@ func concat(child: WrapperPath) -> WrapperPath:
 	else:
 		renext(child)
 	return self
+func is_root() -> bool:
+	return !is_instance_valid(parent)
 
 static func from(classpath: String) -> WrapperPath:
 	var result = WrapperPath.new(PartType.SELF)
