@@ -18,13 +18,13 @@ var targetIR: ShrimpIR:
 		return ShrimpVMUtil.find_ir_node(context.forward(WrapperPath.from("<")).get_pointer().type)
 var schema: Dictionary:
 	get:
-		return targetIR.get_wrapper_schema().attributes[context.pointer.path]
+		return targetIR.get_wrapper_schema().attributes[context.pointer.seek_tail().path]
 var value:
 	get:
 		return context.get_pointer()
 var block: NodeBlock:
 	get:
-		return context.get_node()
+		return context.locate()
 
 func _ready() -> void:
 	unselect()
@@ -115,9 +115,9 @@ func create_editbox() -> Control:
 		return ItemEditor.create_editbox(schema.type, value, eventEmitter.event.emit)
 
 static func create(contexx: WrapperContext, root: Node) -> NodeParameter:
-	contexx.pointer = contexx.pointer.normalize().seek_tail()
+	contexx.pointer = contexx.pointer.normalize()
 	var instance = preload("res://addons/shrimpvm/scenes/node_parameter.tscn").instantiate() as NodeParameter
-	instance.name = contexx.pointer.path
+	instance.name = contexx.pointer.seek_tail().path
 	instance.context = contexx
 	root.add_child(instance)
 	instance.rebuild()
