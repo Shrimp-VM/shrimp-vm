@@ -2,7 +2,7 @@
 extends Node
 class_name ShrimpPlugin
 
-@export var category_colors: Dictionary[String, Color] = {}
+@export var categoryColors: Dictionary[String, Color] = {}
 
 var pluginName: String
 var description: String

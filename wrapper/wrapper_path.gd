@@ -80,8 +80,15 @@ func seek_parent(types: Array[PartType]) -> WrapperPath:
 	else:
 		return null
 func seek_root() -> WrapperPath:
-	if is_instance_valid(parent):
+	if type == PartType.ROOT:
+		return self
+	elif is_instance_valid(parent):
 		return parent.seek_root()
+	else:
+		return self
+func seek_tail() -> WrapperPath:
+	if is_instance_valid(next):
+		return next.seek_tail()
 	else:
 		return self
 func duplicate(deep: bool = false) -> WrapperPath:

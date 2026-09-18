@@ -115,6 +115,7 @@ func create_editbox() -> Control:
 		return ItemEditor.create_editbox(schema.type, value, eventEmitter.event.emit)
 
 static func create(contexx: WrapperContext, root: Node) -> NodeParameter:
+	contexx.pointer = contexx.pointer.normalize().seek_tail()
 	var instance = preload("res://addons/shrimpvm/scenes/node_parameter.tscn").instantiate() as NodeParameter
 	instance.name = contexx.pointer.path
 	instance.context = contexx
