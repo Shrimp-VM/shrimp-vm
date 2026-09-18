@@ -48,18 +48,29 @@ func renext(nexx: WrapperPath):
 	if is_instance_valid(next):
 		next.parent = self
 func normalize() -> WrapperPath:
-	if is_instance_valid(next):
-		next.normalize()
-	match type:
-		WrapperPath.PartType.PARENT:
-			if is_instance_valid(parent) && is_instance_valid(parent.parent):
-				parent.parent.renext(next)
-				return parent.parent
-		WrapperPath.PartType.SELF:
-			if is_instance_valid(next):
-				next.reparent(seek_parent([PartType.ATTRIBUTE, PartType.INDEX, PartType.ROOT]))
-				return next
-	return self
+	var childrens: Array[WrapperPath] = []
+	var rootPath: WrapperPath = seek_root()
+	while is_instance_valid(rootPath):
+		var current: WrapperPath = rootPath
+		rootPath = rootPath.next
+		current.next = null
+		current.parent = null
+		match current.type:
+			PartType.PARENT:
+				if not childrens.is_empty() && childrens[-1].type in [PartType.ATTRIBUTE, PartType.INDEX]:
+					childrens.pop_back()
+				else:
+					childrens.append(current)
+			PartType.SELF:
+				pass
+			_:
+				childrens.append(current)
+	if childrens.is_empty():
+		return WrapperPath.new(PartType.SELF)
+	for i in range(1, childrens.size()):
+		childrens[i - 1].renext(childrens[i])
+	childrens[0].parent = null
+	return childrens[0]
 func seek_parent(types: Array[PartType]) -> WrapperPath:
 	if is_instance_valid(parent):
 		if parent.type in types:
