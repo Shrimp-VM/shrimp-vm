@@ -173,12 +173,9 @@ func rebuild_desk():
 						rebuild()
 				)
 func rebuild():
+	if Engine.is_editor_hint():
+		rebuild_desk()
 	ShrimpVMUtil.disconnect_children(treeCenter, [treeTip])
-	if treeData.get("invalid", false):
-		treeData = {}
-		select(null)
-		rebuild()
-		return
 	if has_root_node():
 		var ir = find_ir_typed(treeData.type)
 		if ir:
@@ -190,11 +187,10 @@ func rebuild():
 			treeTip.hide()
 		else:
 			push_warning("Tree build failed, unrecognized node %s" % treeData.type)
-	select(null)
-	if !has_root_node():
+	else:
+		treeData = {}
 		treeTip.show()
-	if Engine.is_editor_hint():
-		rebuild_desk()
+	select(null)
 func delete_node(block: NodeBlock):
 	for parameter in block.parameterWrapper.get_children():
 		if parameter is NodeParameter:
@@ -231,7 +227,7 @@ func close_current_file():
 	deleteFileBtn.hide()
 	rebuild()
 func has_root_node() -> bool:
-	return len(treeData) > 0 && treeData.has("type")
+	return ShrimpVMUtil.wrapper_is_valid(treeData)
 func mark_selection(node: NodeBlock):
 	node.selected.connect(select)
 func node_join(node: NodeBlock, desk: bool):
