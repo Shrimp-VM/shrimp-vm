@@ -370,12 +370,10 @@ script = ExtResource("12_t82hj")
 metadata/_edit_lock_ = true
 
 [node name="cyan" parent="layout/layout/workspace/selections" unique_id=800650172 instance=ExtResource("12_iu8n6")]
-visible = false
+modulate = Color(0, 1, 0.6524255, 1)
 layout_mode = 0
-offset_left = 77.0
-offset_top = 28.0
-offset_right = 127.0
-offset_bottom = 78.0
+offset_right = 100.0
+offset_bottom = 100.0
 
 [node name="fileManager" type="PanelContainer" parent="layout/layout" unique_id=533633626]
 layout_mode = 2

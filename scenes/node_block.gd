@@ -59,8 +59,8 @@ func _gui_input(event: InputEvent) -> void:
 		else:
 			requestSelect()
 
-func requestSelect():
-	selected.emit(context.pointer)
+func requestSelect(pointer: WrapperPath = null):
+	selected.emit(pointer if is_instance_valid(pointer) else context.pointer)
 func consume():
 	count -= 1
 	rebuild_count()
@@ -94,12 +94,15 @@ func rebuild():
 		for key in schema.attributes:
 			if ShrimpVMUtil.schema_typeis(schema.attributes[key], ShrimpIR.TYPE_EXTERNAL_PARAMETER): continue
 			var instance = NodeParameter.create(context.forward(WrapperPath.from(key)), parameterWrapper)
-			instance.selected.connect(func(_p): selected.emit(self))
+			instance.selected.connect(
+				func(p: NodeParameter):
+					requestSelect(p.context.pointer)
+			)
 func create_wrapper() -> Dictionary:
 	var result = {}
 	result.type = data.type
 	for key in schema.attributes:
-		result[key] = ItemEditor.create_initial_value(schema.attributes[key].type)
+		result[key] = NodeParameter.create_initial_value(schema.attributes[key])
 	return result
 func auto_rebuild(node: Node) -> NodeBlock:
 	if get_parent(): return
@@ -115,7 +118,5 @@ static func create(contexx: WrapperContext, inDesx: bool, counx: float = INF, ty
 	if inDesx:
 		contexx = WrapperContext.new({"type": type})
 		contexx.nodeTree = instance
-	else:
-		print(contexx)
 	instance.context = contexx
 	return instance

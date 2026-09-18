@@ -2,6 +2,8 @@
 extends Control
 class_name SelectionManager
 
+const BOX_PADDING = 10
+
 func _ready() -> void:
 	stop_all()
 
@@ -27,3 +29,5 @@ func move(namx: String, positiox: Vector2, sizx: Vector2):
 	panel.global_position = positiox
 	panel.size = sizx
 	start(namx)
+func select(namx: String, box: Control):
+	move(namx, box.global_position - Vector2(1, 1) * BOX_PADDING, box.size + Vector2(1, 1) * 2 * BOX_PADDING)

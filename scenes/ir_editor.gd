@@ -196,11 +196,10 @@ func rebuild():
 		treeTip.show()
 	select(null)
 func get_root_block() -> NodeBlock:
-	var child = treeCenter.get_child(0)
-	if child is NodeBlock:
-		return child
-	else:
-		return null
+	for child in treeCenter.get_children():
+		if child is NodeBlock:
+			return child
+	return null
 func delete_node(block: NodeBlock):
 	for parameter in block.parameterWrapper.get_children():
 		if parameter is NodeParameter:
@@ -291,9 +290,9 @@ func select(path: WrapperPath):
 				attributeWrapper.add_child(instance)
 				instance.rebuild(attribute.label, editor)
 			nodeDescriptionLabel.text = selectingPointer.schema.description
-			selectionMgr.move("cyan", selectingPointer.global_position, selectingPointer.size)
+			selectionMgr.select("cyan", selectingPointer)
 		elif selectingPointer is NodeParameter:
-			pass
+			selectionMgr.select("cyan", selectingPointer)
 		inspector.show()
 	else:
 		selectionMgr.stop_all()
