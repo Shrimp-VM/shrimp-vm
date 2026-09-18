@@ -65,8 +65,8 @@ func select():
 func unselect():
 	selectionBar.hide()
 	addChildTip.hide()
-func create_primarybox(type: int, data: Variant, index: int = -1) -> Control:
-	match type:
+func create_primarybox(data: Variant, index: int = -1) -> Control:
+	match schema.type:
 		ShrimpIR.TYPE_ENUM:
 			if ShrimpVMUtil.wrapper_is_valid(data):
 				if value is Array:
@@ -80,7 +80,7 @@ func create_primarybox(type: int, data: Variant, index: int = -1) -> Control:
 				label.label_settings.font_color = Color.RED
 				return label
 		_:
-			return ItemEditor.create_showbox(type, data)
+			return ItemEditor.create_showbox(schema.type, data)
 func create_showbox(index: int = -1) -> Control:
 	if schema.type is Array:
 		var label = Label.new()
@@ -92,9 +92,9 @@ func create_showbox(index: int = -1) -> Control:
 			data = value[index]
 		else:
 			data = value
-		return create_primarybox(schema.type, data)
+		return create_primarybox(data, index)
 	else:
-		return create_primarybox(schema.type, value)
+		return create_primarybox(value)
 func create_editbox() -> Control:
 	if schema.type is Array:
 		var btn = OptionButton.new()

@@ -145,10 +145,12 @@ loadBuiltins = true
 
 [node name="pluginManager" type="Node" parent="." unique_id=1968528528]
 script = ExtResource("6_p0jkk")
+defaultColor = Color(0.7433311, 0.23397693, 0, 1)
 metadata/_custom_type_script = "uid://ctpbtdput2kyx"
 
 [node name="category" type="Node" parent="pluginManager" unique_id=2029956541]
 script = ExtResource("7_1fc1t")
+categoryColors = null
 metadata/_custom_type_script = "uid://vjqr0exaodsu"
 
 [node name="fileManager" type="Node" parent="." unique_id=1307891398]
