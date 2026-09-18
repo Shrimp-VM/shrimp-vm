@@ -10,6 +10,8 @@
 [ext_resource type="Script" uid="uid://wcx6kruoo167" path="res://addons/shrimpvm/nodes/literals/string_node.gd" id="4_5sj3v"]
 [ext_resource type="Script" uid="uid://2bp5i42dylnd" path="res://addons/shrimpvm/clickable_wrapper.gd" id="5_nc1qr"]
 [ext_resource type="Script" uid="uid://da63e86ydg0o" path="res://addons/shrimpvm/nodes/functions/print_node.gd" id="5_p0jkk"]
+[ext_resource type="Script" uid="uid://ctpbtdput2kyx" path="res://addons/shrimpvm/plugin/shrimp_plugin_manager.gd" id="6_p0jkk"]
+[ext_resource type="Script" uid="uid://vjqr0exaodsu" path="res://addons/shrimpvm/plugin/shrimp_plugin.gd" id="7_1fc1t"]
 
 [sub_resource type="Resource" id="Resource_1fc1t"]
 script = ExtResource("4_5sj3v")
@@ -140,24 +142,24 @@ defaultFileSystem = Dictionary[StringName, ExtResource("2_xrwol")]({
 &"HelloWorld.sst": SubResource("Resource_t82hj")
 })
 loadBuiltins = true
-categoryColor = Dictionary[String, Color]({
-"Functions": Color(0.73675454, 0.51387084, 0, 1),
-"Literals": Color(1, 0.3203125, 0, 1),
-"Macro": Color(0.47369397, 0, 0.31231946, 1),
-"Mathmatics": Color(0, 0.38162273, 0.0018552035, 1),
-"Nodes": Color(0, 0.6972954, 0.49729306, 1),
-"Streams": Color(0, 0.28456783, 0.5, 1)
-})
 
-[node name="vm" type="Node" parent="." unique_id=1396633106]
-unique_name_in_owner = true
-script = ExtResource("2_iyhou")
-metadata/_custom_type_script = "uid://drxoblkew75eu"
+[node name="pluginManager" type="Node" parent="." unique_id=1968528528]
+script = ExtResource("6_p0jkk")
+metadata/_custom_type_script = "uid://ctpbtdput2kyx"
+
+[node name="category" type="Node" parent="pluginManager" unique_id=2029956541]
+script = ExtResource("7_1fc1t")
+metadata/_custom_type_script = "uid://vjqr0exaodsu"
 
 [node name="fileManager" type="Node" parent="." unique_id=1307891398]
 unique_name_in_owner = true
 script = ExtResource("3_fjp0f")
 metadata/_custom_type_script = "uid://6uypkkt4063e"
+
+[node name="vm" type="Node" parent="." unique_id=1396633106]
+unique_name_in_owner = true
+script = ExtResource("2_iyhou")
+metadata/_custom_type_script = "uid://drxoblkew75eu"
 
 [node name="bg" type="ColorRect" parent="." unique_id=481410875]
 layout_mode = 1

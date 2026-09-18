@@ -79,7 +79,7 @@ func rebuild_count():
 func get_color() -> Color:
 	var node = ShrimpVMUtil.find_ir_node(context.get_pointer().get("type", ""))
 	if node:
-		return ShrimpPlugin.shade_category(node.get_category_tag())
+		return ShrimpPluginManager.shade_category(node.get_category_tag())
 	else:
 		return Color.BLACK
 func rebuild():
@@ -91,8 +91,8 @@ func rebuild():
 	ShrimpVMUtil.disconnect_children(parameterWrapper)
 	if !inDesk:
 		for key in schema.attributes:
-			if ShrimpVMUtil.schema_typeis(schema, ShrimpIR.TYPE_EXTERNAL_PARAMETER): continue
-			var instance = NodeParameter.create(context.forward(WrapperPath.from(key)), key, parameterWrapper)
+			if ShrimpVMUtil.schema_typeis(schema.attributes[key], ShrimpIR.TYPE_EXTERNAL_PARAMETER): continue
+			var instance = NodeParameter.create(context.forward(WrapperPath.from(key)), parameterWrapper)
 			instance.selected.connect(
 				func(e):
 					if is_instance_valid(paramPointer):
@@ -104,7 +104,7 @@ func create_wrapper() -> Dictionary:
 	var result = {}
 	result.type = data.type
 	for key in schema.attributes:
-		result[key] = ItemEditor.create_initial_value(schema.attributes[key])
+		result[key] = ItemEditor.create_initial_value(schema.attributes[key].type)
 	return result
 func auto_rebuild(node: Node) -> NodeBlock:
 	if get_parent(): return
@@ -113,8 +113,12 @@ func auto_rebuild(node: Node) -> NodeBlock:
 	node.remove_child(self)
 	return self
 
-static func create(contexx: WrapperContext, inDesx: bool) -> NodeBlock:
-	var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
-	instance.context = contexx
+static func create(contexx: WrapperContext, inDesx: bool, counx: float = INF, type: String = "") -> NodeBlock:
+	var instance = preload("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
+	instance.count = counx
 	instance.inDesk = inDesx
+	if inDesx:
+		contexx = WrapperContext.new({"type": type})
+		contexx.nodeTree = instance
+	instance.context = contexx
 	return instance

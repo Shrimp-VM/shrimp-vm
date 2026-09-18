@@ -19,7 +19,6 @@ signal modal_finished()
 @export var initialDesk: Array[ShrimpIR] = []
 @export var defaultFileSystem: Dictionary[StringName, ShrimpIR] = {}
 @export var loadBuiltins: bool = false
-@export var categoryColor: Dictionary[String, Color] = {}
 @export_dir var autoScanDirs: Array[String] = []
 
 @onready var vm: ShrimpVM = $%vm
@@ -49,8 +48,10 @@ var debugContext: ExecutionContext
 var nodePointer: NodeBlock = null
 var compilationWarns: Array[Array] = []
 var blockCounts: Dictionary[ShrimpIR, float] = {}
+var context: WrapperContext
 
 func _ready() -> void:
+	context = WrapperContext.new(treeData)
 	debugContext = ExecutionContext.new()
 	debugContext.env.write_symbol("filemgr", fileManager)
 	openBtn.pressed.connect(
@@ -139,13 +140,9 @@ func rebuild_desk():
 		deskWrapper.add_child(title)
 		for ir in categories[category]:
 			if ir is ShrimpIR:
-				var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
-				instance.data = {"type": ir.get_node_type()}
-				instance.inDesk = true
-				instance.count = blockCounts[ir] if finiteBlockCount else INF
-				instance.colorMap = categoryColor
+				var instance = NodeBlock.create(null, true, blockCounts[ir] if finiteBlockCount else INF, ir.get_node_type())
 				node_join(instance, true)
-				instance.rebuild(ir.get_wrapper_schema(), {"type": ir.get_node_type()})
+				instance.rebuild()
 				instance.clicked.connect(
 					func():
 						if has_root_node():
@@ -185,11 +182,11 @@ func rebuild():
 	if has_root_node():
 		var ir = find_ir_typed(treeData.type)
 		if ir:
-			var instance = load("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
-			instance.inDesk = false
-			instance.colorMap = categoryColor
+			context.dataTree = treeData
+			var instance = NodeBlock.create(context, false)
+			context.nodeTree = instance
 			node_join(instance, false)
-			instance.rebuild(ir.get_wrapper_schema(), treeData)
+			instance.rebuild()
 			treeTip.hide()
 		else:
 			push_warning("Tree build failed, unrecognized node %s" % treeData.type)
@@ -282,9 +279,9 @@ func select(node: NodeBlock):
 				func(v):
 					node.data[attributeKey] = v
 					save_current_file()
-					parameter.rebuild(node.schema.attributes[attributeKey], v, node)
+					parameter.rebuild()
 			)
-			var editor = parameter.create_editbox(attribute, node.data[attributeKey])
+			var editor = parameter.create_editbox()
 			if !is_instance_valid(editor):
 				continue
 			var instance = load("res://addons/shrimpvm/scenes/parameter_inspector.tscn").instantiate() as ParameterInspector

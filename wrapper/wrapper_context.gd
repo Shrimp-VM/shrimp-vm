@@ -5,15 +5,16 @@ var dataTree
 var nodeTree: NodeBlock
 var pointer: WrapperPath
 
+func _init(data, pointex: WrapperPath = WrapperPath.from("/")) -> void:
+	dataTree = data
+	pointer = pointex
+
 func get_pointer():
 	return seek(pointer)
 func run(path: WrapperPath) -> Variant:
 	return seek(pointer.duplicate(true).concat(path).normalize())
 func forward(path: WrapperPath) -> WrapperContext:
-	var next := WrapperContext.new()
-	next.dataTree = dataTree
-	next.pointer = pointer.duplicate(true).concat(path).normalize()
-	return next
+	return WrapperContext.new(dataTree, pointer.duplicate(true).concat(path).normalize())
 func seek(distPath: WrapperPath):
 	var node = dataTree
 	var part: WrapperPath = distPath.seek_root()
