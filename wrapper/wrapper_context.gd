@@ -4,23 +4,38 @@ class_name WrapperContext
 var tree
 var pointer: WrapperPath
 
-func get_target():
-	return pointer.execute_root(tree)
+func get_pointer():
+	return seek(pointer)
 func run(path: WrapperPath) -> Variant:
-	var distPath = pointer.duplicate(true).concat(path).normalize()
-	match distPath.type:
-		WrapperPath.PartType.ATTRIBUTE:
-			if tree is Dictionary:
-				return tree.get(path)
-			else:
-				push_error("Mush execute attribute on a Wrapper.")
-		WrapperPath.PartType.INDEX:
-			if tree is Array:
-				return tree.get(path)
-			else:
-				push_error("Mush execute index on a Array.")
-	push_error("Unmatched part type.")
-	return null
-func forward(path: WrapperPath):
-	tree = run(path)
-	return tree
+	return seek(pointer.duplicate(true).concat(path).normalize())
+func forward(path: WrapperPath) -> WrapperContext:
+	var next := WrapperContext.new()
+	next.tree = tree
+	next.pointer = pointer.duplicate(true).concat(path).normalize()
+	return next
+func seek(distPath: WrapperPath):
+	var node = tree
+	var part: WrapperPath = distPath.seek_root()
+	while is_instance_valid(part):
+		match part.type:
+			WrapperPath.PartType.ATTRIBUTE:
+				if node is Dictionary:
+					node = node.get(part.path)
+				else:
+					push_error("Must execute attribute on a Dictionary.")
+					return null
+			WrapperPath.PartType.INDEX:
+				if node is Array:
+					var i: int = part.path
+					if i >= 0 && i < node.size():
+						node = node[i]
+					else:
+						push_error("Index out of range: %d" % i)
+						return null
+				else:
+					push_error("Must execute index on an Array.")
+					return null
+			WrapperPath.PartType.ROOT:
+				node = tree
+		part = part.next
+	return node
