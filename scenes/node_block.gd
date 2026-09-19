@@ -133,4 +133,5 @@ static func create(contexx: WrapperContext, inDesx: bool, counx: float = INF, ty
 		contexx = WrapperContext.new({"type": type})
 		contexx.nodeTree = instance
 	instance.targetContext = contexx
+	instance.name = "%s_%d" % [instance.targetIR.get_node_type(), randi_range(111111, 999999)]
 	return instance

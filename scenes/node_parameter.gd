@@ -52,7 +52,7 @@ func make_template(namx: NodePath) -> Control:
 	return templateWrapper.get_node(namx).duplicate()
 func rebuild():
 	nameLabel.text = schema.label
-	ShrimpVMUtil.disconnect_children(arrayWrapper, [emptyTip])
+	ShrimpVMUtil.disconnect_children(arrayWrapper)
 	ShrimpVMUtil.disconnect_children(valueWrapper)
 	if schema.array:
 		if value is Array:
