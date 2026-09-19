@@ -183,7 +183,7 @@ metadata/_custom_type_script = "uid://ctpbtdput2kyx"
 script = ExtResource("7_1fc1t")
 categoryColors = Dictionary[String, Color]({
 "Functions": Color(0.75648403, 0.6107331, 0, 1),
-"Literals": Color(0.60522425, 0.18020411, 0, 1),
+"Literals": Color(0.87486136, 0.2613222, 0, 1),
 "Macro": Color(0.8090962, 0, 0.53832406, 1),
 "Mathematics": Color(0, 0.66441286, 0.12534569, 1),
 "Streams": Color(0, 0.3264815, 0.8025197, 1)
@@ -338,6 +338,7 @@ icon = ExtResource("4_0kp88")
 
 [node name="inspector" parent="layout/layout/workspace/margins/wrapper" unique_id=188591203 instance=ExtResource("15_5mgoq")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="workspace" type="PanelContainer" parent="layout/layout/workspace" unique_id=1835959688]

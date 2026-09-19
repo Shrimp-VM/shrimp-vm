@@ -20,8 +20,9 @@ signal exhausted()
 @onready var parameterWrapper: Control = $%wrapper
 @onready var countBar: Control = $%countBar
 @onready var countLabel: Label = $%count
-var frameBox: StyleBoxFlat
-var parameterBox: StyleBoxFlat
+@onready var nextIcon: Triangle = $%nextIcon
+@onready var triangles: Control = $%triangles
+var styleBox: StyleBoxFlat
 var targetContext: WrapperContext
 var ownerParameter: NodeParameter
 var getContext: WrapperContext:
@@ -58,8 +59,7 @@ func _ready() -> void:
 				parentBlock.mark_selection.emit(node)
 	)
 	mark_selection.emit(self)
-	frameBox = frameBar.get_theme_stylebox("panel")
-	parameterBox = parameterPanel.get_theme_stylebox("panel")
+	styleBox = get_theme_stylebox("panel")
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index != MouseButton.MOUSE_BUTTON_LEFT: return
@@ -99,9 +99,10 @@ func get_color() -> Color:
 func rebuild():
 	rebuild_count()
 	nameLabel.text = schema.name
-	frameBox.bg_color = get_color()
-	parameterBox.bg_color = get_color()
+	styleBox.bg_color = get_color()
+	nextIcon.fillColor = get_color()
 	parameterPanel.visible = can_show_parameters()
+	triangles.visible = !inDesk
 	if can_show_parameters():
 		ShrimpVMUtil.disconnect_children(parameterWrapper)
 		for key in schema.attributes:

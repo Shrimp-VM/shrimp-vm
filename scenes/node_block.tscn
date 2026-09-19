@@ -4,8 +4,20 @@
 [ext_resource type="Script" uid="uid://qq17orpp58tj" path="res://addons/shrimpvm/shrimp_ir.gd" id="2_qlsr3"]
 [ext_resource type="Script" uid="uid://2bp5i42dylnd" path="res://addons/shrimpvm/clickable_wrapper.gd" id="2_y5sfv"]
 [ext_resource type="Script" uid="uid://uw4oee4tvks" path="res://addons/shrimpvm/nodes/base/root_node.gd" id="3_w8yxg"]
+[ext_resource type="PackedScene" uid="uid://cwjvn21pj3cv0" path="res://addons/shrimpvm/scenes/triangle.tscn" id="5_qlsr3"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_in0f3"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w8yxg"]
+resource_local_to_scene = true
+bg_color = Color(0, 0.6381068, 0.4232797, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="Resource" id="Resource_in0f3"]
 script = ExtResource("3_w8yxg")
@@ -24,33 +36,22 @@ corner_radius_bottom_left = 1000
 resource_local_to_scene = true
 font_size = 10
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_05f5v"]
-resource_local_to_scene = true
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w8yxg"]
 content_margin_left = 10.0
 content_margin_top = 5.0
 content_margin_right = 10.0
 content_margin_bottom = 5.0
-bg_color = Color(0.64705884, 0.16470589, 0.16470589, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(1, 1, 1, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_in0f3"]
 resource_local_to_scene = true
-bg_color = Color(0.64705884, 0.16470589, 0.16470589, 1)
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
+draw_center = false
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qlsr3"]
 bg_color = Color(0, 0, 0, 0.4)
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qlsr3"]
 content_margin_left = 10.0
@@ -60,13 +61,15 @@ content_margin_bottom = 10.0
 
 [node name="NodeBlock" type="PanelContainer" unique_id=1255986660]
 offset_right = 102.0
-offset_bottom = 43.0
-theme_override_styles/panel = SubResource("StyleBoxEmpty_in0f3")
+offset_bottom = 33.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_w8yxg")
 script = ExtResource("1_0pwqf")
 placeholderIR = SubResource("Resource_in0f3")
 placeholderWrapper = Dictionary[String, Variant]({
 "body": []
 })
+metadata/_edit_vertical_guides_ = [86.0]
+metadata/_edit_horizontal_guides_ = [63.0, 55.0]
 
 [node name="wrapper" type="VBoxContainer" parent="." unique_id=79488617]
 layout_mode = 2
@@ -113,7 +116,7 @@ label_settings = SubResource("LabelSettings_in0f3")
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_05f5v")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_w8yxg")
 script = ExtResource("2_y5sfv")
 
 [node name="wrapper" type="HBoxContainer" parent="wrapper/frame/frame" unique_id=1574956757]
@@ -134,29 +137,83 @@ text = "[color=#fffd99]Root Node[/color]"
 fit_content = true
 autowrap_mode = 0
 
-[node name="margin" type="MarginContainer" parent="wrapper" unique_id=2020458860]
-layout_mode = 2
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_right = 5
-
-[node name="parameters" type="PanelContainer" parent="wrapper/margin" unique_id=1293641701]
+[node name="parameters" type="PanelContainer" parent="wrapper" unique_id=1293641701]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_in0f3")
 
-[node name="gray" type="PanelContainer" parent="wrapper/margin/parameters" unique_id=485216387]
+[node name="gray" type="PanelContainer" parent="wrapper/parameters" unique_id=485216387]
 layout_mode = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_qlsr3")
 
-[node name="content" type="PanelContainer" parent="wrapper/margin/parameters" unique_id=1244050780]
+[node name="content" type="PanelContainer" parent="wrapper/parameters" unique_id=1244050780]
 layout_mode = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxEmpty_qlsr3")
 
-[node name="wrapper" type="VBoxContainer" parent="wrapper/margin/parameters/content" unique_id=274422648]
+[node name="wrapper" type="VBoxContainer" parent="wrapper/parameters/content" unique_id=274422648]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 0
 theme_override_constants/separation = 5
+
+[node name="triangles" type="Control" parent="." unique_id=150206879]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+metadata/_edit_lock_ = true
+
+[node name="parentIcon" parent="triangles" unique_id=567482577 instance=ExtResource("5_qlsr3")]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -10.0
+offset_top = -1.0
+offset_right = 0.0
+offset_bottom = 13.0
+grow_horizontal = 0
+grow_vertical = 0
+rotation = 1.5707964
+mouse_filter = 2
+fillColor = Color(0.5, 0.5, 0.5, 1)
+borderColor = Color(1, 1, 1, 1)
+borderWidth = 1.0
+
+[node name="nextIcon" parent="triangles" unique_id=1873705865 instance=ExtResource("5_qlsr3")]
+unique_name_in_owner = true
+z_index = 10
+z_as_relative = false
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -10.0
+offset_right = 0.0
+offset_bottom = 14.0
+grow_horizontal = 0
+grow_vertical = 0
+rotation = 1.5707964
+mouse_filter = 2
+fillColor = Color(0, 0.6381068, 0.4232797, 1)
+
+[node name="gray" parent="triangles/nextIcon" unique_id=1123226563 instance=ExtResource("5_qlsr3")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 0.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+fillColor = Color(0, 0, 0, 0.4)
+borderColor = Color(1, 1, 1, 1)
+borderWidth = 1.0
+metadata/_edit_lock_ = true

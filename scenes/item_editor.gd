@@ -7,12 +7,18 @@ signal updated(newData: Array)
 @export var itemType: int = TYPE_FLOAT
 
 @onready var addBtn: Button = $%addBtn
+@onready var clearBtn: Button = $%clearBtn
 @onready var itemsWrapper: Control = $%wrapper
+@onready var emptyTip: Label = $%emptyTip
 var bannedItem: EditableItem
 
 func _ready() -> void:
 	addBtn.pressed.connect(func(): add_item(create_initial_value(itemType)))
+	clearBtn.pressed.connect(clear)
 
+func clear():
+	ShrimpVMUtil.disconnect_children(itemsWrapper)
+	update_emit()
 func add_item(value):
 	var instance = preload("res://addons/shrimpvm/scenes/editable_item.tscn").instantiate() as EditableItem
 	if !is_instance_valid(itemsWrapper):
@@ -34,9 +40,9 @@ func set_data(items: Array):
 func get_data() -> Array:
 	return (
 		itemsWrapper
-		.get_children()
-		.filter(func(e): return e != bannedItem)
-		.map(func(e: EditableItem): return extract_value(itemType, e.get_content()))
+			.get_children()
+			.filter(func(e): return e != bannedItem)
+			.map(func(e: EditableItem): return extract_value(itemType, e.get_content()))
 	)
 func rebuild():
 	var i = 0
@@ -46,6 +52,9 @@ func rebuild():
 			child.index = i
 			child.rebuild()
 			i += 1
+	if !is_instance_valid(emptyTip):
+		emptyTip = get_node("%emptyTip")
+	emptyTip.visible = i <= 0
 func update_emit():
 	updated.emit(get_data())
 	rebuild()
@@ -124,3 +133,9 @@ static func create_initial_value(type: int):
 			return false
 		_:
 			return null
+static func create(type: int, initialData: Array, update: Callable = func(_e): return ):
+	var editor = preload("res://addons/shrimpvm/scenes/item_editor.tscn").instantiate() as ItemEditor
+	editor.itemType = type
+	editor.updated.connect(update)
+	editor.set_data(initialData)
+	return editor

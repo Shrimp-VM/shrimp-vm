@@ -145,20 +145,16 @@ func rebuild_desk():
 							if !is_instance_valid(selectingPointer): return
 							var wrapper = instance.create_wrapper()
 							var childrenList: Array = []
-							var insertIndex = 0
+							var insertIndex = -1
 							if is_instance_valid(selectingPointer):
 								if selectingPointer is NodeParameter:
-										if selectingPointer.schema.type != ShrimpIR.TYPE_ENUM: return
-										var attributeKey = selectingPointer.name
-										if selectingPointer.schema.get("array", false):
-											childrenList = selectingPointer.data[attributeKey]
-											insertIndex = -1
-										else:
-											selectingPointer.data[attributeKey] = wrapper
-								elif selectingPointer is NodeBlock:
-									if is_instance_valid(selectingPointer.parentBlock):
-										childrenList = selectingPointer.parentBlock.data[selectingPointer.parentAttribute]
-										insertIndex = selectingPointer.get_index()
+									if !ShrimpVMUtil.schema_typeis(selectingPointer.schema, ShrimpIR.TYPE_ENUM): return
+									var attributeKey = selectingPointer.name
+									if selectingPointer.schema.array:
+										childrenList = selectingPointer.value
+										insertIndex = -1
+									else:
+										selectingPointer.value[attributeKey] = wrapper
 							childrenList.assign(ShrimpVMUtil.erase_gunmu(childrenList))
 							if insertIndex < 0:
 								childrenList.append(wrapper)
@@ -267,8 +263,10 @@ func select(path: WrapperPath):
 		if selectingPointer is NodeBlock:
 			inspector.block = selectingPointer
 			inspector.rebuild()
+			inspector.show()
+		else:
+			inspector.hide()
 		selectionMgr.select("cyan", selectingPointer)
-		inspector.show()
 	else:
 		selectionMgr.stop_all()
 		inspector.hide()

@@ -116,11 +116,7 @@ func create_editbox() -> Control:
 	if schema.array:
 		if ShrimpVMUtil.schema_typeis(schema, ShrimpIR.TYPE_ENUM): return null
 		else:
-			var editor = preload("res://addons/shrimpvm/scenes/item_editor.tscn").instantiate() as ItemEditor
-			editor.itemType = schema.type
-			editor.updated.connect(eventEmitter.event.emit)
-			editor.set_data(value)
-			return editor
+			return ItemEditor.create(schema.type, value, eventEmitter.event.emit)
 	else:
 		return ItemEditor.create_editbox(schema.type, value, eventEmitter.event.emit)
 

@@ -23,35 +23,30 @@ content_margin_left = 10.0
 content_margin_top = 5.0
 content_margin_right = 10.0
 content_margin_bottom = 5.0
-bg_color = Color(0.1, 0.1, 0.1, 0.6)
-border_width_left = 5
-border_width_top = 1
-border_width_right = 5
-border_width_bottom = 1
-border_color = Color(1, 1, 1, 1)
-border_blend = true
-corner_radius_top_left = 3
-corner_radius_top_right = 3
-corner_radius_bottom_right = 3
-corner_radius_bottom_left = 3
-corner_detail = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fkhx3"]
-content_margin_left = 5.0
-content_margin_top = 5.0
-content_margin_right = 5.0
-content_margin_bottom = 5.0
-bg_color = Color(0.1, 0.1, 0.1, 0.6)
+bg_color = Color(1, 1, 1, 0.2)
 border_width_left = 1
-border_width_top = 1
 border_width_right = 1
-border_width_bottom = 1
 border_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 5
-corner_radius_top_right = 5
 corner_radius_bottom_right = 5
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fkhx3"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+border_width_top = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_right = 5
 corner_radius_bottom_left = 5
-corner_detail = 5
+corner_detail = 1
+
+[sub_resource type="LabelSettings" id="LabelSettings_fkhx3"]
+font_size = 12
+font_color = Color(0.5789182, 0.5789182, 0.5789182, 1)
 
 [node name="ItemEditor" type="PanelContainer" unique_id=2080137173]
 offset_right = 8.0
@@ -68,11 +63,17 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_21dpo")
 
 [node name="wrapper" type="HBoxContainer" parent="wrapper/controls" unique_id=406158483]
 layout_mode = 2
+alignment = 1
 
 [node name="addBtn" type="Button" parent="wrapper/controls/wrapper" unique_id=346102999]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Add"
+
+[node name="clearBtn" type="Button" parent="wrapper/controls/wrapper" unique_id=1917462396]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Clear"
 
 [node name="items" type="PanelContainer" parent="wrapper" unique_id=1289121073]
 layout_mode = 2
@@ -81,3 +82,9 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_fkhx3")
 [node name="wrapper" type="VBoxContainer" parent="wrapper/items" unique_id=248468333]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="emptyTip" type="Label" parent="wrapper/items" unique_id=1999596962]
+unique_name_in_owner = true
+layout_mode = 2
+text = "List is now empty."
+label_settings = SubResource("LabelSettings_fkhx3")

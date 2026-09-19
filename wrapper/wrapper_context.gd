@@ -83,3 +83,5 @@ func locate(what: Array[GDScript] = [NodeBlock, NodeParameter]) -> Node:
 	return result
 func is_root() -> bool:
 	return pointer.is_root()
+func delete():
+	locate()
