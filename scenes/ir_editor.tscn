@@ -2,33 +2,14 @@
 
 [ext_resource type="Script" uid="uid://bismlewml5ugm" path="res://addons/shrimpvm/scenes/ir_editor.gd" id="1_iyhou"]
 [ext_resource type="Script" uid="uid://drxoblkew75eu" path="res://addons/shrimpvm/shrimp_vm.gd" id="2_iyhou"]
-[ext_resource type="Script" uid="uid://qq17orpp58tj" path="res://addons/shrimpvm/shrimp_ir.gd" id="2_xrwol"]
 [ext_resource type="Script" uid="uid://6uypkkt4063e" path="res://addons/shrimpvm/file_manager.gd" id="3_fjp0f"]
 [ext_resource type="Script" uid="uid://chc23i883u687" path="res://addons/shrimpvm/scenes/editor_workspace.gd" id="3_ohykq"]
-[ext_resource type="Script" uid="uid://uw4oee4tvks" path="res://addons/shrimpvm/nodes/base/root_node.gd" id="3_ypfex"]
 [ext_resource type="Texture2D" uid="uid://cfx1oikjukn4e" path="res://addons/shrimpvm/icons/run.svg" id="4_0kp88"]
-[ext_resource type="Script" uid="uid://wcx6kruoo167" path="res://addons/shrimpvm/nodes/literals/string_node.gd" id="4_5sj3v"]
 [ext_resource type="Script" uid="uid://2bp5i42dylnd" path="res://addons/shrimpvm/clickable_wrapper.gd" id="5_nc1qr"]
-[ext_resource type="Script" uid="uid://da63e86ydg0o" path="res://addons/shrimpvm/nodes/functions/print_node.gd" id="5_p0jkk"]
 [ext_resource type="Script" uid="uid://ctpbtdput2kyx" path="res://addons/shrimpvm/plugin/shrimp_plugin_manager.gd" id="6_p0jkk"]
 [ext_resource type="Script" uid="uid://vjqr0exaodsu" path="res://addons/shrimpvm/plugin/shrimp_plugin.gd" id="7_1fc1t"]
 [ext_resource type="PackedScene" uid="uid://bgavbblqerqdd" path="res://addons/shrimpvm/scenes/selection_rect.tscn" id="12_iu8n6"]
 [ext_resource type="Script" uid="uid://c2exvird41rgj" path="res://addons/shrimpvm/scenes/selection_manager.gd" id="12_t82hj"]
-
-[sub_resource type="Resource" id="Resource_1fc1t"]
-script = ExtResource("4_5sj3v")
-content = "Hello World!"
-metadata/_custom_type_script = "uid://wcx6kruoo167"
-
-[sub_resource type="Resource" id="Resource_iu8n6"]
-script = ExtResource("5_p0jkk")
-content = SubResource("Resource_1fc1t")
-metadata/_custom_type_script = "uid://da63e86ydg0o"
-
-[sub_resource type="Resource" id="Resource_t82hj"]
-script = ExtResource("3_ypfex")
-body = Array[ExtResource("2_xrwol")]([SubResource("Resource_iu8n6")])
-metadata/_custom_type_script = "uid://uw4oee4tvks"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_05f5v"]
 content_margin_left = 10.0
@@ -140,9 +121,6 @@ treeData = {
 }],
 "type": "root"
 }
-defaultFileSystem = Dictionary[StringName, ExtResource("2_xrwol")]({
-&"HelloWorld.sst": SubResource("Resource_t82hj")
-})
 loadBuiltins = true
 
 [node name="pluginManager" type="Node" parent="." unique_id=1968528528]
@@ -370,6 +348,7 @@ script = ExtResource("12_t82hj")
 metadata/_edit_lock_ = true
 
 [node name="cyan" parent="layout/layout/workspace/selections" unique_id=800650172 instance=ExtResource("12_iu8n6")]
+visible = false
 modulate = Color(0, 1, 0.6524255, 1)
 layout_mode = 0
 offset_right = 100.0

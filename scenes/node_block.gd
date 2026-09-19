@@ -7,10 +7,12 @@ signal selected(node: NodeBlock)
 signal mark_selection(node: NodeBlock)
 signal exhausted()
 
+@export_tool_button("Rebuild") var r = rebuild
 @export var inDesk: bool = false
 @export var count: float = INF
-@export var ir: ShrimpIR
-@export var wrapper: Dictionary[String, Variant]
+@export_category("Placeholders")
+@export var placeholderIR: ShrimpIR
+@export var placeholderWrapper: Dictionary[String, Variant]
 
 @onready var frameBar: ClickableWrapper = $%frame
 @onready var nameLabel: RichTextLabel = $%name
@@ -20,26 +22,33 @@ signal exhausted()
 @onready var countLabel: Label = $%count
 var frameBox: StyleBoxFlat
 var parameterBox: StyleBoxFlat
-var context: WrapperContext
+var targetContext: WrapperContext
+var getContext: WrapperContext:
+	get:
+		if Engine.is_editor_hint(): return WrapperContext.new(data, WrapperPath.from("/"), self)
+		return targetContext
 var targetIR: ShrimpIR:
 	get:
+		if Engine.is_editor_hint(): return placeholderIR
 		return ShrimpVMUtil.find_ir_node(data.type)
 var schema: Dictionary:
 	get:
 		return targetIR.get_wrapper_schema()
 var data: Dictionary:
 	get:
-		return context.get_pointer()
+		if Engine.is_editor_hint(): return placeholderWrapper.merged({"type": targetIR.get_node_type()})
+		return getContext.get_pointer()
 var parentBlock: NodeBlock:
 	get:
-		return null
+		if Engine.is_editor_hint(): return null
+		return getContext.forward(WrapperPath.from("<")).locate([NodeBlock])
 
 func _ready() -> void:
-	frameBar.clicked.connect(
-		func():
-			if !inDesk && !parameterWrapper.get_children().is_empty():
-				parameterPanel.visible = !parameterPanel.visible
-	)
+	# frameBar.clicked.connect(
+	# 	func():
+	# 		if !inDesk && !parameterWrapper.get_children().is_empty():
+	# 			parameterPanel.visible = !parameterPanel.visible
+	# )
 	mark_selection.connect(
 		func(node: NodeBlock):
 			if is_instance_valid(parentBlock):
@@ -60,7 +69,7 @@ func _gui_input(event: InputEvent) -> void:
 			requestSelect()
 
 func requestSelect(pointer: WrapperPath = null):
-	selected.emit(pointer if is_instance_valid(pointer) else context.pointer)
+	selected.emit(pointer if is_instance_valid(pointer) else getContext.pointer)
 func consume():
 	count -= 1
 	rebuild_count()
@@ -78,26 +87,33 @@ func rebuild_count():
 	else:
 		countBar.hide()
 func get_color() -> Color:
-	var node = ShrimpVMUtil.find_ir_node(context.get_pointer().get("type", ""))
+	if Engine.is_editor_hint(): return Color.BROWN
+	var node = ShrimpVMUtil.find_ir_node(getContext.get_pointer().get("type", ""))
 	if node:
 		return ShrimpPluginManager.shade_category(node.get_category_tag())
 	else:
 		return Color.BLACK
 func rebuild():
+	rebuild_count()
+	nameLabel.text = schema.name
 	frameBox.bg_color = get_color()
 	parameterBox.bg_color = get_color()
-	parameterPanel.visible = len(schema.attributes) > 0 && !inDesk
-	nameLabel.text = schema.name
-	rebuild_count()
-	ShrimpVMUtil.disconnect_children(parameterWrapper)
-	if !inDesk:
+	parameterPanel.visible = can_show_parameters()
+	if can_show_parameters():
+		ShrimpVMUtil.disconnect_children(parameterWrapper)
 		for key in schema.attributes:
 			if ShrimpVMUtil.schema_typeis(schema.attributes[key], ShrimpIR.TYPE_EXTERNAL_PARAMETER): continue
-			var instance = NodeParameter.create(context.forward(WrapperPath.from(key)), parameterWrapper)
+			var instance: NodeParameter
+			if Engine.is_editor_hint():
+				instance = NodeParameter.create(getContext.forward(WrapperPath.from(key)), parameterWrapper)
+			else:
+				instance = NodeParameter.create(getContext.forward(WrapperPath.from(key)), parameterWrapper)
 			instance.selected.connect(
 				func(p: NodeParameter):
-					requestSelect(p.context.pointer)
+					requestSelect(p.getContext.pointer)
 			)
+func can_show_parameters() -> bool:
+	return len(schema.attributes) > 0 && !inDesk
 func create_wrapper() -> Dictionary:
 	var result = {}
 	result.type = data.type
@@ -118,5 +134,5 @@ static func create(contexx: WrapperContext, inDesx: bool, counx: float = INF, ty
 	if inDesx:
 		contexx = WrapperContext.new({"type": type})
 		contexx.nodeTree = instance
-	instance.context = contexx
+	instance.targetContext = contexx
 	return instance

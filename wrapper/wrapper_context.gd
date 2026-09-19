@@ -52,6 +52,7 @@ func locate(what: Array[GDScript] = [NodeBlock, NodeParameter]) -> Node:
 			WrapperPath.PartType.ATTRIBUTE:
 				if result is NodeBlock:
 					var param = result.parameterWrapper.get_node(pathPart.path) as NodeParameter
+					result = param
 					if param.schema.array:
 						pendingArray = param.arrayWrapper.get_children()
 					else:
@@ -63,7 +64,11 @@ func locate(what: Array[GDScript] = [NodeBlock, NodeParameter]) -> Node:
 				else:
 					return result
 			WrapperPath.PartType.INDEX:
-				result = pendingArray.get(pathPart.path)
+				var child = pendingArray.get(pathPart.path)
+				if child is NodeBlock:
+					result = child
+				else:
+					return result
 			WrapperPath.PartType.ROOT:
 				result = nodeTree
 		pathPart = pathPart.next

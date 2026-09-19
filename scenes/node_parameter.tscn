@@ -1,22 +1,8 @@
 [gd_scene format=3 uid="uid://bwy2dbfwa4es4"]
 
 [ext_resource type="Script" uid="uid://o1e7jwnqy7pi" path="res://addons/shrimpvm/scenes/node_parameter.gd" id="1_y6t73"]
-[ext_resource type="StyleBox" uid="uid://cdspxw4ys7xge" path="res://addons/shrimpvm/themes/next_sibling.tres" id="2_4jtv5"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y6t73"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4jtv5"]
-bg_color = Color(0.60038817, 0.60038817, 0.60038817, 0)
-draw_center = false
-border_width_left = 10
-border_width_right = 10
-border_color = Color(1, 0.7269941, 0, 1)
-border_blend = true
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-corner_detail = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0pwqf"]
 content_margin_left = 10.0
@@ -58,28 +44,6 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_y6t73")
 script = ExtResource("1_y6t73")
-
-[node name="anchor" type="Control" parent="." unique_id=1753864934]
-layout_mode = 2
-mouse_filter = 1
-
-[node name="selection" type="Panel" parent="anchor" unique_id=871403165]
-unique_name_in_owner = true
-visible = false
-z_index = 15
-z_as_relative = false
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -10.0
-offset_top = -10.0
-offset_right = 10.0
-offset_bottom = 10.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_4jtv5")
 
 [node name="wrapper" type="HBoxContainer" parent="." unique_id=1179675663]
 layout_mode = 2
@@ -143,11 +107,3 @@ horizontal_alignment = 1
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-
-[node name="addChildTip" type="Panel" parent="wrapper/wrapper" unique_id=112202479]
-unique_name_in_owner = true
-visible = false
-z_index = 1
-layout_mode = 2
-mouse_filter = 2
-theme_override_styles/panel = ExtResource("2_4jtv5")

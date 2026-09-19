@@ -7,7 +7,7 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_in0f3"]
 
-[sub_resource type="Resource" id="Resource_qlsr3"]
+[sub_resource type="Resource" id="Resource_in0f3"]
 script = ExtResource("3_w8yxg")
 metadata/_custom_type_script = "uid://uw4oee4tvks"
 
@@ -30,12 +30,19 @@ content_margin_left = 10.0
 content_margin_top = 5.0
 content_margin_right = 10.0
 content_margin_bottom = 5.0
-bg_color = Color(0, 0, 0, 1)
+bg_color = Color(0.64705884, 0.16470589, 0.16470589, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w8yxg"]
+draw_center = false
 border_width_left = 1
-border_width_top = 5
+border_width_top = 1
 border_width_right = 1
-border_color = Color(1, 1, 1, 1)
-border_blend = true
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 0.3)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -43,12 +50,7 @@ corner_radius_bottom_left = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_in0f3"]
 resource_local_to_scene = true
-bg_color = Color(0, 0, 0, 1)
-border_width_left = 1
-border_width_right = 1
-border_width_bottom = 5
-border_color = Color(1, 1, 1, 1)
-border_blend = true
+bg_color = Color(0.64705884, 0.16470589, 0.16470589, 1)
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 
@@ -68,8 +70,8 @@ offset_right = 102.0
 offset_bottom = 43.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_in0f3")
 script = ExtResource("1_0pwqf")
-ir = SubResource("Resource_qlsr3")
-wrapper = Dictionary[String, Variant]({
+placeholderIR = SubResource("Resource_in0f3")
+placeholderWrapper = Dictionary[String, Variant]({
 "body": []
 })
 
@@ -90,6 +92,7 @@ mouse_filter = 2
 
 [node name="countBar" type="PanelContainer" parent="wrapper/frame/anchor" unique_id=1694097726]
 unique_name_in_owner = true
+visible = false
 z_index = 1
 layout_mode = 1
 anchors_preset = -1
@@ -137,6 +140,11 @@ bbcode_enabled = true
 text = "[color=#fffd99]Root Node[/color]"
 fit_content = true
 autowrap_mode = 0
+
+[node name="border" type="Panel" parent="wrapper/frame" unique_id=1159424197]
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_w8yxg")
 
 [node name="margin" type="MarginContainer" parent="wrapper" unique_id=2020458860]
 layout_mode = 2

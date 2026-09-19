@@ -238,7 +238,7 @@ func close_current_file():
 func has_root_node() -> bool:
 	return ShrimpVMUtil.wrapper_is_valid(treeData)
 func mark_selection(node: NodeBlock):
-	node.selected.connect(select)
+	node.selected.connect(func(n: NodeBlock): select(n.getContext.pointer))
 func node_join(node: NodeBlock, desk: bool):
 	node.mark_selection.connect(mark_selection)
 	if desk:
