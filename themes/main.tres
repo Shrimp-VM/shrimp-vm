@@ -1,6 +1,75 @@
 [gd_resource type="Theme" format=3 uid="uid://bvgxqtaxctodq"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_68ttx"]
+content_margin_left = 16.0
+content_margin_top = 5.0
+content_margin_right = 16.0
+content_margin_bottom = 5.0
+bg_color = Color(0.20405686, 0.20405686, 0.20405686, 1)
+corner_radius_top_left = 1000
+corner_radius_top_right = 1000
+corner_radius_bottom_right = 1000
+corner_radius_bottom_left = 1000
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_myd17"]
+content_margin_left = 16.0
+content_margin_top = 5.0
+content_margin_right = 16.0
+content_margin_bottom = 5.0
+bg_color = Color(0.16000003, 0.8040002, 1, 0)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 1000
+corner_radius_top_right = 1000
+corner_radius_bottom_right = 1000
+corner_radius_bottom_left = 1000
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ogx0k"]
+content_margin_left = 16.0
+content_margin_top = 5.0
+content_margin_right = 16.0
+content_margin_bottom = 5.0
+bg_color = Color(0.31, 0.83900017, 1, 1)
+corner_radius_top_left = 1000
+corner_radius_top_right = 1000
+corner_radius_bottom_right = 1000
+corner_radius_bottom_left = 1000
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fkaul"]
+content_margin_left = 16.0
+content_margin_top = 5.0
+content_margin_right = 16.0
+content_margin_bottom = 5.0
+bg_color = Color(0.52, 0.88800013, 1, 1)
+corner_radius_top_left = 1000
+corner_radius_top_right = 1000
+corner_radius_bottom_right = 1000
+corner_radius_bottom_left = 1000
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ulikd"]
+content_margin_left = 16.0
+content_margin_top = 5.0
+content_margin_right = 16.0
+content_margin_bottom = 5.0
+bg_color = Color(0.16078432, 0.8, 1, 1)
+corner_radius_top_left = 1000
+corner_radius_top_right = 1000
+corner_radius_bottom_right = 1000
+corner_radius_bottom_left = 1000
 
 [resource]
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_disabled_color = Color(1, 1, 1, 1)
+Button/colors/font_focus_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_color = Color(1, 1, 1, 1)
+Button/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
+Button/styles/disabled = SubResource("StyleBoxFlat_68ttx")
+Button/styles/focus = SubResource("StyleBoxFlat_myd17")
+Button/styles/hover = SubResource("StyleBoxFlat_ogx0k")
+Button/styles/hover_pressed = SubResource("StyleBoxFlat_fkaul")
 Button/styles/normal = SubResource("StyleBoxFlat_ulikd")
+Button/styles/pressed = SubResource("StyleBoxFlat_fkaul")

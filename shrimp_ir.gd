@@ -4,7 +4,12 @@ extends Resource
 class_name ShrimpIR
 
 class Model:
-	static func wrapper_schema(name: String, attributes: Dictionary, description: String = "No descritpion.", trigger: NodeTrigger = NodeTrigger.EXECUTION):
+	static func wrapper_schema(
+		name: String,
+		attributes: Dictionary,
+		description: String = "No descritpion.",
+		trigger: NodeTrigger = NodeTrigger.EXECUTION,
+	):
 		return {
 			"name": name,
 			"attributes": attributes,
@@ -40,6 +45,8 @@ func event_emit(_vm: ShrimpVM, _context: ExecutionContext):
 func get_keys_type(attribute: String):
 	return get_wrapper_schema().attributes[attribute].type
 
+static func is_hidden() -> bool:
+	return false
 static func get_category_tag() -> String:
 	return "Nodes"
 static func get_node_type() -> String:

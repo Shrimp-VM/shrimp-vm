@@ -133,9 +133,12 @@ func rebuild_desk():
 	for category in categories:
 		var title = Label.new()
 		title.text = category
+		title.label_settings = LabelSettings.new()
+		title.label_settings.font_color = Color.BLACK
 		deskWrapper.add_child(title)
 		for ir in categories[category]:
 			if ir is ShrimpIR:
+				if ir.is_hidden(): continue
 				var instance = NodeBlock.create(null, true, blockCounts[ir] if finiteBlockCount else INF, ir.get_node_type())
 				node_join(instance, true)
 				instance.rebuild()

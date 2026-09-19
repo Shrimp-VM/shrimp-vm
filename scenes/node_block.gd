@@ -20,6 +20,7 @@ signal exhausted()
 @onready var parameterWrapper: Control = $%wrapper
 @onready var countBar: Control = $%countBar
 @onready var countLabel: Label = $%count
+@onready var parentIcon: Triangle = $%parentIcon
 @onready var nextIcon: Triangle = $%nextIcon
 @onready var triangles: Control = $%triangles
 var styleBox: StyleBoxFlat

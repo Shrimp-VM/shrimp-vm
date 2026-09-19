@@ -20,6 +20,7 @@
 [ext_resource type="PackedScene" uid="uid://bgavbblqerqdd" path="res://addons/shrimpvm/scenes/selection_rect.tscn" id="12_iu8n6"]
 [ext_resource type="Script" uid="uid://c2exvird41rgj" path="res://addons/shrimpvm/scenes/selection_manager.gd" id="12_t82hj"]
 [ext_resource type="PackedScene" uid="uid://xbde27ya018b" path="res://addons/shrimpvm/scenes/inspector.tscn" id="15_5mgoq"]
+[ext_resource type="Theme" uid="uid://bvgxqtaxctodq" path="res://addons/shrimpvm/themes/main.tres" id="15_m2yu7"]
 
 [sub_resource type="Resource" id="Resource_h6e4u"]
 script = ExtResource("3_pyu3y")
@@ -76,23 +77,26 @@ body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_y7o51"), SubResource
 metadata/_custom_type_script = "uid://uw4oee4tvks"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_05f5v"]
-content_margin_left = 10.0
-content_margin_top = 10.0
-content_margin_right = 10.0
-content_margin_bottom = 10.0
-bg_color = Color(0.4, 0.4, 0.4, 1)
+content_margin_left = 15.0
+content_margin_top = 15.0
+content_margin_right = 15.0
+content_margin_bottom = 15.0
+bg_color = Color(0.39607844, 0.21176471, 0.9098039, 1)
 border_color = Color(1, 1, 1, 1)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glela"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m2yu7"]
 content_margin_left = 20.0
 content_margin_top = 20.0
 content_margin_right = 20.0
 content_margin_bottom = 20.0
-bg_color = Color(0, 0, 0, 0.7019608)
+bg_color = Color(0.9607843, 0.9764706, 1, 1)
 border_color = Color(1, 1, 1, 1)
 border_blend = true
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_05f5v"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h6e4u"]
+bg_color = Color(0.88235295, 0.9137255, 0.9882353, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_fjp0f"]
 font_size = 20
@@ -113,10 +117,20 @@ content_margin_bottom = 20.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_iejdg"]
 font_size = 14
-font_color = Color(0.59, 0.59, 0.59, 1)
+font_color = Color(0.6578363, 0.6578363, 0.6578363, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_glela"]
+content_margin_left = 20.0
+content_margin_top = 20.0
+content_margin_right = 20.0
+content_margin_bottom = 20.0
+bg_color = Color(1, 1, 1, 1)
+border_color = Color(1, 1, 1, 1)
+border_blend = true
 
 [sub_resource type="LabelSettings" id="LabelSettings_nc1qr"]
 font_size = 25
+font_color = Color(0, 0, 0, 1)
 outline_size = 1
 
 [sub_resource type="LabelSettings" id="LabelSettings_0kp88"]
@@ -220,15 +234,6 @@ unique_name_in_owner = true
 script = ExtResource("2_iyhou")
 metadata/_custom_type_script = "uid://drxoblkew75eu"
 
-[node name="bg" type="ColorRect" parent="." unique_id=481410875]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 0.6)
-
 [node name="layout" type="VBoxContainer" parent="." unique_id=29901121]
 layout_mode = 1
 anchors_preset = 15
@@ -250,6 +255,7 @@ theme_override_constants/separation = 10
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
+theme = ExtResource("15_m2yu7")
 text = "Load from computer"
 
 [node name="fileOpener" type="FileDialog" parent="layout/nav/wrapper/openBtn" unique_id=594379426]
@@ -265,6 +271,7 @@ filters = PackedStringArray("*.sst")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
+theme = ExtResource("15_m2yu7")
 text = "Save to computer"
 
 [node name="fileSaver" type="FileDialog" parent="layout/nav/wrapper/saveBtn" unique_id=594606514]
@@ -278,18 +285,21 @@ filters = PackedStringArray("*.sst")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 10
+theme = ExtResource("15_m2yu7")
 text = "Create new script"
 
 [node name="closeFileBtn" type="Button" parent="layout/nav/wrapper" unique_id=901052568]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
+theme = ExtResource("15_m2yu7")
 text = "Close"
 
 [node name="deleteFileBtn" type="Button" parent="layout/nav/wrapper" unique_id=1440390961]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
+theme = ExtResource("15_m2yu7")
 text = "Delete"
 
 [node name="layout" type="HBoxContainer" parent="layout" unique_id=2005437578]
@@ -299,7 +309,7 @@ theme_override_constants/separation = 0
 
 [node name="desk" type="PanelContainer" parent="layout/layout" unique_id=921050149]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_glela")
+theme_override_styles/panel = SubResource("StyleBoxFlat_m2yu7")
 
 [node name="wrapper" type="ScrollContainer" parent="layout/layout/desk" unique_id=601822105]
 layout_mode = 2
@@ -318,11 +328,15 @@ size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_05f5v")
 script = ExtResource("3_ohykq")
 
-[node name="wrapper" type="ScrollContainer" parent="layout/layout/workspace" unique_id=1722816101]
+[node name="block" type="PanelContainer" parent="layout/layout/workspace" unique_id=837595969]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_h6e4u")
+
+[node name="wrapper" type="ScrollContainer" parent="layout/layout/workspace/block" unique_id=1722816101]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="mergin" type="MarginContainer" parent="layout/layout/workspace/wrapper" unique_id=1870157571]
+[node name="mergin" type="MarginContainer" parent="layout/layout/workspace/block/wrapper" unique_id=1870157571]
 layout_mode = 2
 size_flags_horizontal = 6
 size_flags_vertical = 6
@@ -331,13 +345,13 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 20
 
-[node name="center" type="CenterContainer" parent="layout/layout/workspace/wrapper/mergin" unique_id=1266214890]
+[node name="center" type="CenterContainer" parent="layout/layout/workspace/block/wrapper/mergin" unique_id=1266214890]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="treeTip" type="Label" parent="layout/layout/workspace/wrapper/mergin/center" unique_id=287250670]
+[node name="treeTip" type="Label" parent="layout/layout/workspace/block/wrapper/mergin/center" unique_id=287250670]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
@@ -346,31 +360,32 @@ Create one with clicking \"Root Node\" !"
 label_settings = SubResource("LabelSettings_fjp0f")
 horizontal_alignment = 1
 
-[node name="margins" type="PanelContainer" parent="layout/layout/workspace" unique_id=963820862]
+[node name="tools" type="PanelContainer" parent="layout/layout/workspace" unique_id=963820862]
 layout_mode = 2
 size_flags_horizontal = 8
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxEmpty_ohykq")
 
-[node name="wrapper" type="HBoxContainer" parent="layout/layout/workspace/margins" unique_id=1156634532]
+[node name="wrapper" type="HBoxContainer" parent="layout/layout/workspace/tools" unique_id=1156634532]
 layout_mode = 2
 
-[node name="wrapper" type="VBoxContainer" parent="layout/layout/workspace/margins/wrapper" unique_id=556257705]
+[node name="wrapper" type="VBoxContainer" parent="layout/layout/workspace/tools/wrapper" unique_id=556257705]
 layout_mode = 2
 
-[node name="runBtn" type="Button" parent="layout/layout/workspace/margins/wrapper/wrapper" unique_id=98607733]
+[node name="runBtn" type="Button" parent="layout/layout/workspace/tools/wrapper/wrapper" unique_id=98607733]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
+theme = ExtResource("15_m2yu7")
 text = "Run"
 icon = ExtResource("4_0kp88")
 
-[node name="inspector" parent="layout/layout/workspace/margins/wrapper" unique_id=188591203 instance=ExtResource("15_5mgoq")]
+[node name="inspector" parent="layout/layout/workspace/tools/wrapper" unique_id=188591203 instance=ExtResource("15_5mgoq")]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="workspace" type="PanelContainer" parent="layout/layout/workspace" unique_id=1835959688]
+[node name="tip" type="PanelContainer" parent="layout/layout/workspace" unique_id=1835959688]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 8
@@ -378,12 +393,12 @@ mouse_filter = 2
 mouse_behavior_recursive = 1
 theme_override_styles/panel = SubResource("StyleBoxEmpty_nc1qr")
 
-[node name="wrapper" type="HBoxContainer" parent="layout/layout/workspace/workspace" unique_id=171671562]
+[node name="wrapper" type="HBoxContainer" parent="layout/layout/workspace/tip" unique_id=171671562]
 layout_mode = 2
 mouse_filter = 2
 mouse_behavior_recursive = 1
 
-[node name="decoration" type="Label" parent="layout/layout/workspace/workspace/wrapper" unique_id=30092913]
+[node name="decoration" type="Label" parent="layout/layout/workspace/tip/wrapper" unique_id=30092913]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
@@ -391,7 +406,7 @@ mouse_behavior_recursive = 1
 text = "Workspace:"
 label_settings = SubResource("LabelSettings_iejdg")
 
-[node name="scriptName" type="Label" parent="layout/layout/workspace/workspace/wrapper" unique_id=699603676]
+[node name="scriptName" type="Label" parent="layout/layout/workspace/tip/wrapper" unique_id=699603676]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0

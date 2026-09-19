@@ -4,16 +4,16 @@
 [ext_resource type="PackedScene" uid="uid://cwjvn21pj3cv0" path="res://addons/shrimpvm/scenes/triangle.tscn" id="2_0auy1"]
 [ext_resource type="Texture2D" uid="uid://7xnb1dpko6q1" path="res://addons/shrimpvm/icons/file.png" id="2_kafmh"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rsdkj"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0auy1"]
 content_margin_left = 10.0
+content_margin_top = 5.0
 content_margin_right = 10.0
-bg_color = Color(0, 0, 0, 0)
-draw_center = false
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(1, 1, 1, 1)
+content_margin_bottom = 5.0
+bg_color = Color(0.8, 0.8, 0.8, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
 
 [sub_resource type="Animation" id="Animation_0auy1"]
 length = 0.001
@@ -79,17 +79,20 @@ _data = {
 }
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_kafmh"]
-color = Color(1, 1, 1, 0.5)
+color = Color(0.6, 0.6, 0.6, 1)
 grow_begin = -3.0
 grow_end = -3.0
 thickness = 2
 vertical = true
 
+[sub_resource type="LabelSettings" id="LabelSettings_0auy1"]
+font_color = Color(0.28955156, 0.28955156, 0.28955156, 1)
+
 [node name="VirtualFile" type="PanelContainer" unique_id=36684926]
 offset_right = 73.0
 offset_bottom = 23.0
 size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_rsdkj")
+theme_override_styles/panel = SubResource("StyleBoxFlat_0auy1")
 script = ExtResource("1_rsdkj")
 opening = true
 
@@ -109,6 +112,7 @@ size_flags_horizontal = 0
 size_flags_vertical = 4
 
 [node name="triangle" parent="wrapper/indicator" unique_id=567482577 instance=ExtResource("2_0auy1")]
+modulate = Color(0.2901961, 0.2901961, 0.2901961, 1)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -120,8 +124,10 @@ grow_vertical = 2
 pivot_offset_ratio = Vector2(0, 0.5)
 size_flags_horizontal = 0
 size_flags_vertical = 4
+fillColor = Color(0, 0, 0, 1)
 
 [node name="icon" type="TextureRect" parent="wrapper" unique_id=1117093036]
+modulate = Color(0.2901961, 0.2901961, 0.2901961, 1)
 custom_minimum_size = Vector2(15, 15)
 layout_mode = 2
 size_flags_horizontal = 0
@@ -140,3 +146,4 @@ unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
 text = "File.sst"
+label_settings = SubResource("LabelSettings_0auy1")

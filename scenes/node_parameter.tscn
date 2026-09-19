@@ -5,7 +5,9 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y6t73"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0pwqf"]
-bg_color = Color(0, 0, 0, 0.4)
+bg_color = Color(0, 0, 0, 0.3)
+border_width_right = 2
+border_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 5
 corner_radius_bottom_left = 5
 
@@ -15,18 +17,8 @@ content_margin_top = 5.0
 content_margin_right = 15.0
 content_margin_bottom = 5.0
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xsu4m"]
-content_margin_top = 5.0
-content_margin_bottom = 5.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y6t73"]
-draw_center = false
-border_width_right = 10
-border_color = Color(1, 1, 1, 1)
-border_blend = true
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lisre"]
-bg_color = Color(0, 0, 0, 0.15)
+bg_color = Color(0, 0, 0, 0.2)
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 
@@ -52,51 +44,41 @@ script = ExtResource("1_y6t73")
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="wrapper2" type="PanelContainer" parent="wrapper" unique_id=1187739693]
+[node name="nameWrapper" type="PanelContainer" parent="wrapper" unique_id=1187739693]
 layout_mode = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_0pwqf")
 
-[node name="name" type="PanelContainer" parent="wrapper/wrapper2" unique_id=2033548576]
+[node name="name" type="PanelContainer" parent="wrapper/nameWrapper" unique_id=2033548576]
 layout_mode = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxEmpty_4jtv5")
 
-[node name="name" type="Label" parent="wrapper/wrapper2/name" unique_id=196848224]
+[node name="name" type="Label" parent="wrapper/nameWrapper/name" unique_id=196848224]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
 text = "Body"
 
-[node name="debug" type="Button" parent="wrapper/wrapper2/name" unique_id=356742432]
+[node name="debug" type="Button" parent="wrapper/nameWrapper/name" unique_id=356742432]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 mouse_filter = 1
 
-[node name="margin" type="PanelContainer" parent="wrapper/wrapper2" unique_id=741381533]
-layout_mode = 2
-mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxEmpty_xsu4m")
-
-[node name="split" type="Panel" parent="wrapper/wrapper2/margin" unique_id=960628068]
-layout_mode = 2
-mouse_filter = 1
-theme_override_styles/panel = SubResource("StyleBoxFlat_y6t73")
-
-[node name="wrapper" type="PanelContainer" parent="wrapper" unique_id=2125223560]
+[node name="dataWrapper" type="PanelContainer" parent="wrapper" unique_id=2125223560]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_lisre")
 
-[node name="children" type="PanelContainer" parent="wrapper/wrapper" unique_id=1440198449]
+[node name="children" type="PanelContainer" parent="wrapper/dataWrapper" unique_id=1440198449]
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxEmpty_lisre")
 
-[node name="emptyTip" type="Label" parent="wrapper/wrapper/children" unique_id=755308190]
+[node name="emptyTip" type="Label" parent="wrapper/dataWrapper/children" unique_id=755308190]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 6
@@ -105,25 +87,25 @@ text = "Empty"
 label_settings = SubResource("LabelSettings_y6t73")
 horizontal_alignment = 1
 
-[node name="templates" type="VBoxContainer" parent="wrapper/wrapper/children" unique_id=318737698]
+[node name="templates" type="VBoxContainer" parent="wrapper/dataWrapper/children" unique_id=318737698]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 
-[node name="textShow" type="Label" parent="wrapper/wrapper/children/templates" unique_id=2080763787]
+[node name="textShow" type="Label" parent="wrapper/dataWrapper/children/templates" unique_id=2080763787]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 mouse_filter = 1
 text = "test"
 
-[node name="array" type="VBoxContainer" parent="wrapper/wrapper/children" unique_id=2005003967]
+[node name="array" type="VBoxContainer" parent="wrapper/dataWrapper/children" unique_id=2005003967]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 0
 alignment = 1
 
-[node name="value" type="CenterContainer" parent="wrapper/wrapper/children" unique_id=334177503]
+[node name="value" type="CenterContainer" parent="wrapper/dataWrapper/children" unique_id=334177503]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2

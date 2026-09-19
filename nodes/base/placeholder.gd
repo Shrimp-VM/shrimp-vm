@@ -7,6 +7,8 @@ func execute(_vm: ShrimpVM, _context: ExecutionContext) -> Variant:
 func decompile() -> Dictionary:
 	return {}
 
+static func is_hidden() -> bool:
+	return true
 static func get_node_type() -> String:
 	return "placeholder"
 static func create_from(_wrapper: Dictionary) -> PlaceholderNode:
