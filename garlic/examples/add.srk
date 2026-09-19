@@ -11,4 +11,9 @@ root(body={
         number_literal(content=123);
         number_literal(content=123);
     }));
+    print(
+        content=string_literal(
+            content="Hello World!"
+        )
+    );
 })
