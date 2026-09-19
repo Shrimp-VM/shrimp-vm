@@ -6,6 +6,10 @@ class_name ReturnNode
 
 func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
 	return context.stop(await vm.execute(data, context), true)
+func decompile() -> Dictionary:
+	return {
+		"data": ShrimpCompiler.decompile(data)
+	}
 
 static func get_category_tag() -> String:
 	return "Macro"

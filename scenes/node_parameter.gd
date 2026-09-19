@@ -12,6 +12,7 @@ signal selected(parameter: NodeParameter)
 @onready var valueWrapper: Control = $%value
 @onready var emptyTip: Control = $%emptyTip
 var eventEmitter: ShrimpVMUtil.EventEmitter
+var ownerBlock: NodeBlock
 ## 用getContext，不要直接用targetContext
 var targetContext: WrapperContext
 var getContext: WrapperContext:
@@ -45,6 +46,7 @@ func _gui_input(event: InputEvent) -> void:
 		if !event.pressed: return
 		if ShrimpVMUtil.schema_typeis(schema, ShrimpIR.TYPE_ENUM):
 			selected.emit(self)
+			print("select p", self)
 		else:
 			block.requestSelect()
 
@@ -60,21 +62,27 @@ func rebuild():
 				emptyTip.show()
 			else:
 				emptyTip.hide()
+				valueWrapper.hide()
 				for i in len(value):
-					arrayWrapper.add_child(create_showbox(i))
+					var showbox = create_showbox(i, arrayWrapper)
+					if !showbox.get_parent():
+						arrayWrapper.add_child(showbox)
 		else:
 			push_error("The array parameter's wrapper value is not an Array.")
 	else:
 		emptyTip.hide()
-		valueWrapper.add_child(create_showbox())
-func create_primarybox(data: Variant, index: int = -1) -> Control:
+		arrayWrapper.hide()
+		var showbox = create_showbox(-1, valueWrapper)
+		if !showbox.get_parent():
+			valueWrapper.add_child(showbox)
+func create_primarybox(data: Variant, index: int, wrapper: Control) -> Control:
 	match schema.type:
 		ShrimpIR.TYPE_ENUM:
 			if ShrimpVMUtil.wrapper_is_valid(data):
 				if value is Array:
-					return NodeBlock.create(getContext.forward(WrapperPath.from("[%d]" % index)), false).auto_rebuild(self)
+					return NodeBlock.create(getContext.forward(WrapperPath.from("[%d]" % index)), false, INF, "", self).mount(wrapper)
 				else:
-					return NodeBlock.create(getContext, false).auto_rebuild(self)
+					return NodeBlock.create(getContext, false, INF, "", self).mount(wrapper)
 			else:
 				var label = Label.new()
 				label.text = "NULL"
@@ -83,7 +91,7 @@ func create_primarybox(data: Variant, index: int = -1) -> Control:
 				return label
 		_:
 			return ItemEditor.create_showbox(schema.type, data)
-func create_showbox(index: int = -1) -> Control:
+func create_showbox(index: int, wrapper: Control) -> Control:
 	if schema.type is Array:
 		var label = Label.new()
 		label.text = str(schema.type[value])
@@ -94,9 +102,9 @@ func create_showbox(index: int = -1) -> Control:
 			data = value[index]
 		else:
 			data = value
-		return create_primarybox(data, index)
+		return create_primarybox(data, index, wrapper)
 	else:
-		return create_primarybox(value)
+		return create_primarybox(value, -1, wrapper)
 func create_editbox() -> Control:
 	if schema.type is Array:
 		var btn = OptionButton.new()
@@ -123,11 +131,12 @@ static func create_initial_value(schemx: Dictionary):
 		return 0
 	else:
 		return ItemEditor.create_initial_value(schemx.type)
-static func create(contexx: WrapperContext, root: Node) -> NodeParameter:
+static func create(contexx: WrapperContext, root: Node, ownerBlocx: NodeBlock = null) -> NodeParameter:
 	contexx.pointer = contexx.pointer.normalize()
 	var instance = preload("res://addons/shrimpvm/scenes/node_parameter.tscn").instantiate() as NodeParameter
 	instance.name = contexx.pointer.seek_tail().path
 	instance.targetContext = contexx
+	instance.ownerBlock = ownerBlocx
 	root.add_child(instance)
 	instance.rebuild()
 	return instance

@@ -33,10 +33,9 @@ enum NodeTrigger {
 
 ## EXECUTION=Orderly run, EVENT_*=event test, returns a bool, TERMINAL=stop, can't connect next sibling
 @abstract func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant
+@abstract func decompile() -> Dictionary
 func event_emit(_vm: ShrimpVM, _context: ExecutionContext):
 	pass
-func decompile() -> Dictionary:
-	return {}
 
 func get_keys_type(attribute: String):
 	return get_wrapper_schema().attributes[attribute].type

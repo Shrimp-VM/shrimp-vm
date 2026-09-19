@@ -16,8 +16,8 @@ content_margin_right = 15.0
 content_margin_bottom = 5.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xsu4m"]
-content_margin_top = 4.0
-content_margin_bottom = 4.0
+content_margin_top = 5.0
+content_margin_bottom = 5.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y6t73"]
 draw_center = false
@@ -26,7 +26,7 @@ border_color = Color(1, 1, 1, 1)
 border_blend = true
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lisre"]
-bg_color = Color(0, 0, 0, 0.25)
+bg_color = Color(0, 0, 0, 0.15)
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 
@@ -76,6 +76,7 @@ mouse_filter = 1
 
 [node name="margin" type="PanelContainer" parent="wrapper/wrapper2" unique_id=741381533]
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxEmpty_xsu4m")
 
 [node name="split" type="Panel" parent="wrapper/wrapper2/margin" unique_id=960628068]
@@ -99,6 +100,7 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_lisre")
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 6
+mouse_filter = 1
 text = "Empty"
 label_settings = SubResource("LabelSettings_y6t73")
 horizontal_alignment = 1
@@ -119,6 +121,7 @@ unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
 theme_override_constants/separation = 0
+alignment = 1
 
 [node name="value" type="CenterContainer" parent="wrapper/wrapper/children" unique_id=334177503]
 unique_name_in_owner = true

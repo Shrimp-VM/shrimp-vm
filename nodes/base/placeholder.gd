@@ -4,6 +4,8 @@ class_name PlaceholderNode
 
 func execute(_vm: ShrimpVM, _context: ExecutionContext) -> Variant:
 	return
+func decompile() -> Dictionary:
+	return {}
 
 static func get_node_type() -> String:
 	return "placeholder"

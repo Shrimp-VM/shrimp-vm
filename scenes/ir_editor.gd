@@ -34,13 +34,10 @@ signal modal_finished()
 @onready var treeCenter: Control = $%center
 @onready var treeTip: Control = $%treeTip
 @onready var fileTip: Control = $%fileTip
-@onready var inspector: Control = $%inspector
-@onready var deleteNodeBtn: Button = $%deleteNode
-@onready var attributeWrapper: Control = $%attributes
+@onready var inspector: NodeInspector = $%inspector
 @onready var filesWrapper: Control = $%files
 @onready var modalPanel: ClickableWrapper = $%modalPanel
 @onready var modalLabel: RichTextLabel = $%modalTip
-@onready var nodeDescriptionLabel: Label = $%nodeDescription
 @onready var selectionMgr: SelectionManager = $%selections
 var debugContext: ExecutionContext
 var compilationWarns: Array[Array] = []
@@ -84,7 +81,7 @@ func _ready() -> void:
 	closeFileBtn.pressed.connect(fileManager.close)
 	deleteFileBtn.pressed.connect(fileManager.delete)
 	workspace.clicked.connect(func(): select(null))
-	deleteNodeBtn.pressed.connect(
+	inspector.delete.connect(
 		func():
 			delete_node(selectingPointer)
 			save_current_file()
@@ -161,7 +158,7 @@ func rebuild_desk():
 								elif selectingPointer is NodeBlock:
 									if is_instance_valid(selectingPointer.parentBlock):
 										childrenList = selectingPointer.parentBlock.data[selectingPointer.parentAttribute]
-										insertIndex = selectingPointer.get_index() - 1
+										insertIndex = selectingPointer.get_index()
 							childrenList.assign(ShrimpVMUtil.erase_gunmu(childrenList))
 							if insertIndex < 0:
 								childrenList.append(wrapper)
@@ -268,25 +265,8 @@ func select(path: WrapperPath):
 	selectingPath = path
 	if is_instance_valid(selectingPointer):
 		if selectingPointer is NodeBlock:
-			ShrimpVMUtil.disconnect_children(attributeWrapper)
-			for attributeKey in selectingPointer.schema.attributes:
-				var eventEmitter = ShrimpVMUtil.EventEmitter.new()
-				var attribute = selectingPointer.schema.attributes[attributeKey]
-				var parameter = selectingPointer.parameterWrapper.get_node(attributeKey) as NodeParameter
-				parameter.eventEmitter = eventEmitter
-				parameter.eventEmitter.event.connect(
-					func(v):
-						selectingPointer.data[attributeKey] = v
-						save_current_file()
-						parameter.rebuild()
-				)
-				var editor = parameter.create_editbox()
-				if !is_instance_valid(editor):
-					continue
-				var instance = load("res://addons/shrimpvm/scenes/parameter_inspector.tscn").instantiate() as ParameterInspector
-				attributeWrapper.add_child(instance)
-				instance.rebuild(attribute.label, editor)
-			nodeDescriptionLabel.text = selectingPointer.schema.description
+			inspector.block = selectingPointer
+			inspector.rebuild()
 		selectionMgr.select("cyan", selectingPointer)
 		inspector.show()
 	else:

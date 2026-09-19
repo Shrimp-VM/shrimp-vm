@@ -158,4 +158,5 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_qlsr3")
 [node name="wrapper" type="VBoxContainer" parent="wrapper/margin/parameters/content" unique_id=274422648]
 unique_name_in_owner = true
 layout_mode = 2
+mouse_filter = 0
 theme_override_constants/separation = 5

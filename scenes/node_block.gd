@@ -23,6 +23,7 @@ signal exhausted()
 var frameBox: StyleBoxFlat
 var parameterBox: StyleBoxFlat
 var targetContext: WrapperContext
+var ownerParameter: NodeParameter
 var getContext: WrapperContext:
 	get:
 		if is_instance_valid(targetContext):
@@ -40,7 +41,10 @@ var data: Dictionary:
 		return getContext.get_pointer()
 var parentBlock: NodeBlock:
 	get:
-		return getContext.forward(WrapperPath.from("<")).locate([NodeBlock])
+		return ownerParameter.ownerBlock if ownerParameter else null
+var parentAttribute: String:
+	get:
+		return String(ownerParameter.name) if ownerParameter else ""
 
 func _ready() -> void:
 	# frameBar.clicked.connect(
@@ -66,6 +70,7 @@ func _gui_input(event: InputEvent) -> void:
 				consume()
 		else:
 			requestSelect()
+			print("select b", self)
 
 func requestSelect(pointer: WrapperPath = null):
 	selected.emit(pointer if is_instance_valid(pointer) else getContext.pointer)
@@ -103,9 +108,9 @@ func rebuild():
 			if ShrimpVMUtil.schema_typeis(schema.attributes[key], ShrimpIR.TYPE_EXTERNAL_PARAMETER): continue
 			var instance: NodeParameter
 			if Engine.is_editor_hint():
-				instance = NodeParameter.create(getContext.forward(WrapperPath.from(key)), parameterWrapper)
+				instance = NodeParameter.create(getContext.forward(WrapperPath.from(key)), parameterWrapper, self)
 			else:
-				instance = NodeParameter.create(getContext.forward(WrapperPath.from(key)), parameterWrapper)
+				instance = NodeParameter.create(getContext.forward(WrapperPath.from(key)), parameterWrapper, self)
 			instance.selected.connect(
 				func(p: NodeParameter):
 					requestSelect(p.getContext.pointer)
@@ -118,14 +123,12 @@ func create_wrapper() -> Dictionary:
 	for key in schema.attributes:
 		result[key] = NodeParameter.create_initial_value(schema.attributes[key])
 	return result
-func auto_rebuild(node: Node) -> NodeBlock:
-	if get_parent(): return
-	node.add_child(self)
+func mount(parent: Node) -> NodeBlock:
+	parent.add_child(self)
 	rebuild()
-	node.remove_child(self)
 	return self
 
-static func create(contexx: WrapperContext, inDesx: bool, counx: float = INF, type: String = "") -> NodeBlock:
+static func create(contexx: WrapperContext, inDesx: bool, counx: float = INF, type: String = "", ownerParam: NodeParameter = null) -> NodeBlock:
 	var instance = preload("res://addons/shrimpvm/scenes/node_block.tscn").instantiate() as NodeBlock
 	instance.count = counx
 	instance.inDesk = inDesx
@@ -133,5 +136,6 @@ static func create(contexx: WrapperContext, inDesx: bool, counx: float = INF, ty
 		contexx = WrapperContext.new({"type": type})
 		contexx.nodeTree = instance
 	instance.targetContext = contexx
+	instance.ownerParameter = ownerParam
 	instance.name = "%s_%d" % [instance.targetIR.get_node_type(), randi_range(111111, 999999)]
 	return instance

@@ -70,7 +70,6 @@ func locate(what: Array[GDScript] = [NodeBlock, NodeParameter]) -> Node:
 				else:
 					return result
 			WrapperPath.PartType.INDEX:
-				print(pendingArray)
 				var child = pendingArray.get(pathPart.path)
 				if child is NodeBlock:
 					result = child
