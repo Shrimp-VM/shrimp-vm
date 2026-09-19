@@ -3,7 +3,7 @@ extends Control
 class_name NodeBlock
 
 signal clicked()
-signal selected(node: NodeBlock)
+signal selected(pointer: WrapperPath)
 signal mark_selection(node: NodeBlock)
 signal exhausted()
 
@@ -29,7 +29,6 @@ var getContext: WrapperContext:
 		return targetContext
 var targetIR: ShrimpIR:
 	get:
-		if Engine.is_editor_hint(): return placeholderIR
 		return ShrimpVMUtil.find_ir_node(data.type)
 var schema: Dictionary:
 	get:

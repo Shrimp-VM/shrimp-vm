@@ -125,7 +125,7 @@ loadBuiltins = true
 
 [node name="pluginManager" type="Node" parent="." unique_id=1968528528]
 script = ExtResource("6_p0jkk")
-defaultColor = Color(0.7433311, 0.23397693, 0, 1)
+defaultColor = Color(0, 0.6381068, 0.4232797, 1)
 metadata/_custom_type_script = "uid://ctpbtdput2kyx"
 
 [node name="category" type="Node" parent="pluginManager" unique_id=2029956541]
@@ -226,6 +226,7 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_glela")
 [node name="wrapper" type="ScrollContainer" parent="layout/layout/desk" unique_id=601822105]
 layout_mode = 2
 horizontal_scroll_mode = 0
+vertical_scroll_mode = 3
 
 [node name="wrapper" type="VBoxContainer" parent="layout/layout/desk/wrapper" unique_id=1487999515]
 unique_name_in_owner = true
@@ -382,7 +383,6 @@ size_flags_vertical = 3
 
 [node name="fileTip" type="Label" parent="layout/layout/fileManager/wrapper/wrapper/files" unique_id=156850020]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 text = "No scripts.
 Create one with the button aobve !"

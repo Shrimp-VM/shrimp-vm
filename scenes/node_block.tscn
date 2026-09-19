@@ -31,18 +31,11 @@ content_margin_top = 5.0
 content_margin_right = 10.0
 content_margin_bottom = 5.0
 bg_color = Color(0.64705884, 0.16470589, 0.16470589, 1)
-corner_radius_top_left = 5
-corner_radius_top_right = 5
-corner_radius_bottom_right = 5
-corner_radius_bottom_left = 5
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w8yxg"]
-draw_center = false
 border_width_left = 1
 border_width_top = 1
 border_width_right = 1
 border_width_bottom = 1
-border_color = Color(0, 0, 0, 0.3)
+border_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 5
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
@@ -140,11 +133,6 @@ bbcode_enabled = true
 text = "[color=#fffd99]Root Node[/color]"
 fit_content = true
 autowrap_mode = 0
-
-[node name="border" type="Panel" parent="wrapper/frame" unique_id=1159424197]
-layout_mode = 2
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_w8yxg")
 
 [node name="margin" type="MarginContainer" parent="wrapper" unique_id=2020458860]
 layout_mode = 2

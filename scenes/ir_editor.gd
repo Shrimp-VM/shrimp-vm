@@ -238,7 +238,7 @@ func close_current_file():
 func has_root_node() -> bool:
 	return ShrimpVMUtil.wrapper_is_valid(treeData)
 func mark_selection(node: NodeBlock):
-	node.selected.connect(func(n: NodeBlock): select(n.getContext.pointer))
+	node.selected.connect(select)
 func node_join(node: NodeBlock, desk: bool):
 	node.mark_selection.connect(mark_selection)
 	if desk:
@@ -290,9 +290,7 @@ func select(path: WrapperPath):
 				attributeWrapper.add_child(instance)
 				instance.rebuild(attribute.label, editor)
 			nodeDescriptionLabel.text = selectingPointer.schema.description
-			selectionMgr.select("cyan", selectingPointer)
-		elif selectingPointer is NodeParameter:
-			selectionMgr.select("cyan", selectingPointer)
+		selectionMgr.select("cyan", selectingPointer)
 		inspector.show()
 	else:
 		selectionMgr.stop_all()

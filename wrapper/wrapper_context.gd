@@ -44,6 +44,7 @@ func seek(distPath: WrapperPath):
 	return node
 func locate(what: Array[GDScript] = [NodeBlock, NodeParameter]) -> Node:
 	if !is_instance_valid(pointer): return null
+	var forwarded = false
 	var result = nodeTree
 	var pendingArray = []
 	var pathPart = pointer.normalize().seek_root()
@@ -53,12 +54,14 @@ func locate(what: Array[GDScript] = [NodeBlock, NodeParameter]) -> Node:
 				if result is NodeBlock:
 					var param = result.parameterWrapper.get_node(pathPart.path) as NodeParameter
 					result = param
+					forwarded = true
 					if param.schema.array:
 						pendingArray = param.arrayWrapper.get_children()
 					else:
 						var child = param.valueWrapper.get_child(0)
 						if child.get_script() in what:
 							result = child
+							forwarded = true
 						else:
 							return result
 				else:
@@ -67,11 +70,13 @@ func locate(what: Array[GDScript] = [NodeBlock, NodeParameter]) -> Node:
 				var child = pendingArray.get(pathPart.path)
 				if child is NodeBlock:
 					result = child
+					forwarded = true
 				else:
 					return result
 			WrapperPath.PartType.ROOT:
 				result = nodeTree
 		pathPart = pathPart.next
+	if !forwarded: return null
 	return result
 func is_root() -> bool:
 	return pointer.is_root()

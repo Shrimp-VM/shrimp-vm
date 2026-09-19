@@ -69,10 +69,7 @@ func _fixture() -> Dictionary:
 
 
 func _make_context(data, pointer_classpath: String = "#") -> WrapperContext:
-	var ctx := WrapperContext.new()
-	ctx.dataTree = data
-	ctx.pointer = WrapperPath.from(pointer_classpath).normalize()
-	return ctx
+	return WrapperContext.new(data,WrapperPath.from(pointer_classpath).normalize())
 
 
 # ---------------------------------------------------------------- 用例

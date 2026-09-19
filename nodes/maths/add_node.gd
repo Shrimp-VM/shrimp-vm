@@ -14,7 +14,7 @@ func decompile() -> Dictionary:
 	}
 
 static func get_category_tag() -> String:
-	return "Mathmatics"
+	return "Mathematics"
 static func get_node_type() -> String:
 	return "add"
 static func create_from(wrapper: Dictionary) -> AddNode:
