@@ -8,6 +8,8 @@ signal close_file(file: VirtualFile)
 signal delete_file(file: VirtualFile)
 signal rebuilding(file: VirtualFile)
 
+@export_tool_button("Now archive") var a = func(): print(archive())
+@export_tool_button("Now inarchive") var i = func(): print(inarchive())
 @export_global_file var archiveFile = "user://virtuals.json"
 @export var allowArchive: bool = true
 
@@ -15,6 +17,10 @@ var files: Array[VirtualFile] = []
 var currentOpening: VirtualFile = null
 
 func add(fn: StringName, content: String):
+	match search(fn):
+		var found when found is VirtualFile:
+			open(found)
+			delete()
 	var file = load("res://addons/shrimpvm/scenes/virtual_file.tscn").instantiate() as VirtualFile
 	file.fileName = fn
 	file.content = content
@@ -29,10 +35,10 @@ func open(file: VirtualFile):
 	currentOpening = file
 	file.opening = true
 func close():
-	close_file.emit(currentOpening)
 	if is_instance_valid(currentOpening):
+		close_file.emit(currentOpening)
 		currentOpening.opening = false
-	currentOpening = null
+		currentOpening = null
 func delete():
 	if is_instance_valid(currentOpening):
 		if currentOpening in files:
@@ -66,18 +72,27 @@ func decompile(src: String) -> Array:
 	if json.parse(src) != OK:
 		return []
 	return json.data
-func archive():
-	if !allowArchive: return
+func archive() -> String:
+	if !allowArchive:
+		push_warning("Archive skipped.")
+		return ""
 	var fa = FileAccess.open(archiveFile, FileAccess.ModeFlags.WRITE)
 	if fa == null:
-		return
+		push_error("Failed to write archive file.")
+		return ""
+	var compiled = compile()
 	fa.store_string(compile())
 	fa.close()
-func inarchive():
-	if !allowArchive: return
+	return compiled
+func inarchive() -> String:
+	if !allowArchive:
+		push_warning("Inarchive skipped.")
+		return ""
 	var fa = FileAccess.open(archiveFile, FileAccess.ModeFlags.READ)
 	if fa == null:
-		return
+		push_error("Failed to read archive file.")
+		return ""
 	for data in decompile(fa.get_as_text()):
 		add(data[0], data[1])
 	fa.close()
+	return compile()

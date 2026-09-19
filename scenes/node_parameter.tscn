@@ -5,25 +5,28 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y6t73"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0pwqf"]
-content_margin_left = 10.0
-content_margin_top = 5.0
-content_margin_right = 10.0
-content_margin_bottom = 5.0
 bg_color = Color(0, 0, 0, 0.4)
-border_width_top = 2
-border_width_right = 10
-border_width_bottom = 2
-border_color = Color(1, 1, 1, 1)
-border_blend = true
 corner_radius_top_left = 5
 corner_radius_bottom_left = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lisre"]
-bg_color = Color(0, 0, 0, 0.25)
-border_width_top = 2
-border_width_bottom = 2
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_4jtv5"]
+content_margin_left = 10.0
+content_margin_top = 5.0
+content_margin_right = 15.0
+content_margin_bottom = 5.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_xsu4m"]
+content_margin_top = 4.0
+content_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y6t73"]
+draw_center = false
+border_width_right = 5
 border_color = Color(1, 1, 1, 1)
 border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lisre"]
+bg_color = Color(0, 0, 0, 0.25)
 corner_radius_top_right = 5
 corner_radius_bottom_right = 5
 
@@ -49,22 +52,36 @@ script = ExtResource("1_y6t73")
 layout_mode = 2
 theme_override_constants/separation = 0
 
-[node name="name" type="PanelContainer" parent="wrapper" unique_id=2033548576]
+[node name="wrapper2" type="PanelContainer" parent="wrapper" unique_id=1187739693]
 layout_mode = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_0pwqf")
 
-[node name="name" type="Label" parent="wrapper/name" unique_id=196848224]
+[node name="name" type="PanelContainer" parent="wrapper/wrapper2" unique_id=2033548576]
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxEmpty_4jtv5")
+
+[node name="name" type="Label" parent="wrapper/wrapper2/name" unique_id=196848224]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
 text = "Body"
 
-[node name="debug" type="Button" parent="wrapper/name" unique_id=356742432]
+[node name="debug" type="Button" parent="wrapper/wrapper2/name" unique_id=356742432]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 8
 mouse_filter = 1
+
+[node name="margin" type="PanelContainer" parent="wrapper/wrapper2" unique_id=741381533]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_xsu4m")
+
+[node name="split" type="Panel" parent="wrapper/wrapper2/margin" unique_id=960628068]
+layout_mode = 2
+mouse_filter = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_y6t73")
 
 [node name="wrapper" type="PanelContainer" parent="wrapper" unique_id=2125223560]
 layout_mode = 2

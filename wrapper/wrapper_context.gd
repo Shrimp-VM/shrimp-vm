@@ -47,14 +47,17 @@ func locate(what: Array[GDScript] = [NodeBlock, NodeParameter]) -> Node:
 	var forwarded = false
 	var result = nodeTree
 	var pendingArray = []
+	var pendingParam: NodeParameter = null
 	var pathPart = pointer.normalize().seek_root()
 	while is_instance_valid(pathPart):
 		match pathPart.type:
 			WrapperPath.PartType.ATTRIBUTE:
 				if result is NodeBlock:
 					var param = result.parameterWrapper.get_node(pathPart.path) as NodeParameter
-					result = param
-					forwarded = true
+					pendingParam = param
+					if NodeParameter in what:
+						result = pendingParam
+						forwarded = true
 					if param.schema.array:
 						pendingArray = param.arrayWrapper.get_children()
 					else:

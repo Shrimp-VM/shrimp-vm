@@ -25,8 +25,10 @@ var parameterBox: StyleBoxFlat
 var targetContext: WrapperContext
 var getContext: WrapperContext:
 	get:
-		if Engine.is_editor_hint(): return WrapperContext.new(data, WrapperPath.from("/"), self)
-		return targetContext
+		if is_instance_valid(targetContext):
+			return targetContext
+		else:
+			return WrapperContext.new(placeholderWrapper.merged({"type": placeholderIR.get_node_type()}), WrapperPath.from("/"), self)
 var targetIR: ShrimpIR:
 	get:
 		return ShrimpVMUtil.find_ir_node(data.type)
@@ -35,11 +37,9 @@ var schema: Dictionary:
 		return targetIR.get_wrapper_schema()
 var data: Dictionary:
 	get:
-		if Engine.is_editor_hint(): return placeholderWrapper.merged({"type": targetIR.get_node_type()})
 		return getContext.get_pointer()
 var parentBlock: NodeBlock:
 	get:
-		if Engine.is_editor_hint(): return null
 		return getContext.forward(WrapperPath.from("<")).locate([NodeBlock])
 
 func _ready() -> void:
@@ -50,7 +50,7 @@ func _ready() -> void:
 	# )
 	mark_selection.connect(
 		func(node: NodeBlock):
-			if is_instance_valid(parentBlock):
+			if is_instance_valid(parentBlock) && parentBlock:
 				parentBlock.mark_selection.emit(node)
 	)
 	mark_selection.emit(self)
@@ -86,7 +86,6 @@ func rebuild_count():
 	else:
 		countBar.hide()
 func get_color() -> Color:
-	if Engine.is_editor_hint(): return Color.BROWN
 	var node = ShrimpVMUtil.find_ir_node(getContext.get_pointer().get("type", ""))
 	if node:
 		return ShrimpPluginManager.shade_category(node.get_category_tag())

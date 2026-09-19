@@ -197,15 +197,17 @@ func _test_seek_parent() -> void:
 	_assert_null(p.next.next.seek_parent([]), "无匹配类型时应返回 null")
 
 
-## duplicate(true)：前向链递归复制、parent 引用共享
+## duplicate(true)：前向链与 parent 链均深拷贝，原链不受影响
 func _test_duplicate_deep() -> void:
 	var p := WrapperPath.from("a.b")
-	var q := p.duplicate(true)
-	_assert_true(q != p, "深拷贝应产生新节点")
-	_assert_eq(q._to_string(), p._to_string(), "拷贝后结构一致")
-	_assert_true(q.parent == p.parent, "深拷贝共享 parent 引用")
-	# 当前实现：副本节点的 reparent 会把原链的 next 重接到副本链上
-	_assert_true(p.next == q.next, "原链 next 被重接到副本链（当前实现行为）")
+	var q := p.next.duplicate(true)
+	_assert_true(q != p.next, "深拷贝应产生新节点")
+	_assert_eq(q._to_string(), p.next._to_string(), "拷贝后结构一致")
+	_assert_true(q.parent != p, "parent 应为克隆而非共享引用")
+	_assert_true(q.parent.next == q, "克隆的 parent 链应正确回接")
+	_assert_eq(q.parent._to_string(), p._to_string(), "parent 链克隆后结构一致")
+	_assert_true(p.next.parent == p, "原链不应被修改")
+	_assert_true(p.next.next.parent == p.next, "原链 next 指向不变")
 
 
 ## duplicate(false)：后继链与 parent 均共享

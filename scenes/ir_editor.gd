@@ -11,10 +11,7 @@ signal script_run_finihsed()
 signal modal_finished()
 
 @export_tool_button("Rebuild") var rebuilder = rebuild
-@export var treeData: Dictionary = {
-	"type": "root",
-	"body": []
-}
+@export var treeData: Dictionary = {}
 @export var finiteBlockCount: bool = false
 @export var initialDesk: Array[ShrimpIR] = []
 @export var defaultFileSystem: Dictionary[StringName, ShrimpIR] = {}

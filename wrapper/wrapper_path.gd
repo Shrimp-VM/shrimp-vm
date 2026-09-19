@@ -92,12 +92,21 @@ func seek_tail() -> WrapperPath:
 	else:
 		return self
 func duplicate(deep: bool = false) -> WrapperPath:
-	return WrapperPath.new(
-		type,
-		path,
-		next.duplicate(deep) if deep && is_instance_valid(next) else next,
-		parent
-	)
+	var result = WrapperPath.new(type, path)
+	if deep:
+		if is_instance_valid(next):
+			result.renext(next.duplicate(true))
+		var resultPointer: WrapperPath = result
+		var oldParent: WrapperPath = parent
+		while is_instance_valid(oldParent):
+			var cloned = WrapperPath.new(oldParent.type, oldParent.path)
+			resultPointer.reparent(cloned)
+			oldParent = oldParent.parent
+			resultPointer = cloned
+	else:
+		result.reparent(parent)
+		result.renext(next)
+	return result
 func concat(child: WrapperPath) -> WrapperPath:
 	if child.type == PartType.ROOT:
 		return child.duplicate()
