@@ -2,6 +2,8 @@
 extends RefCounted
 class_name GarlicParser
 
+const IMPORTER_ID = "shrimpvm.garlic"
+
 var tokens: Array[GarlicLexer.Token] = []
 var position: int = 0
 var errors: Array[String] = []
@@ -158,3 +160,8 @@ static func parse(source: String) -> Variant:
 			push_error("GarlicParser: %s" % message)
 		return null
 	return result
+static func parse_from_file(fp: String):
+	var f = FileAccess.open(fp, FileAccess.ModeFlags.READ)
+	if !f:
+		return null
+	return parse(f.get_as_text())
