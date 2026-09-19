@@ -17,21 +17,21 @@ func run(path: WrapperPath) -> Variant:
 func forward(path: WrapperPath) -> WrapperContext:
 	return WrapperContext.new(dataTree, pointer.duplicate(true).concat(path).normalize(), nodeTree)
 func seek(distPath: WrapperPath):
-	var node = dataTree
+	var result = dataTree
 	var part: WrapperPath = distPath.seek_root()
 	while is_instance_valid(part):
 		match part.type:
 			WrapperPath.PartType.ATTRIBUTE:
-				if node is Dictionary:
-					node = node.get(part.path)
+				if result is Dictionary:
+					result = result.get(part.path)
 				else:
 					push_error("Must execute attribute on a Dictionary.")
 					return null
 			WrapperPath.PartType.INDEX:
-				if node is Array:
+				if result is Array:
 					var i: int = part.path
-					if i >= 0 && i < node.size():
-						node = node[i]
+					if i >= 0 && i < result.size():
+						result = result[i]
 					else:
 						push_error("Index out of range: %d" % i)
 						return null
@@ -39,9 +39,9 @@ func seek(distPath: WrapperPath):
 					push_error("Must execute index on an Array.")
 					return null
 			WrapperPath.PartType.ROOT:
-				node = dataTree
+				result = dataTree
 		part = part.next
-	return node
+	return result
 func locate(what: Array[GDScript] = [NodeBlock, NodeParameter]) -> Node:
 	if !is_instance_valid(pointer): return null
 	var forwarded = false

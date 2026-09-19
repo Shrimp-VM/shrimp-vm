@@ -46,7 +46,6 @@ func _gui_input(event: InputEvent) -> void:
 		if !event.pressed: return
 		if ShrimpVMUtil.schema_typeis(schema, ShrimpIR.TYPE_ENUM):
 			selected.emit(self)
-			print("select p", self)
 		else:
 			block.requestSelect()
 

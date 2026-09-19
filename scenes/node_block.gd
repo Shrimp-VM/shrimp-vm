@@ -70,7 +70,6 @@ func _gui_input(event: InputEvent) -> void:
 				consume()
 		else:
 			requestSelect()
-			print("select b", self)
 
 func requestSelect(pointer: WrapperPath = null):
 	selected.emit(pointer if is_instance_valid(pointer) else getContext.pointer)

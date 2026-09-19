@@ -149,12 +149,11 @@ func rebuild_desk():
 							if is_instance_valid(selectingPointer):
 								if selectingPointer is NodeParameter:
 									if !ShrimpVMUtil.schema_typeis(selectingPointer.schema, ShrimpIR.TYPE_ENUM): return
-									var attributeKey = selectingPointer.name
 									if selectingPointer.schema.array:
 										childrenList = selectingPointer.value
 										insertIndex = -1
 									else:
-										selectingPointer.value[attributeKey] = wrapper
+										selectingPointer.block.data[selectingPointer.name] = wrapper
 							childrenList.assign(ShrimpVMUtil.erase_gunmu(childrenList))
 							if insertIndex < 0:
 								childrenList.append(wrapper)
@@ -193,7 +192,7 @@ func get_root_block() -> NodeBlock:
 func delete_node(block: NodeBlock):
 	for parameter in block.parameterWrapper.get_children():
 		if parameter is NodeParameter:
-			if typeof(parameter.schema.type) != TYPE_INT || parameter.schema.type != ShrimpIR.TYPE_ENUM: continue
+			if !ShrimpVMUtil.schema_typeis(parameter.schema, ShrimpIR.TYPE_ENUM): continue
 			if parameter.schema.array:
 				for child in parameter.arrayWrapper.get_children():
 					if child is NodeBlock:
