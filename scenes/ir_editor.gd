@@ -146,24 +146,32 @@ func rebuild_desk():
 							var wrapper = instance.create_wrapper()
 							var childrenList: Array = []
 							var insertIndex = -1
-							if is_instance_valid(selectingPointer):
-								if selectingPointer is NodeParameter:
-									if !ShrimpVMUtil.schema_typeis(selectingPointer.schema, ShrimpIR.TYPE_ENUM): return
-									if selectingPointer.schema.array:
-										childrenList = selectingPointer.value
-										insertIndex = -1
-									else:
-										selectingPointer.block.data[selectingPointer.name] = wrapper
+							if selectingPointer is NodeParameter:
+								if !ShrimpVMUtil.schema_typeis(selectingPointer.schema, ShrimpIR.TYPE_ENUM): return
+								if selectingPointer.schema.array:
+									childrenList = selectingPointer.value
+									insertIndex = -1
+								else:
+									selectingPointer.block.data[selectingPointer.name] = wrapper
+							elif selectingPointer is NodeBlock:
+								if !is_instance_valid(selectingPointer.parentBlock): return
+								childrenList = selectingPointer.parentBlock.data[selectingPointer.parentParameterKey]
+								insertIndex = selectingPointer.get_index()
+							# 不是插入的话自动插进一个空数组去然后垃圾回收，不需要重写
 							childrenList.assign(ShrimpVMUtil.erase_gunmu(childrenList))
 							if insertIndex < 0:
 								childrenList.append(wrapper)
 							else:
 								childrenList.insert(insertIndex, wrapper)
+							if selectingPointer is NodeParameter:
+								selectingPointer.rebuild()
+							elif selectingPointer is NodeBlock:
+								selectingPointer.parentParameterBox.rebuild()
+							update_selection()
 						else:
 							treeData = instance.create_wrapper()
 						blockCounts[ir] -= 1
 						save_current_file()
-						rebuild()
 				)
 func rebuild():
 	if Engine.is_editor_hint():
@@ -183,27 +191,31 @@ func rebuild():
 	else:
 		treeData = {}
 		treeTip.show()
-	select(null)
+	update_selection()
 func get_root_block() -> NodeBlock:
 	for child in treeCenter.get_children():
 		if child is NodeBlock:
 			return child
 	return null
-func delete_node(block: NodeBlock):
+func delete_node(block: NodeBlock, auto_rebuild: bool = true):
 	for parameter in block.parameterWrapper.get_children():
 		if parameter is NodeParameter:
 			if !ShrimpVMUtil.schema_typeis(parameter.schema, ShrimpIR.TYPE_ENUM): continue
 			if parameter.schema.array:
 				for child in parameter.arrayWrapper.get_children():
 					if child is NodeBlock:
-						delete_node(child)
+						delete_node(child, false)
 			else:
 				for child in parameter.valueWrapper.get_children():
 					if child is NodeBlock:
-						delete_node(child)
+						delete_node(child, false)
 	block.data.invalid = true
 	store_block(block.data.type)
-	rebuild()
+	if auto_rebuild:
+		if block.parentParameterBox:
+			block.parentParameterBox.rebuild()
+		else:
+			rebuild()
 func store_block(type: String, count: int = 1):
 	blockCounts[find_ir_typed(type)] += count
 	rebuild_desk()
@@ -265,10 +277,12 @@ func select(path: WrapperPath):
 			inspector.show()
 		else:
 			inspector.hide()
-		selectionMgr.select("cyan", selectingPointer)
+		update_selection()
 	else:
 		selectionMgr.stop_all()
 		inspector.hide()
+func update_selection():
+	selectionMgr.select("cyan", selectingPointer)
 func modal(content: String = ""):
 	if content:
 		modalLabel.text = content

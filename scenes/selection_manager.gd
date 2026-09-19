@@ -11,9 +11,9 @@ func get_panel_list() -> Array[String]:
 	var result: Array[String] = []
 	result.assign(get_children().map(func(e: Node): return e.name))
 	return result
-func get_panel(namx: String) -> Panel:
+func get_panel(namx: String) -> SelectionRect:
 	var panel = get_node_or_null(namx)
-	if panel is Panel:
+	if panel is SelectionRect:
 		return panel
 	else:
 		return null
@@ -30,4 +30,5 @@ func move(namx: String, positiox: Vector2, sizx: Vector2):
 	panel.size = sizx
 	start(namx)
 func select(namx: String, box: Control):
+	if !is_instance_valid(box): return stop(namx)
 	move(namx, box.global_position - Vector2(1, 1) * BOX_PADDING, box.size + Vector2(1, 1) * 2 * BOX_PADDING)

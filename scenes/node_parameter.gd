@@ -47,7 +47,7 @@ func _gui_input(event: InputEvent) -> void:
 		if ShrimpVMUtil.schema_typeis(schema, ShrimpIR.TYPE_ENUM):
 			selected.emit(self)
 		else:
-			block.requestSelect()
+			block.request_select()
 
 func make_template(namx: NodePath) -> Control:
 	return templateWrapper.get_node(namx).duplicate()
@@ -57,6 +57,8 @@ func rebuild():
 	ShrimpVMUtil.disconnect_children(valueWrapper)
 	if schema.array:
 		if value is Array:
+			if ShrimpVMUtil.schema_typeis(schema, ShrimpIR.TYPE_ENUM):
+				value = ShrimpVMUtil.erase_gunmu(value)
 			if value.is_empty():
 				emptyTip.show()
 			else:

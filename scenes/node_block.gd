@@ -43,9 +43,12 @@ var data: Dictionary:
 var parentBlock: NodeBlock:
 	get:
 		return ownerParameter.ownerBlock if ownerParameter else null
-var parentAttribute: String:
+var parentParameterKey: String:
 	get:
 		return String(ownerParameter.name) if ownerParameter else ""
+var parentParameterBox: NodeParameter:
+	get:
+		return parentBlock.get_parameter(parentParameterKey)
 
 func _ready() -> void:
 	# frameBar.clicked.connect(
@@ -69,9 +72,11 @@ func _gui_input(event: InputEvent) -> void:
 				clicked.emit()
 				consume()
 		else:
-			requestSelect()
+			request_select()
 
-func requestSelect(pointer: WrapperPath = null):
+func get_parameter(key: String) -> NodeParameter:
+	return parameterWrapper.get_node(key)
+func request_select(pointer: WrapperPath = null):
 	selected.emit(pointer if is_instance_valid(pointer) else getContext.pointer)
 func consume():
 	count -= 1
@@ -113,7 +118,7 @@ func rebuild():
 				instance = NodeParameter.create(getContext.forward(WrapperPath.from(key)), parameterWrapper, self)
 			instance.selected.connect(
 				func(p: NodeParameter):
-					requestSelect(p.getContext.pointer)
+					request_select(p.getContext.pointer)
 			)
 func can_show_parameters() -> bool:
 	return len(schema.attributes) > 0 && !inDesk

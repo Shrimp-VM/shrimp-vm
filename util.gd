@@ -67,10 +67,9 @@ static func concat_array(a: Array, b: Array):
 	var result = a.duplicate()
 	result.append_array(b)
 	return result
-static func erase_gunmu(nodes: Array) -> Array[Dictionary]:
-	var result: Array[Dictionary] = []
-	result.assign(nodes.filter(func(e): return !e.get("invalid", false)))
-	return result
+static func erase_gunmu(wrappers: Array) -> Array:
+	wrappers.assign(wrappers.filter(wrapper_is_valid))
+	return wrappers
 static func erase_nonir(array: Array) -> Array[ShrimpIR]:
 	var result: Array[ShrimpIR] = []
 	result.assign(array.filter(func(e): return is_instance_valid(e) && e is ShrimpIR))

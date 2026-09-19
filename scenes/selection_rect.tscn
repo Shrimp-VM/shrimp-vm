@@ -1,5 +1,7 @@
 [gd_scene format=3 uid="uid://bgavbblqerqdd"]
 
+[ext_resource type="Script" uid="uid://bdvy6mpwq5tgj" path="res://addons/shrimpvm/scenes/selection_rect.gd" id="1_1yi3k"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y3w75"]
 content_margin_left = 10.0
 content_margin_top = 10.0
@@ -21,3 +23,4 @@ offset_right = 50.0
 offset_bottom = 50.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_y3w75")
+script = ExtResource("1_1yi3k")
