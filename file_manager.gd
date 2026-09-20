@@ -14,8 +14,17 @@ signal rebuilding(file: VirtualFile)
 @export var allowArchive: bool = true
 
 var files: Array[VirtualFile] = []
+var autoCompilations: Dictionary[VirtualFile, ShrimpIR] = {}
 var currentOpening: VirtualFile = null
 
+func auto_compile():
+	for file in files:
+		autoCompilations[file] = ShrimpCompiler.import_json(file.content)
+func get_compilation(fn: StringName) -> ShrimpIR:
+	for file in files:
+		if file.fileName == fn:
+			return autoCompilations.get(file)
+	return null
 func add(fn: StringName, content: String):
 	match search(fn):
 		var found when found is VirtualFile:
@@ -43,6 +52,8 @@ func delete():
 	if is_instance_valid(currentOpening):
 		if currentOpening in files:
 			files.erase(currentOpening)
+		if currentOpening in autoCompilations:
+			autoCompilations.erase(currentOpening)
 		currentOpening.queue_free()
 	currentOpening = null
 	delete_file.emit(currentOpening)
@@ -65,9 +76,9 @@ func rebuild():
 	rebuilding.emit(currentOpening)
 	if is_instance_valid(currentOpening):
 		currentOpening.rebuild()
-func compile() -> String:
+func serialize() -> String:
 	return JSON.new().stringify(files.map(func(e: VirtualFile): return [e.fileName, e.content]))
-func decompile(src: String) -> Array:
+func deserialize(src: String) -> Array:
 	var json = JSON.new()
 	if json.parse(src) != OK:
 		return []
@@ -80,8 +91,8 @@ func archive() -> String:
 	if fa == null:
 		push_error("Failed to write archive file.")
 		return ""
-	var compiled = compile()
-	fa.store_string(compile())
+	var compiled = serialize()
+	fa.store_string(serialize())
 	fa.close()
 	return compiled
 func inarchive() -> String:
@@ -92,7 +103,7 @@ func inarchive() -> String:
 	if fa == null:
 		push_error("Failed to read archive file.")
 		return ""
-	for data in decompile(fa.get_as_text()):
+	for data in deserialize(fa.get_as_text()):
 		add(data[0], data[1])
 	fa.close()
-	return compile()
+	return serialize()
