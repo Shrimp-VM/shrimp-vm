@@ -68,7 +68,7 @@ func _ready() -> void:
 	langBtn.item_selected.connect(
 		func(index):
 			TranslationServer.set_locale(languages[langBtn.get_item_text(index)])
-			rebuild()
+			rebuild(true)
 	)
 	runBtn.pressed.connect(
 		func():
@@ -186,8 +186,8 @@ func rebuild_desk():
 						blockCounts[ir] -= 1
 						save_current_file()
 				)
-func rebuild():
-	if Engine.is_editor_hint():
+func rebuild(all: bool = false):
+	if Engine.is_editor_hint() || all:
 		rebuild_desk()
 		langBtn.item_count = 0
 		for lang in languages:
