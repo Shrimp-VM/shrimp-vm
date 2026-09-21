@@ -17,11 +17,16 @@ signal modal_finished()
 @export var defaultFileSystem: Dictionary[StringName, ShrimpIR] = {}
 @export var loadBuiltins: bool = false
 @export_dir var autoScanDirs: Array[String] = []
+@export var languages: Dictionary[StringName, String] = {
+	"English": "en",
+	"简体中文": "zh_CN"
+}
 
 @onready var vm: ShrimpVM = $%vm
 @onready var fileManager: ShrimpFileManager = $%fileManager
 @onready var openBtn: Button = $%openBtn
 @onready var saveBtn: Button = $%saveBtn
+@onready var langBtn: OptionButton = $%langBtn
 @onready var runBtn: Button = $%runBtn
 @onready var newFileBtn: Button = $%newFileBtn
 @onready var closeFileBtn: Button = $%closeFileBtn
@@ -59,6 +64,11 @@ func _ready() -> void:
 		func():
 			fileSaver.popup()
 			save_to(await fileSaver.file_selected)
+	)
+	langBtn.item_selected.connect(
+		func(index):
+			TranslationServer.set_locale(languages[langBtn.get_item_text(index)])
+			rebuild()
 	)
 	runBtn.pressed.connect(
 		func():
@@ -179,6 +189,9 @@ func rebuild_desk():
 func rebuild():
 	if Engine.is_editor_hint():
 		rebuild_desk()
+		langBtn.item_count = 0
+		for lang in languages:
+			langBtn.add_item(lang)
 	ShrimpVMUtil.disconnect_children(treeCenter, [treeTip])
 	if has_root_node():
 		var ir = find_ir_typed(treeData.type)

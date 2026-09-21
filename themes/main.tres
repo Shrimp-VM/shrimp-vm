@@ -1,5 +1,7 @@
 [gd_resource type="Theme" format=3 uid="uid://bvgxqtaxctodq"]
 
+[ext_resource type="Texture2D" uid="uid://d2hgdsfp87hea" path="res://addons/shrimpvm/icons/arrow.svg" id="1_68ttx"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_68ttx"]
 content_margin_left = 16.0
 content_margin_top = 5.0
@@ -73,3 +75,5 @@ Button/styles/hover = SubResource("StyleBoxFlat_ogx0k")
 Button/styles/hover_pressed = SubResource("StyleBoxFlat_fkaul")
 Button/styles/normal = SubResource("StyleBoxFlat_ulikd")
 Button/styles/pressed = SubResource("StyleBoxFlat_fkaul")
+OptionButton/constants/arrow_margin = 10
+OptionButton/icons/arrow = ExtResource("1_68ttx")
