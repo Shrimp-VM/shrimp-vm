@@ -132,7 +132,7 @@ func rebuild_desk():
 	ShrimpVMUtil.disconnect_children(deskWrapper)
 	for category in categories:
 		var title = Label.new()
-		title.text = category
+		title.text = ShrimpTranslator.get_category(category)
 		title.label_settings = LabelSettings.new()
 		title.label_settings.font_color = Color.BLACK
 		deskWrapper.add_child(title)

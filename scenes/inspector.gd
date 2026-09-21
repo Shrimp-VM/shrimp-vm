@@ -31,4 +31,4 @@ func rebuild():
 		var instance = load("res://addons/shrimpvm/scenes/parameter_inspector.tscn").instantiate() as ParameterInspector
 		attributeWrapper.add_child(instance)
 		instance.rebuild(attribute.label, editor)
-	descriptionLabel.text = block.schema.description
+	descriptionLabel.text = ShrimpTranslator.get_ir_description(block.targetIR)

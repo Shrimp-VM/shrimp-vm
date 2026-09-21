@@ -52,7 +52,7 @@ func _gui_input(event: InputEvent) -> void:
 func make_template(namx: NodePath) -> Control:
 	return templateWrapper.get_node(namx).duplicate()
 func rebuild():
-	nameLabel.text = schema.label
+	nameLabel.text = ShrimpTranslator.get_attribute_label(ownerBlock.targetIR, name)
 	ShrimpVMUtil.disconnect_children(arrayWrapper)
 	ShrimpVMUtil.disconnect_children(valueWrapper)
 	if schema.array:

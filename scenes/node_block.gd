@@ -103,7 +103,7 @@ func get_color() -> Color:
 		return Color.BLACK
 func rebuild():
 	rebuild_count()
-	nameLabel.text = schema.name
+	nameLabel.text = ShrimpTranslator.get_ir_name(targetIR)
 	styleBox.bg_color = get_color()
 	nextIcon.fillColor = get_color()
 	parameterPanel.visible = can_show_parameters()
