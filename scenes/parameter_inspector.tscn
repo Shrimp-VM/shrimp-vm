@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" uid="uid://dv6l00jnwu6hm" path="res://addons/shrimpvm/scenes/parameter_inspector.gd" id="1_5lk73"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_5lk73"]
+font_color = Color(0, 0, 0, 1)
+
 [node name="ParameterInspector" type="HBoxContainer" unique_id=1577221721]
 offset_right = 5.0
 offset_bottom = 23.0
@@ -11,6 +14,7 @@ script = ExtResource("1_5lk73")
 unique_name_in_owner = true
 layout_mode = 2
 text = "参数名称"
+label_settings = SubResource("LabelSettings_5lk73")
 
 [node name="editor" type="CenterContainer" parent="." unique_id=704067819]
 unique_name_in_owner = true

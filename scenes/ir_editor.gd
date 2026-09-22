@@ -125,14 +125,14 @@ func _ready() -> void:
 	fileTip.show()
 	for fp in defaultFileSystem:
 		fileManager.add(fp, ShrimpCompiler.export_json(defaultFileSystem[fp]))
-	if !Engine.is_editor_hint():
-		fileManager.inarchive()
-		fileManager.close()
 	var desk = initialDesk
 	if loadBuiltins:
 		desk += ShrimpVMUtil.get_builtins()
 	desk += ShrimpVMUtil.scan_ir_nodes(autoScanDirs)
 	blockCounts = ShrimpVMUtil.create_count_map(desk)
+	if !Engine.is_editor_hint():
+		fileManager.inarchive()
+		fileManager.close()
 	rebuild()
 	rebuild_desk()
 	modal()
