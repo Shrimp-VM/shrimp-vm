@@ -129,10 +129,11 @@ func _ready() -> void:
 	if loadBuiltins:
 		desk += ShrimpVMUtil.get_builtins()
 	desk += ShrimpVMUtil.scan_ir_nodes(autoScanDirs)
-	blockCounts = ShrimpVMUtil.create_count_map(desk)
+	blockCounts.merge(ShrimpVMUtil.create_count_map(desk))
 	if !Engine.is_editor_hint():
 		fileManager.inarchive()
 		fileManager.close()
+		fileManager.auto_compile()
 	rebuild()
 	rebuild_desk()
 	modal()
