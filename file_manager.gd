@@ -25,7 +25,7 @@ func get_compilation(fn: StringName) -> ShrimpIR:
 		if file.fileName == fn:
 			return autoCompilations.get(file)
 	return null
-func add(fn: StringName, content: String):
+func add(fn: StringName, content: String, autoOpen: bool = true):
 	match search(fn):
 		var found when found is VirtualFile:
 			open(found)
@@ -36,18 +36,20 @@ func add(fn: StringName, content: String):
 	files.append(file)
 	add_file.emit(file)
 	file.clicked.connect(open)
-	open(file)
+	if autoOpen:
+		open(file)
 	archive()
 func open(file: VirtualFile):
+	if !is_instance_valid(file): return
 	close()
 	open_file.emit(file)
 	currentOpening = file
 	file.opening = true
 func close():
-	if is_instance_valid(currentOpening):
-		close_file.emit(currentOpening)
-		currentOpening.opening = false
-		currentOpening = null
+	if !is_instance_valid(currentOpening): return
+	close_file.emit(currentOpening)
+	currentOpening.opening = false
+	currentOpening = null
 func delete():
 	if is_instance_valid(currentOpening):
 		if currentOpening in files:
@@ -66,7 +68,9 @@ func save(content: String):
 	if !is_instance_valid(currentOpening): return
 	currentOpening.content = content
 	archive()
-func search(fn: String) -> VirtualFile:
+func has_file(fn: StringName) -> bool:
+	return files.find_custom(func(e: VirtualFile): return e.fileName == fn) >= 0
+func search(fn: StringName) -> VirtualFile:
 	var index = files.find_custom(func(e: VirtualFile): return e.fileName == fn)
 	if index >= 0:
 		return files[index]

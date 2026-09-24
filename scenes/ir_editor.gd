@@ -10,11 +10,13 @@ signal script_run_start()
 signal script_run_finihsed()
 signal modal_finished()
 
-@export_tool_button("Rebuild") var rebuilder = rebuild
+@export_tool_button("Rebuild editor") var rebuilder = rebuild
+@export_tool_button("Run workspace") var runer = run_workspace
 @export var treeData: Dictionary = {}
 @export var finiteBlockCount: bool = false
 @export var initialDesk: Array[ShrimpIR] = []
 @export var defaultFileSystem: Dictionary[StringName, ShrimpIR] = {}
+@export var autoOpen: StringName = ""
 @export var loadBuiltins: bool = false
 @export_dir var autoScanDirs: Array[String] = []
 @export var languages: Dictionary[StringName, String] = {
@@ -70,20 +72,7 @@ func _ready() -> void:
 			TranslationServer.set_locale(languages[langBtn.get_item_text(index)])
 			rebuild(true)
 	)
-	runBtn.pressed.connect(
-		func():
-			compilation_start.emit()
-			compilationWarns = []
-			save_current_file()
-			if !has_root_node():
-				compilation_warn.emit(ShrimpOptimizer.WarnType.NULL_ROOT, "Cannot run null script.")
-			compilation_stage.emit("Building IR-Trees: %s" % JSON.stringify(treeData, "    "))
-			var ir = ShrimpCompiler.compile(treeData, true, compilation_warn)
-			compilation_finished.emit()
-			script_run_start.emit()
-			await vm.execute(ir, debugContext)
-			script_run_finihsed.emit()
-	)
+	runBtn.pressed.connect(run_workspace)
 	newFileBtn.pressed.connect(
 		func():
 			fileManager.add("%d.sst" % randi_range(100000, 999999), save_data())
@@ -122,22 +111,35 @@ func _ready() -> void:
 	)
 	modalPanel.clicked.connect(modal)
 	compilation_warn.connect(func(t, m): compilationWarns.append([t, m]))
-	fileTip.show()
-	for fp in defaultFileSystem:
-		fileManager.add(fp, ShrimpCompiler.export_json(defaultFileSystem[fp]))
 	var desk = initialDesk
 	if loadBuiltins:
 		desk += ShrimpVMUtil.get_builtins()
 	desk += ShrimpVMUtil.scan_ir_nodes(autoScanDirs)
 	blockCounts.merge(ShrimpVMUtil.create_count_map(desk))
+	fileTip.show()
+	for fp in defaultFileSystem:
+		fileManager.add(fp, ShrimpCompiler.export_json(defaultFileSystem[fp]), false)
 	if !Engine.is_editor_hint():
 		fileManager.inarchive()
-		fileManager.close()
 		fileManager.auto_compile()
+	fileManager.close()
+	fileManager.open(fileManager.search(autoOpen))
 	rebuild()
 	rebuild_desk()
 	modal()
 
+func run_workspace():
+	compilation_start.emit()
+	compilationWarns = []
+	save_current_file()
+	if !has_root_node():
+		compilation_warn.emit(ShrimpOptimizer.WarnType.NULL_ROOT, "Cannot run null script.")
+	compilation_stage.emit("Building IR-Trees: %s" % JSON.stringify(treeData, "    "))
+	var ir = ShrimpCompiler.compile(treeData, true, compilation_warn)
+	compilation_finished.emit()
+	script_run_start.emit()
+	await vm.execute(ir, debugContext)
+	script_run_finihsed.emit()
 func rebuild_desk():
 	var categories = ShrimpVMUtil.category_desk(blockCounts.keys())
 	ShrimpVMUtil.disconnect_children(deskWrapper)

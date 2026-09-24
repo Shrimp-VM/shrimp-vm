@@ -1,7 +1,8 @@
 extends RefCounted
 class_name ExecutionContext
 
-signal exit(data: Variant)
+signal exited(data: Variant)
+signal paused(data: Variant)
 
 enum LifeMode {
 	STOP,
@@ -15,6 +16,7 @@ var env: ExecutionEnvironment
 var running: bool = false
 var lastResult: Variant
 var body: Array[ShrimpIR]
+var vm: ShrimpVM
 var currentNode: ShrimpIR
 var currentIndex: int = 0
 
@@ -28,30 +30,48 @@ func _init(parenx: ExecutionContext = null, lifeModx: LifeMode = LifeMode.PASS, 
 		env.reparent(parent.env)
 
 # Every context can only run 1 task the same time
-func start(nodes: Array[ShrimpIR], vm: ShrimpVM) -> Variant:
+func start(nodes: Array[ShrimpIR], vmx: ShrimpVM, startLoop: bool = true) -> Variant:
 	if running:
-		return await ExecutionContext.new(parent, lifeMode, env).start(nodes, vm)
+		return await ExecutionContext.new(parent, lifeMode, env).start(nodes, vmx)
 	body = ShrimpVMUtil.erase_nonir(nodes)
+	vm = vmx
 	running = true
 	currentIndex = 0
 	lastResult = null
-	while currentIndex < len(body):
-		if !running:
-			return lastResult
+	if startLoop:
+		return await eventloop(vmx)
+	else:
+		return null
+func eventloop(vmx: ShrimpVM = null) -> Variant:
+	if is_instance_valid(vmx):
+		vm = vmx
+	elif !is_instance_valid(vm):
+		assert(false, "Cannot run event loop without a VM.")
+		return null
+	while !is_exited():
 		var node = body[currentIndex]
+		var result
 		if is_instance_valid(node) && node is ShrimpIR:
 			currentNode = node
-			var result = await node.execute(vm, self)
-			if running:
-				lastResult = result
-		else:
-			push_warning("%s is not a ShrimpIR, skipping execution." % node)
+			result = await node.execute(vm, self)
 		currentIndex += 1
+		if running:
+			lastResult = result
+		else:
+			return lastResult
 	return exit_with(lastResult)
+func is_exited() -> bool:
+	return currentIndex >= len(body)
 func exit_with(data: Variant):
-	lastResult = data
-	exit.emit(data)
+	exited.emit(data)
 	running = false
+	currentIndex = len(body)
+	lastResult = data
+	return data
+func pause_with(data: Variant):
+	paused.emit(data)
+	running = false
+	lastResult = data
 	return data
 func stop_parent(data: Variant, spread: bool = false):
 	if is_instance_valid(parent):

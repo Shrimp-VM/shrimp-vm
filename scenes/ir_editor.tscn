@@ -7,74 +7,105 @@
 [ext_resource type="Script" uid="uid://uw4oee4tvks" path="res://addons/shrimpvm/nodes/base/root_node.gd" id="3_iu8n6"]
 [ext_resource type="Script" uid="uid://chc23i883u687" path="res://addons/shrimpvm/scenes/editor_workspace.gd" id="3_ohykq"]
 [ext_resource type="Script" uid="uid://b60gj4dvoyto0" path="res://addons/shrimpvm/nodes/base/read_symbol.gd" id="3_pyu3y"]
+[ext_resource type="Script" uid="uid://wcx6kruoo167" path="res://addons/shrimpvm/nodes/literals/string_node.gd" id="3_wa8sf"]
 [ext_resource type="Texture2D" uid="uid://cfx1oikjukn4e" path="res://addons/shrimpvm/icons/run.svg" id="4_0kp88"]
-[ext_resource type="Script" uid="uid://dy5pnqath5i5g" path="res://addons/shrimpvm/nodes/maths/add_node.gd" id="4_wa8sf"]
-[ext_resource type="Script" uid="uid://4e7vf5klfk8u" path="res://addons/shrimpvm/nodes/macros/return_node.gd" id="5_5mgoq"]
 [ext_resource type="Script" uid="uid://2bp5i42dylnd" path="res://addons/shrimpvm/clickable_wrapper.gd" id="5_nc1qr"]
 [ext_resource type="Script" uid="uid://dipbdjhg4p62u" path="res://addons/shrimpvm/nodes/macros/function_definition_node.gd" id="6_8c755"]
+[ext_resource type="Script" uid="uid://ypjkdf7lnpoi" path="res://addons/shrimpvm/nodes/literals/bool_node.gd" id="6_ott1x"]
 [ext_resource type="Script" uid="uid://ctpbtdput2kyx" path="res://addons/shrimpvm/plugin/shrimp_plugin_manager.gd" id="6_p0jkk"]
 [ext_resource type="Script" uid="uid://vjqr0exaodsu" path="res://addons/shrimpvm/plugin/shrimp_plugin.gd" id="7_1fc1t"]
 [ext_resource type="Script" uid="uid://cvqni0e6mnw20" path="res://addons/shrimpvm/nodes/literals/number_node.gd" id="7_8c755"]
+[ext_resource type="Script" uid="uid://cit3q8s785amk" path="res://addons/shrimpvm/nodes/macros/yield_node.gd" id="7_jwp8f"]
 [ext_resource type="Script" uid="uid://df4i8jqw37216" path="res://addons/shrimpvm/nodes/macros/function_call_node.gd" id="8_h6e4u"]
+[ext_resource type="Script" uid="uid://dd050p5d2k4oe" path="res://addons/shrimpvm/nodes/streams/repeat_node.gd" id="8_mlimm"]
 [ext_resource type="Script" uid="uid://da63e86ydg0o" path="res://addons/shrimpvm/nodes/functions/print_node.gd" id="9_m2yu7"]
 [ext_resource type="PackedScene" uid="uid://bgavbblqerqdd" path="res://addons/shrimpvm/scenes/selection_rect.tscn" id="12_iu8n6"]
 [ext_resource type="Script" uid="uid://c2exvird41rgj" path="res://addons/shrimpvm/scenes/selection_manager.gd" id="12_t82hj"]
+[ext_resource type="Script" uid="uid://cf5p3iodwlcu" path="res://addons/shrimpvm/nodes/streams/for_node.gd" id="13_41fvb"]
 [ext_resource type="PackedScene" uid="uid://xbde27ya018b" path="res://addons/shrimpvm/scenes/inspector.tscn" id="15_5mgoq"]
 [ext_resource type="Theme" uid="uid://bvgxqtaxctodq" path="res://addons/shrimpvm/themes/main.tres" id="15_m2yu7"]
 [ext_resource type="Script" uid="uid://bkc7845xeo5e7" path="res://addons/shrimpvm/translator.gd" id="15_oimhj"]
 
-[sub_resource type="Resource" id="Resource_h6e4u"]
+[sub_resource type="Resource" id="Resource_rav6t"]
+script = ExtResource("6_ott1x")
+content = true
+metadata/_custom_type_script = "uid://ypjkdf7lnpoi"
+
+[sub_resource type="Resource" id="Resource_l1kpv"]
+script = ExtResource("7_jwp8f")
+data = SubResource("Resource_rav6t")
+metadata/_custom_type_script = "uid://cit3q8s785amk"
+
+[sub_resource type="Resource" id="Resource_pkssi"]
 script = ExtResource("3_pyu3y")
-symbol = "a"
+symbol = "times"
 metadata/_custom_type_script = "uid://b60gj4dvoyto0"
 
-[sub_resource type="Resource" id="Resource_m2yu7"]
-script = ExtResource("3_pyu3y")
-symbol = "b"
-metadata/_custom_type_script = "uid://b60gj4dvoyto0"
+[sub_resource type="Resource" id="Resource_v7ped"]
+script = ExtResource("8_mlimm")
+times = SubResource("Resource_pkssi")
+body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_l1kpv")])
+metadata/_custom_type_script = "uid://dd050p5d2k4oe"
 
-[sub_resource type="Resource" id="Resource_oimhj"]
-script = ExtResource("4_wa8sf")
-a = SubResource("Resource_h6e4u")
-b = SubResource("Resource_m2yu7")
-metadata/_custom_type_script = "uid://dy5pnqath5i5g"
-
-[sub_resource type="Resource" id="Resource_lgtk2"]
-script = ExtResource("5_5mgoq")
-data = SubResource("Resource_oimhj")
-metadata/_custom_type_script = "uid://4e7vf5klfk8u"
-
-[sub_resource type="Resource" id="Resource_y7o51"]
+[sub_resource type="Resource" id="Resource_w2cgy"]
 script = ExtResource("6_8c755")
-functionName = "add"
-params = ["a", "b"]
-body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_lgtk2")])
+isGenerator = true
+functionName = "cooldown"
+params = ["times"]
+body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_v7ped")])
 metadata/_custom_type_script = "uid://dipbdjhg4p62u"
 
-[sub_resource type="Resource" id="Resource_ott1x"]
+[sub_resource type="Resource" id="Resource_kxmox"]
+script = ExtResource("3_pyu3y")
+symbol = "_"
+metadata/_custom_type_script = "uid://b60gj4dvoyto0"
+
+[sub_resource type="Resource" id="Resource_k5hx1"]
+script = ExtResource("9_m2yu7")
+content = SubResource("Resource_kxmox")
+metadata/_custom_type_script = "uid://da63e86ydg0o"
+
+[sub_resource type="Resource" id="Resource_6jnv2"]
+script = ExtResource("9_m2yu7")
+content = SubResource("Resource_k5hx1")
+metadata/_custom_type_script = "uid://da63e86ydg0o"
+
+[sub_resource type="Resource" id="Resource_sr1hs"]
 script = ExtResource("7_8c755")
-content = 123.0
+content = 5.0
 metadata/_custom_type_script = "uid://cvqni0e6mnw20"
 
-[sub_resource type="Resource" id="Resource_jwp8f"]
-script = ExtResource("7_8c755")
-content = 456.0
-metadata/_custom_type_script = "uid://cvqni0e6mnw20"
-
-[sub_resource type="Resource" id="Resource_mlimm"]
+[sub_resource type="Resource" id="Resource_255qk"]
 script = ExtResource("8_h6e4u")
-functionName = "add"
-paramIRs = Array[ExtResource("2_1fc1t")]([SubResource("Resource_ott1x"), SubResource("Resource_jwp8f")])
+functionName = "cooldown"
+paramIRs = Array[ExtResource("2_1fc1t")]([SubResource("Resource_sr1hs")])
 metadata/_custom_type_script = "uid://df4i8jqw37216"
+
+[sub_resource type="Resource" id="Resource_efwo6"]
+script = ExtResource("13_41fvb")
+iterator = SubResource("Resource_255qk")
+symbol = "_"
+body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_6jnv2")])
+metadata/_custom_type_script = "uid://cf5p3iodwlcu"
+
+[sub_resource type="Resource" id="Resource_ep10r"]
+script = ExtResource("3_iu8n6")
+body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_w2cgy"), SubResource("Resource_efwo6")])
+metadata/_custom_type_script = "uid://uw4oee4tvks"
+
+[sub_resource type="Resource" id="Resource_5mgoq"]
+script = ExtResource("3_wa8sf")
+content = "Hello World!"
+metadata/_custom_type_script = "uid://wcx6kruoo167"
 
 [sub_resource type="Resource" id="Resource_41fvb"]
 script = ExtResource("9_m2yu7")
-content = SubResource("Resource_mlimm")
+content = SubResource("Resource_5mgoq")
 metadata/_custom_type_script = "uid://da63e86ydg0o"
 
 [sub_resource type="Resource" id="Resource_t82hj"]
 script = ExtResource("3_iu8n6")
-body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_y7o51"), SubResource("Resource_41fvb")])
+body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_41fvb")])
 metadata/_custom_type_script = "uid://uw4oee4tvks"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_05f5v"]
@@ -169,44 +200,11 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_iyhou")
-treeData = {
-"body": [{
-"body": [{
-"data": {
-"a": {
-"symbol": "a",
-"type": "read_symbol"
-},
-"b": {
-"symbol": "b",
-"type": "read_symbol"
-},
-"type": "add"
-},
-"type": "return"
-}],
-"name": "add",
-"params": ["a", "b"],
-"type": "function_definition"
-}, {
-"content": {
-"name": "add",
-"params": [{
-"content": 123.0,
-"type": "number_literal"
-}, {
-"content": 456.0,
-"type": "number_literal"
-}],
-"type": "function_call"
-},
-"type": "print"
-}],
-"type": "root"
-}
 defaultFileSystem = Dictionary[StringName, ExtResource("2_1fc1t")]({
+&"Generator": SubResource("Resource_ep10r"),
 &"HelloWorld": SubResource("Resource_t82hj")
 })
+autoOpen = &"Generator"
 loadBuiltins = true
 
 [node name="pluginManager" type="Node" parent="." unique_id=1968528528]
@@ -369,7 +367,6 @@ size_flags_vertical = 3
 
 [node name="treeTip" type="Label" parent="layout/layout/workspace/block/wrapper/mergin/center" unique_id=287250670]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 text = "No root node.
 Create one with clicking \"Root Node\" !"

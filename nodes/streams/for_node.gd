@@ -7,10 +7,16 @@ class_name ForNode
 @export var body: Array[ShrimpIR]
 
 func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
-	for i in await vm.execute(iterator, context):
-		var runContext = ExecutionContext.new(context)
-		runContext.env.write_symbol(symbol, i)
-		await vm.execute_all(body, context)
+	var iteratox = await vm.execute(iterator, context)
+	var runContext = ExecutionContext.new(context)
+	if iteratox is FunctionDefinitionNode.ContextGenerator:
+		while iteratox.is_valid():
+			runContext.env.write_symbol(symbol, iteratox.next())
+			await vm.execute_all(body, runContext)
+	else:
+		for i in iteratox:
+			runContext.env.write_symbol(symbol, i)
+			await vm.execute_all(body, runContext)
 	return
 func decompile() -> Dictionary:
 	return {
