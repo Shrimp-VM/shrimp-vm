@@ -1,5 +1,7 @@
 class_name ShrimpVMUtil
 
+const BUILTIN_SUBDIRS = ["base", "functions", "literals", "macros", "maths", "streams", "symbols"]
+
 class EventEmitter extends RefCounted:
 	signal event()
 
@@ -61,7 +63,7 @@ static func get_configured_irs(builtins: bool = true) -> Array[ShrimpIR]:
 static func get_builtin_subdir(path: String):
 	return "res://addons/shrimpvm/nodes/".path_join(path)
 static func get_builtins() -> Array[ShrimpIR]:
-	return scan_ir_nodes(["base", "functions", "literals", "macros", "maths", "streams"].map(get_builtin_subdir))
+	return scan_ir_nodes(BUILTIN_SUBDIRS.map(get_builtin_subdir))
 static func find_ir_node(type: String) -> ShrimpIR:
 	var irs = get_configured_irs()
 	var index = irs.find_custom(func(e): return e.get_node_type() == type)

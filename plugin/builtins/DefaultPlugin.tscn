@@ -15,7 +15,7 @@ categoryColors = Dictionary[String, Color]({
 "Mathematics": Color(0, 0.7254902, 0.44345167, 1),
 "Nodes": Color(0, 0.5789182, 0.12643063, 1),
 "Streams": Color(0, 0.50605536, 0.93404996, 1),
-"Symbols": Color(1, 0.18698072, 0, 1)
+"Symbols": Color(1, 0.24936926, 0, 1)
 })
 metadata/_custom_type_script = "uid://vjqr0exaodsu"
 

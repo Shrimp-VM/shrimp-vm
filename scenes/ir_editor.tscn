@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://6uypkkt4063e" path="res://addons/shrimpvm/file_manager.gd" id="3_fjp0f"]
 [ext_resource type="Script" uid="uid://uw4oee4tvks" path="res://addons/shrimpvm/nodes/base/root_node.gd" id="3_iu8n6"]
 [ext_resource type="Script" uid="uid://chc23i883u687" path="res://addons/shrimpvm/scenes/editor_workspace.gd" id="3_ohykq"]
-[ext_resource type="Script" uid="uid://b60gj4dvoyto0" path="res://addons/shrimpvm/nodes/base/read_symbol.gd" id="3_pyu3y"]
+[ext_resource type="Script" uid="uid://coy6f2obfpseb" path="res://addons/shrimpvm/nodes/symbols/read_symbol.gd" id="3_ott1x"]
 [ext_resource type="Script" uid="uid://wcx6kruoo167" path="res://addons/shrimpvm/nodes/literals/string_node.gd" id="3_wa8sf"]
 [ext_resource type="Texture2D" uid="uid://cfx1oikjukn4e" path="res://addons/shrimpvm/icons/run.svg" id="4_0kp88"]
 [ext_resource type="Script" uid="uid://2bp5i42dylnd" path="res://addons/shrimpvm/clickable_wrapper.gd" id="5_nc1qr"]
@@ -26,10 +26,10 @@
 [ext_resource type="Script" uid="uid://bkc7845xeo5e7" path="res://addons/shrimpvm/translator.gd" id="15_oimhj"]
 [ext_resource type="PackedScene" uid="uid://vo0ycl8i2cd2" path="res://addons/shrimpvm/plugin/builtins/DefaultPlugin.tscn" id="15_ott1x"]
 
-[sub_resource type="Resource" id="Resource_ott1x"]
-script = ExtResource("3_pyu3y")
+[sub_resource type="Resource" id="Resource_rav6t"]
+script = ExtResource("3_ott1x")
 symbol = "i"
-metadata/_custom_type_script = "uid://b60gj4dvoyto0"
+metadata/_custom_type_script = "uid://coy6f2obfpseb"
 
 [sub_resource type="Resource" id="Resource_jwp8f"]
 script = ExtResource("7_8c755")
@@ -38,7 +38,7 @@ metadata/_custom_type_script = "uid://cvqni0e6mnw20"
 
 [sub_resource type="Resource" id="Resource_mlimm"]
 script = ExtResource("5_ott1x")
-a = SubResource("Resource_ott1x")
+a = SubResource("Resource_rav6t")
 b = SubResource("Resource_jwp8f")
 metadata/_custom_type_script = "uid://dy5pnqath5i5g"
 
@@ -47,14 +47,14 @@ script = ExtResource("7_jwp8f")
 data = SubResource("Resource_mlimm")
 metadata/_custom_type_script = "uid://cit3q8s785amk"
 
-[sub_resource type="Resource" id="Resource_rav6t"]
-script = ExtResource("3_pyu3y")
+[sub_resource type="Resource" id="Resource_v7ped"]
+script = ExtResource("3_ott1x")
 symbol = "times"
-metadata/_custom_type_script = "uid://b60gj4dvoyto0"
+metadata/_custom_type_script = "uid://coy6f2obfpseb"
 
 [sub_resource type="Resource" id="Resource_l1kpv"]
 script = ExtResource("8_mlimm")
-times = SubResource("Resource_rav6t")
+times = SubResource("Resource_v7ped")
 symbol = "i"
 body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_41fvb")])
 metadata/_custom_type_script = "uid://dd050p5d2k4oe"
@@ -67,14 +67,14 @@ params = ["times"]
 body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_l1kpv")])
 metadata/_custom_type_script = "uid://dipbdjhg4p62u"
 
-[sub_resource type="Resource" id="Resource_v7ped"]
-script = ExtResource("3_pyu3y")
+[sub_resource type="Resource" id="Resource_ott1x"]
+script = ExtResource("3_ott1x")
 symbol = "data"
-metadata/_custom_type_script = "uid://b60gj4dvoyto0"
+metadata/_custom_type_script = "uid://coy6f2obfpseb"
 
 [sub_resource type="Resource" id="Resource_w2cgy"]
 script = ExtResource("9_m2yu7")
-content = SubResource("Resource_v7ped")
+content = SubResource("Resource_ott1x")
 metadata/_custom_type_script = "uid://da63e86ydg0o"
 
 [sub_resource type="Resource" id="Resource_kxmox"]
