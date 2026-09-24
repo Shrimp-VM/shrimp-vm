@@ -23,3 +23,10 @@ static func shade_category(category: String) -> Color:
 		if plugin.categoryColors.has(category):
 			return plugin.categoryColors[category]
 	return savedDefaultColor
+static func try_edit(type: int) -> ShrimpTypeEditor:
+	for plugin in get_plugins():
+		for child in plugin.get_children():
+			if child is ShrimpTypeEditor:
+				if type in child.get_type_id():
+					return child
+	return null

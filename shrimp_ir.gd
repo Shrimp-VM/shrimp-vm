@@ -9,13 +9,14 @@ class Model:
 		attributes: Dictionary,
 		description: String = "No descritpion.",
 		trigger: NodeTrigger = NodeTrigger.EXECUTION,
+		more: Dictionary = {}
 	):
 		return {
 			"name": name,
 			"attributes": attributes,
 			"trigger": trigger,
 			"description": description
-		}
+		}.merged(more, true)
 	static func attribute_schema(type: Variant, label: String, array: bool = false, default: Variant = null):
 		return {
 			"type": type,

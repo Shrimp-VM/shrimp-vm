@@ -215,51 +215,11 @@ initialFileSystem = Dictionary[StringName, ExtResource("2_1fc1t")]({
 autoOpen = &"Hello World!"
 rootWrapper = {
 "body": [{
-"async": false,
-"body": [{
-"body": [{
-"data": {
-"a": {
-"symbol": "i",
-"type": "read_symbol"
-},
-"b": {
-"content": 5.0,
-"type": "number_literal"
-},
-"type": "add"
-},
-"type": "yield"
-}],
-"symbol": "i",
-"times": {
-"symbol": "times",
-"type": "read_symbol"
-},
-"type": "repeat_times"
-}],
-"generator": true,
-"name": "cooldown",
-"params": ["times"],
-"type": "function_definition"
-}, {
-"body": [{
 "content": {
-"symbol": "data",
-"type": "read_symbol"
+"content": "Hello World!",
+"type": "string_literal"
 },
 "type": "print"
-}],
-"iterator": {
-"name": "cooldown",
-"params": [{
-"content": 10.0,
-"type": "number_literal"
-}],
-"type": "function_call"
-},
-"symbol": "data",
-"type": "for"
 }],
 "type": "root"
 }
@@ -269,7 +229,7 @@ script = ExtResource("6_p0jkk")
 defaultColor = Color(0, 0.6381068, 0.4232797, 1)
 metadata/_custom_type_script = "uid://ctpbtdput2kyx"
 
-[node name="category" type="Node" parent="pluginManager" unique_id=2029956541]
+[node name="builtin" type="Node" parent="pluginManager" unique_id=2029956541]
 script = ExtResource("7_1fc1t")
 categoryColors = Dictionary[String, Color]({
 "Functions": Color(0.75648403, 0.6107331, 0, 1),
@@ -486,7 +446,7 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_behavior_recursive = 1
-text = "Generator"
+text = "Hello World!"
 label_settings = SubResource("LabelSettings_iejdg")
 
 [node name="selections" type="Control" parent="layout/layout/workspace" unique_id=1899592325]
