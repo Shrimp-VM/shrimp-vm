@@ -27,6 +27,10 @@ signal modal_finished()
 @export var autoOpen: StringName = ""
 @export_category("Wrapper & Data")
 @export var rootWrapper: Dictionary = {}
+@export_category("User permissons")
+@export var allowArchive: bool = true
+@export var allowDeleteFile: bool = true
+@export var allowCreateFile: bool = true
 
 @onready var vm: ShrimpVM = $%vm
 @onready var fileManager: ShrimpFileManager = $%fileManager
@@ -88,6 +92,7 @@ func _ready() -> void:
 		func():
 			delete_node(selectingPointer)
 			save_current_file()
+			inspector.hide()
 	)
 	fileManager.add_file.connect(
 		func(f: VirtualFile):
@@ -199,6 +204,9 @@ func rebuild(all: bool = false):
 		langBtn.item_count = 0
 		for lang in languages:
 			langBtn.add_item(lang)
+	fileManager.allowArchive = allowArchive
+	newFileBtn.visible = allowCreateFile
+	deleteFileBtn.visible = allowDeleteFile
 	ShrimpVMUtil.disconnect_children(treeCenter, [treeTip])
 	if has_root_node():
 		var ir = find_ir_typed(rootWrapper.type)
@@ -237,8 +245,7 @@ func delete_node(block: NodeBlock, auto_rebuild: bool = true):
 	if auto_rebuild:
 		if block.parentParameterBox:
 			block.parentParameterBox.rebuild()
-		else:
-			rebuild()
+		update_selection()
 func store_block(type: String, count: int = 1):
 	blockCounts[find_ir_typed(type)] += count
 	rebuild_desk()
@@ -305,7 +312,10 @@ func select(path: WrapperPath):
 		selectionMgr.stop_all()
 		inspector.hide()
 func update_selection():
-	selectionMgr.select("cyan", selectingPointer)
+	if is_instance_valid(selectingPointer):
+		selectionMgr.select("cyan", selectingPointer)
+	else:
+		selectionMgr.stop("cyan")
 func modal(content: String = ""):
 	if content:
 		modalLabel.text = content
