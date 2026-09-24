@@ -1,6 +1,56 @@
 [gd_scene format=3 uid="uid://c4i5myjgeuait"]
 
 [ext_resource type="Script" uid="uid://ci5sjq134kdxj" path="res://addons/shrimpvm/scenes/test_scene.gd" id="1_mwvut"]
+[ext_resource type="PackedScene" uid="uid://twhmsepd8isx" path="res://addons/shrimpvm/scenes/ir_editor.tscn" id="2_sncm2"]
 
 [node name="Test" type="Node" unique_id=802212923]
+process_mode = 3
 script = ExtResource("1_mwvut")
+
+[node name="editor" parent="." unique_id=2000783686 instance=ExtResource("2_sncm2")]
+unique_name_in_owner = true
+treeData = {
+"body": [{
+"async": false,
+"body": [{
+"body": [{
+"data": {
+"content": true,
+"type": "boolean_literal"
+},
+"type": "yield"
+}],
+"times": {
+"symbol": "times",
+"type": "read_symbol"
+},
+"type": "repeat_times"
+}],
+"generator": true,
+"name": "cooldown",
+"params": ["times"],
+"type": "function_definition"
+}, {
+"body": [{
+"content": {
+"content": {
+"symbol": "_",
+"type": "read_symbol"
+},
+"type": "print"
+},
+"type": "print"
+}],
+"iterator": {
+"name": "cooldown",
+"params": [{
+"content": 5.0,
+"type": "number_literal"
+}],
+"type": "function_call"
+},
+"symbol": "_",
+"type": "for"
+}],
+"type": "root"
+}
