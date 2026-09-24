@@ -26,93 +26,93 @@
 [ext_resource type="Theme" uid="uid://bvgxqtaxctodq" path="res://addons/shrimpvm/themes/main.tres" id="15_m2yu7"]
 [ext_resource type="Script" uid="uid://bkc7845xeo5e7" path="res://addons/shrimpvm/translator.gd" id="15_oimhj"]
 
-[sub_resource type="Resource" id="Resource_jwp8f"]
-script = ExtResource("3_pyu3y")
-symbol = "i"
-metadata/_custom_type_script = "uid://b60gj4dvoyto0"
-
-[sub_resource type="Resource" id="Resource_mlimm"]
-script = ExtResource("7_8c755")
-content = 5.0
-metadata/_custom_type_script = "uid://cvqni0e6mnw20"
-
-[sub_resource type="Resource" id="Resource_rav6t"]
-script = ExtResource("5_ott1x")
-a = SubResource("Resource_jwp8f")
-b = SubResource("Resource_mlimm")
-metadata/_custom_type_script = "uid://dy5pnqath5i5g"
-
-[sub_resource type="Resource" id="Resource_l1kpv"]
-script = ExtResource("7_jwp8f")
-data = SubResource("Resource_rav6t")
-metadata/_custom_type_script = "uid://cit3q8s785amk"
-
-[sub_resource type="Resource" id="Resource_pkssi"]
-script = ExtResource("3_pyu3y")
-symbol = "times"
-metadata/_custom_type_script = "uid://b60gj4dvoyto0"
-
-[sub_resource type="Resource" id="Resource_v7ped"]
-script = ExtResource("8_mlimm")
-times = SubResource("Resource_pkssi")
-symbol = "i"
-body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_l1kpv")])
-metadata/_custom_type_script = "uid://dd050p5d2k4oe"
-
-[sub_resource type="Resource" id="Resource_w2cgy"]
-script = ExtResource("6_8c755")
-isGenerator = true
-functionName = "cooldown"
-params = ["times"]
-body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_v7ped")])
-metadata/_custom_type_script = "uid://dipbdjhg4p62u"
-
 [sub_resource type="Resource" id="Resource_ott1x"]
 script = ExtResource("3_pyu3y")
 symbol = "i"
 metadata/_custom_type_script = "uid://b60gj4dvoyto0"
 
-[sub_resource type="Resource" id="Resource_6jnv2"]
-script = ExtResource("9_m2yu7")
-content = SubResource("Resource_ott1x")
-metadata/_custom_type_script = "uid://da63e86ydg0o"
-
-[sub_resource type="Resource" id="Resource_sr1hs"]
+[sub_resource type="Resource" id="Resource_jwp8f"]
 script = ExtResource("7_8c755")
 content = 5.0
 metadata/_custom_type_script = "uid://cvqni0e6mnw20"
 
-[sub_resource type="Resource" id="Resource_255qk"]
+[sub_resource type="Resource" id="Resource_mlimm"]
+script = ExtResource("5_ott1x")
+a = SubResource("Resource_ott1x")
+b = SubResource("Resource_jwp8f")
+metadata/_custom_type_script = "uid://dy5pnqath5i5g"
+
+[sub_resource type="Resource" id="Resource_41fvb"]
+script = ExtResource("7_jwp8f")
+data = SubResource("Resource_mlimm")
+metadata/_custom_type_script = "uid://cit3q8s785amk"
+
+[sub_resource type="Resource" id="Resource_rav6t"]
+script = ExtResource("3_pyu3y")
+symbol = "times"
+metadata/_custom_type_script = "uid://b60gj4dvoyto0"
+
+[sub_resource type="Resource" id="Resource_l1kpv"]
+script = ExtResource("8_mlimm")
+times = SubResource("Resource_rav6t")
+symbol = "i"
+body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_41fvb")])
+metadata/_custom_type_script = "uid://dd050p5d2k4oe"
+
+[sub_resource type="Resource" id="Resource_pkssi"]
+script = ExtResource("6_8c755")
+isGenerator = true
+functionName = "cooldown"
+params = ["times"]
+body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_l1kpv")])
+metadata/_custom_type_script = "uid://dipbdjhg4p62u"
+
+[sub_resource type="Resource" id="Resource_v7ped"]
+script = ExtResource("3_pyu3y")
+symbol = "data"
+metadata/_custom_type_script = "uid://b60gj4dvoyto0"
+
+[sub_resource type="Resource" id="Resource_w2cgy"]
+script = ExtResource("9_m2yu7")
+content = SubResource("Resource_v7ped")
+metadata/_custom_type_script = "uid://da63e86ydg0o"
+
+[sub_resource type="Resource" id="Resource_kxmox"]
+script = ExtResource("7_8c755")
+content = 10.0
+metadata/_custom_type_script = "uid://cvqni0e6mnw20"
+
+[sub_resource type="Resource" id="Resource_k5hx1"]
 script = ExtResource("8_h6e4u")
 functionName = "cooldown"
-paramIRs = Array[ExtResource("2_1fc1t")]([SubResource("Resource_sr1hs")])
+paramIRs = Array[ExtResource("2_1fc1t")]([SubResource("Resource_kxmox")])
 metadata/_custom_type_script = "uid://df4i8jqw37216"
 
-[sub_resource type="Resource" id="Resource_efwo6"]
+[sub_resource type="Resource" id="Resource_6jnv2"]
 script = ExtResource("13_41fvb")
-iterator = SubResource("Resource_255qk")
-symbol = "i"
-body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_6jnv2")])
+iterator = SubResource("Resource_k5hx1")
+symbol = "data"
+body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_w2cgy")])
 metadata/_custom_type_script = "uid://cf5p3iodwlcu"
 
-[sub_resource type="Resource" id="Resource_ep10r"]
+[sub_resource type="Resource" id="Resource_sr1hs"]
 script = ExtResource("3_iu8n6")
-body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_w2cgy"), SubResource("Resource_efwo6")])
+body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_pkssi"), SubResource("Resource_6jnv2")])
 metadata/_custom_type_script = "uid://uw4oee4tvks"
 
-[sub_resource type="Resource" id="Resource_5mgoq"]
+[sub_resource type="Resource" id="Resource_wa8sf"]
 script = ExtResource("3_wa8sf")
 content = "Hello World!"
 metadata/_custom_type_script = "uid://wcx6kruoo167"
 
-[sub_resource type="Resource" id="Resource_41fvb"]
+[sub_resource type="Resource" id="Resource_5mgoq"]
 script = ExtResource("9_m2yu7")
-content = SubResource("Resource_5mgoq")
+content = SubResource("Resource_wa8sf")
 metadata/_custom_type_script = "uid://da63e86ydg0o"
 
-[sub_resource type="Resource" id="Resource_t82hj"]
+[sub_resource type="Resource" id="Resource_8c755"]
 script = ExtResource("3_iu8n6")
-body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_41fvb")])
+body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_5mgoq")])
 metadata/_custom_type_script = "uid://uw4oee4tvks"
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_05f5v"]
@@ -207,18 +207,31 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_iyhou")
-treeData = {
+autoLoadBuiltins = true
+initialFileSystem = Dictionary[StringName, ExtResource("2_1fc1t")]({
+&"Generator": SubResource("Resource_sr1hs"),
+&"Hello World!": SubResource("Resource_8c755")
+})
+autoOpen = &"Hello World!"
+rootWrapper = {
 "body": [{
 "async": false,
 "body": [{
 "body": [{
 "data": {
-"content": true,
-"type": "boolean_literal"
+"a": {
+"symbol": "i",
+"type": "read_symbol"
+},
+"b": {
+"content": 5.0,
+"type": "number_literal"
+},
+"type": "add"
 },
 "type": "yield"
 }],
-"symbol": "",
+"symbol": "i",
 "times": {
 "symbol": "times",
 "type": "read_symbol"
@@ -232,7 +245,7 @@ treeData = {
 }, {
 "body": [{
 "content": {
-"symbol": "i",
+"symbol": "data",
 "type": "read_symbol"
 },
 "type": "print"
@@ -240,22 +253,16 @@ treeData = {
 "iterator": {
 "name": "cooldown",
 "params": [{
-"content": 5.0,
+"content": 10.0,
 "type": "number_literal"
 }],
 "type": "function_call"
 },
-"symbol": "i",
+"symbol": "data",
 "type": "for"
 }],
 "type": "root"
 }
-defaultFileSystem = Dictionary[StringName, ExtResource("2_1fc1t")]({
-&"Generator": SubResource("Resource_ep10r"),
-&"HelloWorld": SubResource("Resource_t82hj")
-})
-autoOpen = &"Generator"
-loadBuiltins = true
 
 [node name="pluginManager" type="Node" parent="." unique_id=1968528528]
 script = ExtResource("6_p0jkk")

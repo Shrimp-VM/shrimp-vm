@@ -66,6 +66,7 @@ static func compile_body(from: Array, optimize: bool = true) -> Array[ShrimpIR]:
 		result.append(compile(wrapper, optimize))
 	return result
 static func decompile(from: ShrimpIR) -> Dictionary:
+	if !is_instance_valid(from): return {}
 	return {"type": from.get_node_type()}.merged(from.decompile(), true)
 static func decompile_body(from: Array) -> Array[Dictionary]:
 	var result: Array[Dictionary] = []

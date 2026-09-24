@@ -12,17 +12,21 @@ signal modal_finished()
 
 @export_tool_button("Rebuild editor") var rebuilder = rebuild
 @export_tool_button("Run workspace") var runer = run_workspace
-@export var treeData: Dictionary = {}
-@export var finiteBlockCount: bool = false
-@export var initialDesk: Array[ShrimpIR] = []
-@export var defaultFileSystem: Dictionary[StringName, ShrimpIR] = {}
-@export var autoOpen: StringName = ""
-@export var loadBuiltins: bool = false
-@export_dir var autoScanDirs: Array[String] = []
+@export_category("Metadata")
 @export var languages: Dictionary[StringName, String] = {
 	"English": "en",
 	"简体中文": "zh_CN"
 }
+@export var finiteBlockCount: bool = false
+@export_category("Desk auto load")
+@export var initialDesk: Array[ShrimpIR] = []
+@export var autoLoadBuiltins: bool = false
+@export_dir var autoLoadDirs: Array[String] = []
+@export_category("File system auto load")
+@export var initialFileSystem: Dictionary[StringName, ShrimpIR] = {}
+@export var autoOpen: StringName = ""
+@export_category("Wrapper & Data")
+@export var rootWrapper: Dictionary = {}
 
 @onready var vm: ShrimpVM = $%vm
 @onready var fileManager: ShrimpFileManager = $%fileManager
@@ -52,7 +56,7 @@ var blockCounts: Dictionary[ShrimpIR, float] = {}
 var selectingPath: WrapperPath
 var selectingPointer: Node:
 	get:
-		return WrapperContext.new(treeData, selectingPath, get_root_block()).locate()
+		return WrapperContext.new(rootWrapper, selectingPath, get_root_block()).locate()
 
 func _ready() -> void:
 	debugContext = ExecutionContext.new()
@@ -112,13 +116,13 @@ func _ready() -> void:
 	modalPanel.clicked.connect(modal)
 	compilation_warn.connect(func(t, m): compilationWarns.append([t, m]))
 	var desk = initialDesk
-	if loadBuiltins:
+	if autoLoadBuiltins:
 		desk += ShrimpVMUtil.get_builtins()
-	desk += ShrimpVMUtil.scan_ir_nodes(autoScanDirs)
+	desk += ShrimpVMUtil.scan_ir_nodes(autoLoadDirs)
 	blockCounts.merge(ShrimpVMUtil.create_count_map(desk))
 	fileTip.show()
-	for fp in defaultFileSystem:
-		fileManager.add(fp, ShrimpCompiler.export_json(defaultFileSystem[fp]), false)
+	for fp in initialFileSystem:
+		fileManager.add(fp, ShrimpCompiler.export_json(initialFileSystem[fp]), false)
 	if !Engine.is_editor_hint():
 		fileManager.inarchive()
 		fileManager.auto_compile()
@@ -134,8 +138,8 @@ func run_workspace():
 	save_current_file()
 	if !has_root_node():
 		compilation_warn.emit(ShrimpOptimizer.WarnType.NULL_ROOT, "Cannot run null script.")
-	compilation_stage.emit("Building IR-Trees: %s" % JSON.stringify(treeData, "    "))
-	var ir = ShrimpCompiler.compile(treeData, true, compilation_warn)
+	compilation_stage.emit("Building IR-Trees: %s" % JSON.stringify(rootWrapper, "    "))
+	var ir = ShrimpCompiler.compile(rootWrapper, true, compilation_warn)
 	compilation_finished.emit()
 	script_run_start.emit()
 	await vm.execute(ir, debugContext)
@@ -185,7 +189,7 @@ func rebuild_desk():
 								selectingPointer.parentParameterBox.rebuild()
 							update_selection()
 						else:
-							treeData = instance.create_wrapper()
+							rootWrapper = instance.create_wrapper()
 						blockCounts[ir] -= 1
 						save_current_file()
 				)
@@ -197,18 +201,18 @@ func rebuild(all: bool = false):
 			langBtn.add_item(lang)
 	ShrimpVMUtil.disconnect_children(treeCenter, [treeTip])
 	if has_root_node():
-		var ir = find_ir_typed(treeData.type)
+		var ir = find_ir_typed(rootWrapper.type)
 		if ir:
-			var rootContext = WrapperContext.new(treeData)
+			var rootContext = WrapperContext.new(rootWrapper)
 			var instance = NodeBlock.create(rootContext, false)
 			rootContext.nodeTree = instance
 			node_join(instance, false)
 			instance.rebuild()
 			treeTip.hide()
 		else:
-			push_warning("Tree build failed, unrecognized node %s" % treeData.type)
+			push_warning("Tree build failed, unrecognized node %s" % rootWrapper.type)
 	else:
-		treeData = {}
+		rootWrapper = {}
 		treeTip.show()
 	update_selection()
 func get_root_block() -> NodeBlock:
@@ -250,13 +254,13 @@ func find_ir_typed(type: String) -> ShrimpIR:
 func save_current_file():
 	fileManager.save(save_data())
 func close_current_file():
-	treeData = {}
+	rootWrapper = {}
 	scriptNameLabel.text = "* Untitled"
 	closeFileBtn.hide()
 	deleteFileBtn.hide()
 	rebuild()
 func has_root_node() -> bool:
-	return ShrimpVMUtil.wrapper_is_valid(treeData)
+	return ShrimpVMUtil.wrapper_is_valid(rootWrapper)
 func mark_selection(node: NodeBlock):
 	node.selected.connect(select)
 func node_join(node: NodeBlock, desk: bool):
@@ -276,11 +280,11 @@ func load_json(text: String):
 		return
 	return load_data(json.data)
 func load_data(data: Dictionary):
-	treeData = data
+	rootWrapper = data
 	rebuild()
 func save_data(indent: bool = false):
 	var json = JSON.new()
-	return json.stringify(treeData, "    " if indent else "")
+	return json.stringify(rootWrapper, "    " if indent else "")
 func save_to(filepath: String):
 	var file = FileAccess.open(filepath, FileAccess.ModeFlags.WRITE)
 	if !file:
