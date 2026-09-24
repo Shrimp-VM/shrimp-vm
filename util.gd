@@ -50,7 +50,7 @@ static func scan_ir_nodes(baseDirs: Array) -> Array[ShrimpIR]:
 	return result
 static func without(irs: Array, types: Array) -> Array[ShrimpIR]:
 	var result: Array[ShrimpIR] = []
-	result.assign(irs.filter(func(e: ShrimpIR): return e.get_node_type() in types))
+	result.assign(irs.filter(func(e: ShrimpIR): return e.get_node_type() not in types))
 	return result
 static func create_count_map(irs: Array, count: float = INF) -> Dictionary[ShrimpIR, float]:
 	return irs.reduce(func(current: Dictionary, ir): return current.merged({ir: count}, true), {} as Dictionary[ShrimpIR, float])

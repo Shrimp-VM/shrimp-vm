@@ -11,6 +11,8 @@ func decompile() -> Dictionary:
 		"symbol": symbol
 	}
 
+static func get_category_tag() -> String:
+	return "Symbols"
 static func create_from(wrapper: Dictionary) -> ReadSymbolNode:
 	var result = new()
 	result.symbol = wrapper.symbol
@@ -19,8 +21,5 @@ static func get_node_type() -> String:
 	return "read_symbol"
 static func get_wrapper_schema() -> Dictionary:
 	return Model.wrapper_schema("Read symbol", {
-		"symbol": Model.attribute_schema(
-			TYPE_STRING,
-			"symbol name"
-		)
+		"symbol": Model.attribute_schema(TYPE_STRING_NAME, "symbol name")
 	}, "Read a symbol in the context.")
