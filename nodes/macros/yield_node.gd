@@ -5,7 +5,11 @@ class_name YieldNode
 @export var data: ShrimpIR
 
 func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
-	return context.pause_with(await vm.execute(data, context))
+	var value = await vm.execute(data, context)
+	var gen = ShrimpGenerator.find(context)
+	if gen == null:
+		return value
+	return await gen.suspend(value)
 func decompile() -> Dictionary:
 	return {
 		"data": ShrimpCompiler.decompile(data)

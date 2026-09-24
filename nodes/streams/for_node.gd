@@ -9,9 +9,12 @@ class_name ForNode
 func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
 	var iteratox = await vm.execute(iterator, context)
 	var runContext = ExecutionContext.new(context)
-	if iteratox is FunctionDefinitionNode.ContextGenerator:
+	if iteratox is ShrimpGenerator:
 		while iteratox.is_valid():
-			runContext.env.write_symbol(symbol, iteratox.next())
+			var value = await iteratox.next()
+			if !iteratox.is_valid():
+				break
+			runContext.env.write_symbol(symbol, value)
 			await vm.execute_all(body, runContext)
 	else:
 		for i in iteratox:

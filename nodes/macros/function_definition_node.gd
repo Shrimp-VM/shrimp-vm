@@ -2,18 +2,6 @@
 extends ShrimpIR
 class_name FunctionDefinitionNode
 
-class ContextGenerator:
-	var context: ExecutionContext
-	var vm: ShrimpVM
-
-	func _init(contexx: ExecutionContext, vmx: ShrimpVM) -> void:
-		context = contexx
-		vm = vmx
-	func is_valid() -> bool:
-		return is_instance_valid(vm) && is_instance_valid(context) && !context.is_exited()
-	func next() -> Variant:
-		return await context.eventloop(vm)
-
 @export var isAsync: bool
 @export var isGenerator: bool
 @export var functionName: String
@@ -31,8 +19,9 @@ func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
 			for i in len(params):
 				runContext.env.write_symbol(params[i], input[i])
 			if isGenerator:
+				var gen = ShrimpGenerator.new(runContext, vm)
 				runContext.start(body, vm, false)
-				return ContextGenerator.new(runContext, vm)
+				return gen
 			else:
 				return await vm.execute_all(body, runContext)
 	context.env.write_symbol(functionName, data)
