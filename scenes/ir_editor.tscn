@@ -13,7 +13,6 @@
 [ext_resource type="Script" uid="uid://dy5pnqath5i5g" path="res://addons/shrimpvm/nodes/maths/add_node.gd" id="5_ott1x"]
 [ext_resource type="Script" uid="uid://dipbdjhg4p62u" path="res://addons/shrimpvm/nodes/macros/function_definition_node.gd" id="6_8c755"]
 [ext_resource type="Script" uid="uid://ctpbtdput2kyx" path="res://addons/shrimpvm/plugin/shrimp_plugin_manager.gd" id="6_p0jkk"]
-[ext_resource type="Script" uid="uid://vjqr0exaodsu" path="res://addons/shrimpvm/plugin/shrimp_plugin.gd" id="7_1fc1t"]
 [ext_resource type="Script" uid="uid://cvqni0e6mnw20" path="res://addons/shrimpvm/nodes/literals/number_node.gd" id="7_8c755"]
 [ext_resource type="Script" uid="uid://cit3q8s785amk" path="res://addons/shrimpvm/nodes/macros/yield_node.gd" id="7_jwp8f"]
 [ext_resource type="Script" uid="uid://df4i8jqw37216" path="res://addons/shrimpvm/nodes/macros/function_call_node.gd" id="8_h6e4u"]
@@ -25,6 +24,7 @@
 [ext_resource type="PackedScene" uid="uid://xbde27ya018b" path="res://addons/shrimpvm/scenes/inspector.tscn" id="15_5mgoq"]
 [ext_resource type="Theme" uid="uid://bvgxqtaxctodq" path="res://addons/shrimpvm/themes/main.tres" id="15_m2yu7"]
 [ext_resource type="Script" uid="uid://bkc7845xeo5e7" path="res://addons/shrimpvm/translator.gd" id="15_oimhj"]
+[ext_resource type="PackedScene" uid="uid://vo0ycl8i2cd2" path="res://addons/shrimpvm/plugin/builtins/DefaultPlugin.tscn" id="15_ott1x"]
 
 [sub_resource type="Resource" id="Resource_ott1x"]
 script = ExtResource("3_pyu3y")
@@ -229,16 +229,7 @@ script = ExtResource("6_p0jkk")
 defaultColor = Color(0, 0.6381068, 0.4232797, 1)
 metadata/_custom_type_script = "uid://ctpbtdput2kyx"
 
-[node name="builtin" type="Node" parent="pluginManager" unique_id=2029956541]
-script = ExtResource("7_1fc1t")
-categoryColors = Dictionary[String, Color]({
-"Functions": Color(0.75648403, 0.6107331, 0, 1),
-"Literals": Color(0.87486136, 0.2613222, 0, 1),
-"Macro": Color(0.8090962, 0, 0.53832406, 1),
-"Mathematics": Color(0, 0.66441286, 0.12534569, 1),
-"Streams": Color(0, 0.3264815, 0.8025197, 1)
-})
-metadata/_custom_type_script = "uid://vjqr0exaodsu"
+[node name="builtins" parent="pluginManager" unique_id=2116743327 instance=ExtResource("15_ott1x")]
 
 [node name="fileManager" type="Node" parent="." unique_id=1307891398]
 unique_name_in_owner = true

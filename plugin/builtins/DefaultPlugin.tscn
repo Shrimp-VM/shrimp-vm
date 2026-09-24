@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://vo0ycl8i2cd2"]
+
+[ext_resource type="Script" uid="uid://vjqr0exaodsu" path="res://addons/shrimpvm/plugin/shrimp_plugin.gd" id="1_xk63a"]
+[ext_resource type="Script" uid="uid://bibwif2xye31i" path="res://addons/shrimpvm/plugin/builtins/string_editor.gd" id="2_pm5pw"]
+
+[node name="DefaultPlugin" type="Node" unique_id=2116743327]
+script = ExtResource("1_xk63a")
+metadata/_custom_type_script = "uid://vjqr0exaodsu"
+
+[node name="StringEditor" type="Node" parent="." unique_id=166722600]
+script = ExtResource("2_pm5pw")
+metadata/_custom_type_script = "uid://bibwif2xye31i"
