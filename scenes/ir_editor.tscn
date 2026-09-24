@@ -55,19 +55,14 @@ params = ["times"]
 body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_v7ped")])
 metadata/_custom_type_script = "uid://dipbdjhg4p62u"
 
-[sub_resource type="Resource" id="Resource_kxmox"]
+[sub_resource type="Resource" id="Resource_ott1x"]
 script = ExtResource("3_pyu3y")
-symbol = "_"
+symbol = "i"
 metadata/_custom_type_script = "uid://b60gj4dvoyto0"
-
-[sub_resource type="Resource" id="Resource_k5hx1"]
-script = ExtResource("9_m2yu7")
-content = SubResource("Resource_kxmox")
-metadata/_custom_type_script = "uid://da63e86ydg0o"
 
 [sub_resource type="Resource" id="Resource_6jnv2"]
 script = ExtResource("9_m2yu7")
-content = SubResource("Resource_k5hx1")
+content = SubResource("Resource_ott1x")
 metadata/_custom_type_script = "uid://da63e86ydg0o"
 
 [sub_resource type="Resource" id="Resource_sr1hs"]
@@ -84,7 +79,7 @@ metadata/_custom_type_script = "uid://df4i8jqw37216"
 [sub_resource type="Resource" id="Resource_efwo6"]
 script = ExtResource("13_41fvb")
 iterator = SubResource("Resource_255qk")
-symbol = "_"
+symbol = "i"
 body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_6jnv2")])
 metadata/_custom_type_script = "uid://cf5p3iodwlcu"
 
@@ -200,6 +195,48 @@ grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_iyhou")
+treeData = {
+"body": [{
+"async": false,
+"body": [{
+"body": [{
+"data": {
+"content": true,
+"type": "boolean_literal"
+},
+"type": "yield"
+}],
+"times": {
+"symbol": "times",
+"type": "read_symbol"
+},
+"type": "repeat_times"
+}],
+"generator": true,
+"name": "cooldown",
+"params": ["times"],
+"type": "function_definition"
+}, {
+"body": [{
+"content": {
+"symbol": "i",
+"type": "read_symbol"
+},
+"type": "print"
+}],
+"iterator": {
+"name": "cooldown",
+"params": [{
+"content": 5.0,
+"type": "number_literal"
+}],
+"type": "function_call"
+},
+"symbol": "i",
+"type": "for"
+}],
+"type": "root"
+}
 defaultFileSystem = Dictionary[StringName, ExtResource("2_1fc1t")]({
 &"Generator": SubResource("Resource_ep10r"),
 &"HelloWorld": SubResource("Resource_t82hj")
@@ -344,6 +381,7 @@ script = ExtResource("3_ohykq")
 
 [node name="block" type="PanelContainer" parent="layout/layout/workspace" unique_id=837595969]
 layout_mode = 2
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_h6e4u")
 
 [node name="wrapper" type="ScrollContainer" parent="layout/layout/workspace/block" unique_id=1722816101]
@@ -367,7 +405,9 @@ size_flags_vertical = 3
 
 [node name="treeTip" type="Label" parent="layout/layout/workspace/block/wrapper/mergin/center" unique_id=287250670]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
+mouse_filter = 1
 text = "No root node.
 Create one with clicking \"Root Node\" !"
 label_settings = SubResource("LabelSettings_fjp0f")
@@ -390,6 +430,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 6
+mouse_filter = 1
 theme = ExtResource("15_m2yu7")
 text = "Run"
 icon = ExtResource("4_0kp88")
@@ -425,7 +466,7 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_behavior_recursive = 1
-text = "HelloWorld"
+text = "Generator"
 label_settings = SubResource("LabelSettings_iejdg")
 
 [node name="selections" type="Control" parent="layout/layout/workspace" unique_id=1899592325]
