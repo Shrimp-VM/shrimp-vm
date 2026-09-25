@@ -101,7 +101,9 @@ func get_color() -> Color:
 		return ShrimpPluginManager.shade_category(node.get_category_tag())
 	else:
 		return Color.BLACK
-func rebuild():
+func rebuild(release: bool = false):
+	if release:
+		await ShrimpPluginManager.frame()
 	rebuild_count()
 	nameLabel.text = ShrimpTranslator.get_ir_name(targetIR)
 	styleBox.bg_color = get_color()
@@ -112,15 +114,12 @@ func rebuild():
 		ShrimpVMUtil.disconnect_children(parameterWrapper)
 		for key in schema.attributes:
 			if ShrimpVMUtil.schema_typeis(schema.attributes[key], ShrimpIR.TYPE_EXTERNAL_PARAMETER): continue
-			var instance: NodeParameter
-			if Engine.is_editor_hint():
-				instance = NodeParameter.create(getContext.forward(WrapperPath.from(key)), parameterWrapper, self)
-			else:
-				instance = NodeParameter.create(getContext.forward(WrapperPath.from(key)), parameterWrapper, self)
+			var instance = NodeParameter.create(getContext.forward(WrapperPath.from(key)), self)
 			instance.selected.connect(
 				func(p: NodeParameter):
 					request_select(p.getContext.pointer)
 			)
+			await instance.mount(parameterWrapper, release)
 func can_show_parameters() -> bool:
 	return len(schema.attributes) > 0 && !inDesk
 func create_wrapper() -> Dictionary:
@@ -129,9 +128,11 @@ func create_wrapper() -> Dictionary:
 	for key in schema.attributes:
 		result[key] = NodeParameter.create_initial_value(schema.attributes[key])
 	return result
-func mount(parent: Node) -> NodeBlock:
+func mount(parent: Node, release: bool = false) -> NodeBlock:
+	if release:
+		await ShrimpPluginManager.frame()
 	parent.add_child(self)
-	rebuild()
+	await rebuild(release)
 	return self
 
 static func create(contexx: WrapperContext, inDesx: bool, counx: float = INF, type: String = "", ownerParam: NodeParameter = null) -> NodeBlock:

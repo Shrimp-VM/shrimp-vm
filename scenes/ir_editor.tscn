@@ -30,6 +30,7 @@
 [ext_resource type="Theme" uid="uid://bvgxqtaxctodq" path="res://addons/shrimpvm/themes/main.tres" id="15_m2yu7"]
 [ext_resource type="Script" uid="uid://bkc7845xeo5e7" path="res://addons/shrimpvm/translator.gd" id="15_oimhj"]
 [ext_resource type="PackedScene" uid="uid://vo0ycl8i2cd2" path="res://addons/shrimpvm/plugin/builtins/DefaultPlugin.tscn" id="15_ott1x"]
+[ext_resource type="PackedScene" uid="uid://vbqe5nmht148" path="res://addons/shrimpvm/scenes/loading_animation/loading_animation.tscn" id="31_pkssi"]
 
 [sub_resource type="Resource" id="Resource_efwo6"]
 script = ExtResource("7_8c755")
@@ -120,7 +121,7 @@ metadata/_custom_type_script = "uid://coy6f2obfpseb"
 
 [sub_resource type="Resource" id="Resource_5le2h"]
 script = ExtResource("7_8c755")
-content = 114.0
+content = 1145.0
 metadata/_custom_type_script = "uid://cvqni0e6mnw20"
 
 [sub_resource type="Resource" id="Resource_cj7s1"]
@@ -167,9 +168,36 @@ script = ExtResource("8_h6e4u")
 function = SubResource("Resource_rvclu")
 metadata/_custom_type_script = "uid://df4i8jqw37216"
 
+[sub_resource type="Resource" id="Resource_3sy0i"]
+script = ExtResource("3_ott1x")
+symbol = "apple"
+metadata/_custom_type_script = "uid://coy6f2obfpseb"
+
+[sub_resource type="Resource" id="Resource_euguo"]
+script = ExtResource("9_l1kpv")
+object = SubResource("Resource_3sy0i")
+key = "sugar"
+metadata/_custom_type_script = "uid://5mpowvprbhmf"
+
+[sub_resource type="Resource" id="Resource_gutgp"]
+script = ExtResource("9_m2yu7")
+content = SubResource("Resource_euguo")
+metadata/_custom_type_script = "uid://da63e86ydg0o"
+
+[sub_resource type="Resource" id="Resource_8q0rq"]
+script = ExtResource("7_8c755")
+content = 5.0
+metadata/_custom_type_script = "uid://cvqni0e6mnw20"
+
+[sub_resource type="Resource" id="Resource_v7fi2"]
+script = ExtResource("8_mlimm")
+times = SubResource("Resource_8q0rq")
+body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_5s7du"), SubResource("Resource_gutgp")])
+metadata/_custom_type_script = "uid://dd050p5d2k4oe"
+
 [sub_resource type="Resource" id="Resource_1t8re"]
 script = ExtResource("3_iu8n6")
-body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_ffgre"), SubResource("Resource_l1dr3"), SubResource("Resource_a60ju"), SubResource("Resource_5s7du"), SubResource("Resource_a60ju")])
+body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_ffgre"), SubResource("Resource_l1dr3"), SubResource("Resource_a60ju"), SubResource("Resource_v7fi2")])
 metadata/_custom_type_script = "uid://uw4oee4tvks"
 
 [sub_resource type="Resource" id="Resource_rav6t"]
@@ -348,6 +376,9 @@ corner_radius_top_right = 15
 corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pkssi"]
+bg_color = Color(0.78936666, 1, 0.9386538, 1)
+
 [node name="IR-Editor" type="Control" unique_id=2000783686]
 layout_mode = 3
 anchors_preset = 15
@@ -395,7 +426,30 @@ rootWrapper = {
 "type": "function_definition"
 }, {
 "async": false,
-"body": [],
+"body": [{
+"key": "sugar",
+"object": {
+"type": "this"
+},
+"type": "member_access",
+"value": {
+"a": {
+"key": "sugar",
+"object": {
+"type": "this"
+},
+"type": "member_access",
+"value": {},
+"write": false
+},
+"b": {
+"content": 10.0,
+"type": "number_literal"
+},
+"type": "add"
+},
+"write": true
+}],
 "capture": true,
 "generator": false,
 "name": "plant",
@@ -409,7 +463,7 @@ rootWrapper = {
 "type": "write_variable",
 "value": {
 "args": [{
-"content": 114.0,
+"content": 1145.0,
 "type": "number_literal"
 }],
 "class": {
@@ -431,6 +485,7 @@ rootWrapper = {
 },
 "type": "print"
 }, {
+"body": [{
 "func": {
 "key": "plant",
 "object": {
@@ -455,6 +510,13 @@ rootWrapper = {
 "write": false
 },
 "type": "print"
+}],
+"symbol": "",
+"times": {
+"content": 5.0,
+"type": "number_literal"
+},
+"type": "repeat_times"
 }],
 "type": "root"
 }
@@ -643,6 +705,7 @@ icon = ExtResource("4_0kp88")
 
 [node name="inspector" parent="layout/layout/workspace/tools/wrapper" unique_id=188591203 instance=ExtResource("15_5mgoq")]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="tip" type="PanelContainer" parent="layout/layout/workspace" unique_id=1835959688]
@@ -750,3 +813,31 @@ text = "ModalText"
 fit_content = true
 autowrap_mode = 0
 horizontal_alignment = 1
+
+[node name="loadingScreen" type="Panel" parent="." unique_id=1724140454]
+unique_name_in_owner = true
+visible = false
+z_index = 4096
+z_as_relative = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_pkssi")
+
+[node name="LoadingAnimation" parent="loadingScreen" unique_id=1295463400 instance=ExtResource("31_pkssi")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -150.0
+offset_right = 150.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2

@@ -1,0 +1,183 @@
+[gd_scene format=3 uid="uid://vbqe5nmht148"]
+
+[ext_resource type="Texture2D" uid="uid://b67qpmhphi6wd" path="res://addons/shrimpvm/scenes/loading_animation/hand.png" id="1_0n10j"]
+[ext_resource type="Texture2D" uid="uid://b8f3polwltvgo" path="res://addons/shrimpvm/scenes/loading_animation/godot.png" id="1_euuxl"]
+[ext_resource type="Texture2D" uid="uid://ujh0e0kq8k8j" path="res://addons/shrimpvm/scenes/loading_animation/shrimp.png" id="3_s7uon"]
+[ext_resource type="Texture2D" uid="uid://bcm7g4qd8141a" path="res://addons/shrimpvm/icons/logo.png" id="4_y8oxq"]
+
+[sub_resource type="Animation" id="Animation_y8oxq"]
+length = 0.001
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("hand:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(189, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("shrimp:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(-1.5811924, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("shrimp:position:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(30, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("godot:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(0),
+"points": PackedFloat32Array(0, -0.25, 0, 0.25, 0),
+"times": PackedFloat32Array(0)
+}
+
+[sub_resource type="Animation" id="Animation_s7uon"]
+resource_name = "loop"
+length = 0.9
+loop_mode = 1
+step = 0.05
+tracks/0/type = "bezier"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("hand:position:y")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"handle_modes": PackedInt32Array(2, 2, 2),
+"points": PackedFloat32Array(189, 0, 0, 0.1, 0, 90, -0.1, 0, 0.1, 0, 189, 0, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.2, 0.4)
+}
+tracks/1/type = "bezier"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("shrimp:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"handle_modes": PackedInt32Array(0, 2),
+"points": PackedFloat32Array(-1.5811924, 0, 0, 0, 0, 4.71, 0, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.6)
+}
+tracks/2/type = "bezier"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("shrimp:position:y")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"handle_modes": PackedInt32Array(2, 0, 0),
+"points": PackedFloat32Array(30, 0, 0, 0.15, 0, -150, -0.15, 0, 0.15, 0, 30, 0, 0, 0.1, 0),
+"times": PackedFloat32Array(0, 0.3, 0.6)
+}
+tracks/3/type = "bezier"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("godot:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"handle_modes": PackedInt32Array(2, 0, 0),
+"points": PackedFloat32Array(-0.09, 0, 0, 0.2, 0, 0.09, -0.2, 0, 0.2, 0, -0.09, -0.2, 0, 0, 0),
+"times": PackedFloat32Array(0, 0.45, 0.9)
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_y8oxq"]
+_data = {
+&"RESET": SubResource("Animation_y8oxq"),
+&"loop": SubResource("Animation_s7uon")
+}
+
+[sub_resource type="LabelSettings" id="LabelSettings_s7uon"]
+font_size = 30
+font_color = Color(0, 1, 0.13194513, 1)
+
+[node name="LoadingAnimation" type="Control" unique_id=322702118]
+custom_minimum_size = Vector2(300, 340)
+layout_mode = 3
+anchors_preset = 0
+offset_right = 300.0
+offset_bottom = 300.0
+size_flags_horizontal = 6
+size_flags_vertical = 6
+mouse_filter = 2
+
+[node name="animator" type="AnimationPlayer" parent="." unique_id=734003637]
+libraries/ = SubResource("AnimationLibrary_y8oxq")
+autoplay = &"loop"
+
+[node name="template" type="TextureRect" parent="." unique_id=766023614]
+visible = false
+modulate = Color(1, 0.5328826, 0.5328826, 1)
+layout_mode = 0
+offset_right = 300.0
+offset_bottom = 300.0
+texture = ExtResource("4_y8oxq")
+
+[node name="godot" type="TextureRect" parent="." unique_id=1122919376]
+layout_mode = 0
+offset_left = 58.0
+offset_top = 12.0
+offset_right = 304.0
+offset_bottom = 235.0
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("1_euuxl")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="shrimp" type="TextureRect" parent="." unique_id=690126730]
+layout_mode = 0
+offset_left = -23.000004
+offset_top = 30.0
+offset_right = 182.51767
+offset_bottom = 344.78333
+rotation = -1.5811924
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("3_s7uon")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="hand" type="TextureRect" parent="." unique_id=1353431896]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 189.0
+offset_right = 78.0
+offset_bottom = 266.00146
+texture = ExtResource("1_0n10j")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="tip" type="Label" parent="." unique_id=2071319171]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -110.5
+offset_top = -35.0
+offset_right = 110.5
+grow_horizontal = 2
+grow_vertical = 0
+text = "Editor is Loading..."
+label_settings = SubResource("LabelSettings_s7uon")

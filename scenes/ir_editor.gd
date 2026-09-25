@@ -12,6 +12,7 @@ signal modal_finished()
 
 @export_tool_button("Rebuild editor") var rebuilder = rebuild
 @export_tool_button("Run workspace") var runer = run_workspace
+@export_tool_button("Reload file system") var fsr = fs_reload
 @export_category("Metadata")
 @export var languages: Dictionary[StringName, String] = {
 	"English": "en",
@@ -31,6 +32,7 @@ signal modal_finished()
 @export var allowArchive: bool = true
 @export var allowDeleteFile: bool = true
 @export var allowCreateFile: bool = true
+@export var allowUserFileOverrideDefault: bool = false
 
 @onready var vm: ShrimpVM = $%vm
 @onready var fileManager: ShrimpFileManager = $%fileManager
@@ -54,6 +56,7 @@ signal modal_finished()
 @onready var modalPanel: ClickableWrapper = $%modalPanel
 @onready var modalLabel: RichTextLabel = $%modalTip
 @onready var selectionMgr: SelectionManager = $%selections
+@onready var loadingScreen: Control = $%loadingScreen
 var debugContext: ExecutionContext
 var compilationWarns: Array[Array] = []
 var blockCounts: Dictionary[ShrimpIR, float] = {}
@@ -90,7 +93,7 @@ func _ready() -> void:
 	workspace.clicked.connect(func(): select(null))
 	inspector.delete.connect(
 		func():
-			delete_node(selectingPointer)
+			await delete_node(selectingPointer)
 			save_current_file()
 			inspector.hide()
 	)
@@ -125,18 +128,28 @@ func _ready() -> void:
 		desk += ShrimpVMUtil.get_builtins()
 	desk += ShrimpVMUtil.scan_ir_nodes(autoLoadDirs)
 	blockCounts.merge(ShrimpVMUtil.create_count_map(desk))
-	fileTip.show()
-	for fp in initialFileSystem:
-		fileManager.add(fp, ShrimpCompiler.export_json(initialFileSystem[fp]), false)
-	if !Engine.is_editor_hint():
-		fileManager.inarchive()
-		fileManager.auto_compile()
-	fileManager.close()
-	fileManager.open(fileManager.search(autoOpen))
+	fs_reload()
 	rebuild()
 	rebuild_desk()
 	modal()
 
+func fs_reload():
+	fileTip.show()
+	if allowUserFileOverrideDefault:
+		fs_load_default()
+		fs_load_user()
+	else:
+		fs_load_user()
+		fs_load_default()
+	fileManager.close()
+	fileManager.open(fileManager.search(autoOpen))
+func fs_load_user():
+	if !Engine.is_editor_hint():
+		fileManager.inarchive()
+		fileManager.auto_compile()
+func fs_load_default():
+	for fp in initialFileSystem:
+		fileManager.add(fp, ShrimpCompiler.export_json(initialFileSystem[fp]), false)
 func run_workspace():
 	compilation_start.emit()
 	compilationWarns = []
@@ -150,6 +163,7 @@ func run_workspace():
 	await vm.execute(ir, debugContext)
 	script_run_finihsed.emit()
 func rebuild_desk():
+	await loading()
 	var categories = ShrimpVMUtil.category_desk(blockCounts.keys())
 	ShrimpVMUtil.disconnect_children(deskWrapper)
 	for category in categories:
@@ -189,16 +203,18 @@ func rebuild_desk():
 							else:
 								childrenList.insert(insertIndex, wrapper)
 							if selectingPointer is NodeParameter:
-								selectingPointer.rebuild()
+								await selectingPointer.rebuild(true)
 							elif selectingPointer is NodeBlock:
-								selectingPointer.parentParameterBox.rebuild()
+								await selectingPointer.parentParameterBox.rebuild(true)
 							update_selection()
 						else:
 							rootWrapper = instance.create_wrapper()
 						blockCounts[ir] -= 1
 						save_current_file()
 				)
+	await loaded()
 func rebuild(all: bool = false):
+	await loading()
 	if Engine.is_editor_hint() || all:
 		rebuild_desk()
 		langBtn.item_count = 0
@@ -215,14 +231,25 @@ func rebuild(all: bool = false):
 			var instance = NodeBlock.create(rootContext, false)
 			rootContext.nodeTree = instance
 			node_join(instance, false)
-			instance.rebuild()
+			await instance.rebuild(true)
 			treeTip.hide()
 		else:
 			push_warning("Tree build failed, unrecognized node %s" % rootWrapper.type)
 	else:
 		rootWrapper = {}
 		treeTip.show()
-	update_selection()
+	await select(selectingPath)
+	await loaded()
+func loading():
+	loadingScreen.show()
+	loadingScreen.process_mode = Node.PROCESS_MODE_INHERIT
+	await frame()
+func loaded():
+	loadingScreen.hide()
+	loadingScreen.process_mode = Node.PROCESS_MODE_DISABLED
+	await frame()
+func frame():
+	return ShrimpPluginManager.frame()
 func get_root_block() -> NodeBlock:
 	for child in treeCenter.get_children():
 		if child is NodeBlock:
@@ -244,7 +271,7 @@ func delete_node(block: NodeBlock, auto_rebuild: bool = true):
 	store_block(block.data.type)
 	if auto_rebuild:
 		if block.parentParameterBox:
-			block.parentParameterBox.rebuild()
+			await block.parentParameterBox.rebuild(true)
 		update_selection()
 func store_block(type: String, count: int = 1):
 	blockCounts[find_ir_typed(type)] += count
@@ -303,7 +330,7 @@ func select(path: WrapperPath):
 	if is_instance_valid(selectingPointer):
 		if selectingPointer is NodeBlock:
 			inspector.block = selectingPointer
-			inspector.rebuild()
+			inspector.rebuild(true)
 			inspector.show()
 		else:
 			inspector.hide()

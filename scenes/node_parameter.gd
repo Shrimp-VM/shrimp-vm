@@ -51,7 +51,9 @@ func _gui_input(event: InputEvent) -> void:
 
 func make_template(namx: NodePath) -> Control:
 	return templateWrapper.get_node(namx).duplicate()
-func rebuild():
+func rebuild(release: bool = false):
+	if release:
+		await ShrimpPluginManager.frame()
 	nameLabel.text = ShrimpTranslator.get_attribute_label(ownerBlock.targetIR, name)
 	ShrimpVMUtil.disconnect_children(arrayWrapper)
 	ShrimpVMUtil.disconnect_children(valueWrapper)
@@ -65,7 +67,7 @@ func rebuild():
 				emptyTip.hide()
 				valueWrapper.hide()
 				for i in len(value):
-					var showbox = create_showbox(i, arrayWrapper)
+					var showbox = await create_showbox(i, arrayWrapper, release)
 					if !showbox.get_parent():
 						arrayWrapper.add_child(showbox)
 		else:
@@ -73,17 +75,17 @@ func rebuild():
 	else:
 		emptyTip.hide()
 		arrayWrapper.hide()
-		var showbox = create_showbox(-1, valueWrapper)
+		var showbox = await create_showbox(-1, valueWrapper, release)
 		if !showbox.get_parent():
 			valueWrapper.add_child(showbox)
-func create_primarybox(data: Variant, index: int, wrapper: Control) -> Control:
+func create_primarybox(data: Variant, index: int, wrapper: Control, release: bool = false) -> Control:
 	match schema.type:
 		ShrimpIR.TYPE_ENUM:
 			if ShrimpVMUtil.wrapper_is_valid(data):
 				if value is Array:
-					return NodeBlock.create(getContext.forward(WrapperPath.from("[%d]" % index)), false, INF, "", self).mount(wrapper)
+					return await NodeBlock.create(getContext.forward(WrapperPath.from("[%d]" % index)), false, INF, "", self).mount(wrapper, release)
 				else:
-					return NodeBlock.create(getContext, false, INF, "", self).mount(wrapper)
+					return await NodeBlock.create(getContext, false, INF, "", self).mount(wrapper, release)
 			else:
 				var label = Label.new()
 				label.text = "NULL"
@@ -92,7 +94,7 @@ func create_primarybox(data: Variant, index: int, wrapper: Control) -> Control:
 				return label
 		_:
 			return ItemEditor.create_showbox(schema.type, data)
-func create_showbox(index: int, wrapper: Control) -> Control:
+func create_showbox(index: int, wrapper: Control, release: bool = false) -> Control:
 	if schema.type is Array:
 		var label = Label.new()
 		label.text = str(schema.type[value])
@@ -103,9 +105,9 @@ func create_showbox(index: int, wrapper: Control) -> Control:
 			data = value[index]
 		else:
 			data = value
-		return create_primarybox(data, index, wrapper)
+		return await create_primarybox(data, index, wrapper, release)
 	else:
-		return create_primarybox(value, -1, wrapper)
+		return await create_primarybox(value, -1, wrapper, release)
 func create_editbox() -> Control:
 	if schema.type is Array:
 		var btn = OptionButton.new()
@@ -120,6 +122,9 @@ func create_editbox() -> Control:
 			return ItemEditor.create(schema.type, value, eventEmitter.event.emit)
 	else:
 		return ItemEditor.create_editbox(schema.type, value, eventEmitter.event.emit)
+func mount(root: Node, release: bool = false):
+	root.add_child(self)
+	await rebuild(release)
 
 static func create_initial_value(schemx: Dictionary):
 	if schemx.array:
@@ -128,12 +133,10 @@ static func create_initial_value(schemx: Dictionary):
 		return 0
 	else:
 		return ItemEditor.create_initial_value(schemx.type)
-static func create(contexx: WrapperContext, root: Node, ownerBlocx: NodeBlock = null) -> NodeParameter:
+static func create(contexx: WrapperContext, ownerBlocx: NodeBlock = null) -> NodeParameter:
 	contexx.pointer = contexx.pointer.normalize()
 	var instance = preload("res://addons/shrimpvm/scenes/node_parameter.tscn").instantiate() as NodeParameter
 	instance.name = contexx.pointer.seek_tail().path
 	instance.targetContext = contexx
 	instance.ownerBlock = ownerBlocx
-	root.add_child(instance)
-	instance.rebuild()
 	return instance

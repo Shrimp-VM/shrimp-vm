@@ -12,7 +12,9 @@ var block: NodeBlock
 
 func _ready() -> void:
 	deleteBtn.pressed.connect(delete.emit)
-func rebuild():
+func rebuild(release: bool = false):
+	if release:
+		await ShrimpPluginManager.frame()
 	ShrimpVMUtil.disconnect_children(attributeWrapper)
 	for attributeKey in block.schema.attributes:
 		var eventEmitter = ShrimpVMUtil.EventEmitter.new()
@@ -23,7 +25,7 @@ func rebuild():
 			func(v):
 				block.data[attributeKey] = v
 				save.emit()
-				parameter.rebuild()
+				await parameter.rebuild(release)
 		)
 		var editor = parameter.create_editbox()
 		if !is_instance_valid(editor):

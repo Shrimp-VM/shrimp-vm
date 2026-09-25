@@ -25,11 +25,13 @@ func get_compilation(fn: StringName) -> ShrimpIR:
 		if file.fileName == fn:
 			return autoCompilations.get(file)
 	return null
-func add(fn: StringName, content: String, autoOpen: bool = true):
+func add(fn: StringName, content: String, autoOpen: bool = true) -> VirtualFile:
 	match search(fn):
 		var found when found is VirtualFile:
-			open(found)
-			delete()
+			found.content = content
+			if autoOpen:
+				open(found)
+			return found
 	var file = load("res://addons/shrimpvm/scenes/virtual_file.tscn").instantiate() as VirtualFile
 	file.fileName = fn
 	file.content = content
@@ -39,6 +41,7 @@ func add(fn: StringName, content: String, autoOpen: bool = true):
 	if autoOpen:
 		open(file)
 	archive()
+	return file
 func open(file: VirtualFile):
 	if !is_instance_valid(file): return
 	close()
