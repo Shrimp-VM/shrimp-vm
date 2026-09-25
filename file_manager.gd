@@ -111,6 +111,6 @@ func inarchive() -> String:
 		push_error("Failed to read archive file.")
 		return ""
 	for data in deserialize(fa.get_as_text()):
-		add(data[0], data[1])
+		add(data[0], data[1], false)
 	fa.close()
 	return serialize()

@@ -8,6 +8,7 @@ func _ready() -> void:
 	instance = self
 
 static func translate(key: String, default: String = ""):
+	if !is_instance_valid(instance): return default
 	var text = instance.tr(key)
 	if text == key:
 		return default

@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://2bp5i42dylnd" path="res://addons/shrimpvm/clickable_wrapper.gd" id="2_y5sfv"]
 [ext_resource type="Script" uid="uid://uw4oee4tvks" path="res://addons/shrimpvm/nodes/base/root_node.gd" id="3_w8yxg"]
 [ext_resource type="PackedScene" uid="uid://cwjvn21pj3cv0" path="res://addons/shrimpvm/scenes/triangle.tscn" id="5_qlsr3"]
+[ext_resource type="Script" uid="uid://g02xv4lsxvd" path="res://addons/shrimpvm/scenes/triangle.gd" id="5_w8yxg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w8yxg"]
 resource_local_to_scene = true
@@ -42,6 +43,17 @@ content_margin_top = 5.0
 content_margin_right = 10.0
 content_margin_bottom = 5.0
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0ny7x"]
+content_margin_left = 5.0
+content_margin_top = 5.0
+content_margin_right = 5.0
+content_margin_bottom = 5.0
+bg_color = Color(0, 0, 0, 0.2)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_in0f3"]
 resource_local_to_scene = true
 draw_center = false
@@ -60,8 +72,8 @@ content_margin_right = 10.0
 content_margin_bottom = 10.0
 
 [node name="NodeBlock" type="PanelContainer" unique_id=1255986660]
-offset_right = 102.0
-offset_bottom = 33.0
+offset_right = 104.0
+offset_bottom = 35.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_w8yxg")
 script = ExtResource("1_0pwqf")
 placeholderIR = SubResource("Resource_in0f3")
@@ -112,22 +124,44 @@ mouse_filter = 1
 text = "×1"
 label_settings = SubResource("LabelSettings_in0f3")
 
-[node name="frame" type="PanelContainer" parent="wrapper/frame" unique_id=488213655]
+[node name="layout" type="VBoxContainer" parent="wrapper/frame" unique_id=1335603027]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="frame" type="PanelContainer" parent="wrapper/frame/layout" unique_id=488213655]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxEmpty_w8yxg")
 script = ExtResource("2_y5sfv")
 
-[node name="wrapper" type="HBoxContainer" parent="wrapper/frame/frame" unique_id=1574956757]
+[node name="layout" type="VBoxContainer" parent="wrapper/frame/layout/frame" unique_id=394937553]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="wrapper" type="HBoxContainer" parent="wrapper/frame/layout/frame/layout" unique_id=1574956757]
 layout_mode = 2
 
-[node name="debug" type="Button" parent="wrapper/frame/frame/wrapper" unique_id=2098564548]
-visible = false
+[node name="expandCheck" type="PanelContainer" parent="wrapper/frame/layout/frame/layout/wrapper" unique_id=1953264488]
+unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 8
+size_flags_horizontal = 0
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_0ny7x")
+script = ExtResource("2_y5sfv")
 
-[node name="name" type="RichTextLabel" parent="wrapper/frame/frame/wrapper" unique_id=139600988]
+[node name="expandIcon" type="Control" parent="wrapper/frame/layout/frame/layout/wrapper/expandCheck" unique_id=660623729]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(5, 5)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 1
+script = ExtResource("5_w8yxg")
+direction = 1
+metadata/_custom_type_script = "uid://g02xv4lsxvd"
+
+[node name="name" type="RichTextLabel" parent="wrapper/frame/layout/frame/layout/wrapper" unique_id=139600988]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -201,8 +235,11 @@ grow_vertical = 0
 rotation = 1.5707964
 mouse_filter = 2
 fillColor = Color(0, 0.6381068, 0.4232797, 1)
+borderColor = Color(1, 1, 1, 1)
+borderWidth = 1.0
 
 [node name="gray" parent="triangles/nextIcon" unique_id=1123226563 instance=ExtResource("5_qlsr3")]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -215,4 +252,3 @@ mouse_filter = 2
 fillColor = Color(0, 0, 0, 0.2)
 borderColor = Color(1, 1, 1, 1)
 borderWidth = 1.0
-metadata/_edit_lock_ = true

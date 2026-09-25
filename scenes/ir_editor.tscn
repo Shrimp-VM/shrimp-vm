@@ -816,6 +816,7 @@ horizontal_alignment = 1
 
 [node name="loadingScreen" type="Panel" parent="." unique_id=1724140454]
 unique_name_in_owner = true
+process_mode = 4
 visible = false
 z_index = 4096
 z_as_relative = false

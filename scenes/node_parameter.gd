@@ -54,6 +54,8 @@ func make_template(namx: NodePath) -> Control:
 func rebuild(release: bool = false):
 	if release:
 		await ShrimpPluginManager.frame()
+	if !is_inside_tree():
+		return
 	nameLabel.text = ShrimpTranslator.get_attribute_label(ownerBlock.targetIR, name)
 	ShrimpVMUtil.disconnect_children(arrayWrapper)
 	ShrimpVMUtil.disconnect_children(valueWrapper)

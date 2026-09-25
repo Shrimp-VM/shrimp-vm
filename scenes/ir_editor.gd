@@ -57,6 +57,7 @@ signal modal_finished()
 @onready var modalLabel: RichTextLabel = $%modalTip
 @onready var selectionMgr: SelectionManager = $%selections
 @onready var loadingScreen: Control = $%loadingScreen
+var buildGeneration: int = 0
 var debugContext: ExecutionContext
 var compilationWarns: Array[Array] = []
 var blockCounts: Dictionary[ShrimpIR, float] = {}
@@ -130,7 +131,6 @@ func _ready() -> void:
 	blockCounts.merge(ShrimpVMUtil.create_count_map(desk))
 	fs_reload()
 	rebuild()
-	rebuild_desk()
 	modal()
 
 func fs_reload():
@@ -163,7 +163,6 @@ func run_workspace():
 	await vm.execute(ir, debugContext)
 	script_run_finihsed.emit()
 func rebuild_desk():
-	await loading()
 	var categories = ShrimpVMUtil.category_desk(blockCounts.keys())
 	ShrimpVMUtil.disconnect_children(deskWrapper)
 	for category in categories:
@@ -177,7 +176,7 @@ func rebuild_desk():
 				if ir.is_hidden(): continue
 				var instance = NodeBlock.create(null, true, blockCounts[ir] if finiteBlockCount else INF, ir.get_node_type())
 				node_join(instance, true)
-				instance.rebuild()
+				await instance.rebuild(true)
 				instance.clicked.connect(
 					func():
 						if has_root_node():
@@ -212,17 +211,23 @@ func rebuild_desk():
 						blockCounts[ir] -= 1
 						save_current_file()
 				)
-	await loaded()
 func rebuild(all: bool = false):
 	await loading()
+	buildGeneration += 1
+	var generation = buildGeneration
+	if generation != buildGeneration:
+		return
+	await rebuild_desk()
 	if Engine.is_editor_hint() || all:
-		rebuild_desk()
 		langBtn.item_count = 0
 		for lang in languages:
 			langBtn.add_item(lang)
 	fileManager.allowArchive = allowArchive
 	newFileBtn.visible = allowCreateFile
 	deleteFileBtn.visible = allowDeleteFile
+	for child in treeCenter.get_children():
+		if child is NodeBlock:
+			child.queue_free()
 	ShrimpVMUtil.disconnect_children(treeCenter, [treeTip])
 	if has_root_node():
 		var ir = find_ir_typed(rootWrapper.type)
@@ -232,6 +237,8 @@ func rebuild(all: bool = false):
 			rootContext.nodeTree = instance
 			node_join(instance, false)
 			await instance.rebuild(true)
+			if generation != buildGeneration:
+				return
 			treeTip.hide()
 		else:
 			push_warning("Tree build failed, unrecognized node %s" % rootWrapper.type)
@@ -239,17 +246,17 @@ func rebuild(all: bool = false):
 		rootWrapper = {}
 		treeTip.show()
 	await select(selectingPath)
+	if generation != buildGeneration:
+		return
 	await loaded()
 func loading():
 	loadingScreen.show()
 	loadingScreen.process_mode = Node.PROCESS_MODE_INHERIT
-	await frame()
+	await ShrimpPluginManager.frame()
 func loaded():
 	loadingScreen.hide()
 	loadingScreen.process_mode = Node.PROCESS_MODE_DISABLED
-	await frame()
-func frame():
-	return ShrimpPluginManager.frame()
+	await ShrimpPluginManager.frame()
 func get_root_block() -> NodeBlock:
 	for child in treeCenter.get_children():
 		if child is NodeBlock:

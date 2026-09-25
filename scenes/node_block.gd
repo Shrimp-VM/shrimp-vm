@@ -8,6 +8,8 @@ signal mark_selection(node: NodeBlock)
 signal exhausted()
 
 @export_tool_button("Rebuild") var r = rebuild
+@export_category("States")
+@export var parameterShowing: bool = true
 @export var inDesk: bool = false
 @export var count: float = INF
 @export_category("Placeholders")
@@ -16,12 +18,15 @@ signal exhausted()
 
 @onready var frameBar: ClickableWrapper = $%frame
 @onready var nameLabel: RichTextLabel = $%name
+@onready var expandCheck: ClickableWrapper = $%expandCheck
+@onready var expandIcon: Triangle = $%expandIcon
 @onready var parameterPanel: Control = $%parameters
 @onready var parameterWrapper: Control = $%wrapper
 @onready var countBar: Control = $%countBar
 @onready var countLabel: Label = $%count
 @onready var parentIcon: Triangle = $%parentIcon
 @onready var nextIcon: Triangle = $%nextIcon
+@onready var grayIcon: Triangle = $%gray
 @onready var triangles: Control = $%triangles
 var styleBox: StyleBoxFlat
 var targetContext: WrapperContext
@@ -52,11 +57,11 @@ var parentParameterBox: NodeParameter:
 		return parentBlock.get_parameter(parentParameterKey)
 
 func _ready() -> void:
-	# frameBar.clicked.connect(
-	# 	func():
-	# 		if !inDesk && !parameterWrapper.get_children().is_empty():
-	# 			parameterPanel.visible = !parameterPanel.visible
-	# )
+	expandCheck.clicked.connect(
+		func():
+			parameterShowing = !parameterShowing
+			rebuild_style()
+	)
 	mark_selection.connect(
 		func(node: NodeBlock):
 			if is_instance_valid(parentBlock) && parentBlock:
@@ -84,6 +89,12 @@ func consume():
 	rebuild_count()
 	if count <= 0:
 		exhausted.emit()
+func get_color() -> Color:
+	var node = ShrimpVMUtil.find_ir_node(getContext.get_pointer().get("type", ""))
+	if node:
+		return ShrimpPluginManager.shade_category(node.get_category_tag())
+	else:
+		return Color.BLACK
 func rebuild_count():
 	if inDesk && count != INF:
 		if count > 0:
@@ -95,21 +106,22 @@ func rebuild_count():
 		countBar.show()
 	else:
 		countBar.hide()
-func get_color() -> Color:
-	var node = ShrimpVMUtil.find_ir_node(getContext.get_pointer().get("type", ""))
-	if node:
-		return ShrimpPluginManager.shade_category(node.get_category_tag())
-	else:
-		return Color.BLACK
-func rebuild(release: bool = false):
-	if release:
-		await ShrimpPluginManager.frame()
+func rebuild_style():
 	rebuild_count()
 	nameLabel.text = ShrimpTranslator.get_ir_name(targetIR)
 	styleBox.bg_color = get_color()
 	nextIcon.fillColor = get_color()
 	parameterPanel.visible = can_show_parameters()
+	expandCheck.visible = allow_parameters()
+	expandIcon.direction = Triangle.Direction.DOWN if parameterShowing else Triangle.Direction.RIGHT
 	triangles.visible = !inDesk
+	grayIcon.visible = can_show_parameters()
+func rebuild(release: bool = false):
+	if release:
+		await ShrimpPluginManager.frame()
+	if !is_inside_tree():
+		return
+	rebuild_style()
 	if can_show_parameters():
 		ShrimpVMUtil.disconnect_children(parameterWrapper)
 		for key in schema.attributes:
@@ -120,8 +132,10 @@ func rebuild(release: bool = false):
 					request_select(p.getContext.pointer)
 			)
 			await instance.mount(parameterWrapper, release)
-func can_show_parameters() -> bool:
+func allow_parameters() -> bool:
 	return len(schema.attributes) > 0 && !inDesk
+func can_show_parameters() -> bool:
+	return parameterShowing && allow_parameters()
 func create_wrapper() -> Dictionary:
 	var result = {}
 	result.type = data.type
