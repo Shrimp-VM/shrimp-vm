@@ -30,7 +30,7 @@
 [ext_resource type="Theme" uid="uid://bvgxqtaxctodq" path="res://addons/shrimpvm/themes/main.tres" id="15_m2yu7"]
 [ext_resource type="Script" uid="uid://bkc7845xeo5e7" path="res://addons/shrimpvm/translator.gd" id="15_oimhj"]
 [ext_resource type="PackedScene" uid="uid://vo0ycl8i2cd2" path="res://addons/shrimpvm/plugin/builtins/DefaultPlugin.tscn" id="15_ott1x"]
-[ext_resource type="PackedScene" uid="uid://vbqe5nmht148" path="res://addons/shrimpvm/scenes/loading_animation/loading_animation.tscn" id="31_pkssi"]
+[ext_resource type="PackedScene" uid="uid://clt0c72204nwq" path="res://addons/shrimpvm/scenes/loading_animation/loading_screen.tscn" id="31_pkssi"]
 
 [sub_resource type="Resource" id="Resource_efwo6"]
 script = ExtResource("7_8c755")
@@ -375,9 +375,6 @@ corner_radius_top_left = 15
 corner_radius_top_right = 15
 corner_radius_bottom_right = 15
 corner_radius_bottom_left = 15
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pkssi"]
-bg_color = Color(0.78936666, 1, 0.9386538, 1)
 
 [node name="IR-Editor" type="Control" unique_id=2000783686]
 layout_mode = 3
@@ -814,31 +811,6 @@ fit_content = true
 autowrap_mode = 0
 horizontal_alignment = 1
 
-[node name="loadingScreen" type="Panel" parent="." unique_id=1724140454]
+[node name="loadingScreen" parent="." unique_id=1393937438 instance=ExtResource("31_pkssi")]
 unique_name_in_owner = true
-process_mode = 4
-visible = false
-z_index = 4096
-z_as_relative = false
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_pkssi")
-
-[node name="LoadingAnimation" parent="loadingScreen" unique_id=1295463400 instance=ExtResource("31_pkssi")]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -150.0
-offset_top = -150.0
-offset_right = 150.0
-offset_bottom = 150.0
-grow_horizontal = 2
-grow_vertical = 2

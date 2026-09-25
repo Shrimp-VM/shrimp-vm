@@ -82,7 +82,7 @@ func _ready() -> void:
 	langBtn.item_selected.connect(
 		func(index):
 			TranslationServer.set_locale(languages[langBtn.get_item_text(index)])
-			rebuild(true)
+			rebuild()
 	)
 	runBtn.pressed.connect(run_workspace)
 	newFileBtn.pressed.connect(
@@ -132,6 +132,9 @@ func _ready() -> void:
 	fs_reload()
 	rebuild()
 	modal()
+	langBtn.item_count = 0
+	for lang in languages:
+		langBtn.add_item(lang)
 
 func fs_reload():
 	fileTip.show()
@@ -211,17 +214,13 @@ func rebuild_desk():
 						blockCounts[ir] -= 1
 						save_current_file()
 				)
-func rebuild(all: bool = false):
+func rebuild():
 	await loading()
 	buildGeneration += 1
 	var generation = buildGeneration
 	if generation != buildGeneration:
 		return
 	await rebuild_desk()
-	if Engine.is_editor_hint() || all:
-		langBtn.item_count = 0
-		for lang in languages:
-			langBtn.add_item(lang)
 	fileManager.allowArchive = allowArchive
 	newFileBtn.visible = allowCreateFile
 	deleteFileBtn.visible = allowDeleteFile
