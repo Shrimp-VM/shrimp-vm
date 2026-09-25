@@ -29,3 +29,9 @@ func has_parent(target: ExecutionEnvironment) -> bool:
 func reparent(new: ExecutionEnvironment):
 	if has_parent(new): return
 	parent = new
+func merge(other: ExecutionEnvironment):
+	symbols.merge(other.symbols, true)
+func merged(other: ExecutionEnvironment) -> ExecutionEnvironment:
+	var result = ExecutionEnvironment.new(parent)
+	result.symbols = symbols.merged(other.symbols, true)
+	return result

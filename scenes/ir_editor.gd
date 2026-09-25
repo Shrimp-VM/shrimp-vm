@@ -57,7 +57,7 @@ signal modal_finished()
 @onready var modalLabel: RichTextLabel = $%modalTip
 @onready var selectionMgr: SelectionManager = $%selections
 @onready var loadingScreen: Control = $%loadingScreen
-var buildGeneration: int = 0
+var rebuilding: bool = false
 var debugContext: ExecutionContext
 var compilationWarns: Array[Array] = []
 var blockCounts: Dictionary[ShrimpIR, float] = {}
@@ -215,11 +215,9 @@ func rebuild_desk():
 						save_current_file()
 				)
 func rebuild():
+	if rebuilding: return
+	rebuilding = true
 	await loading()
-	buildGeneration += 1
-	var generation = buildGeneration
-	if generation != buildGeneration:
-		return
 	await rebuild_desk()
 	fileManager.allowArchive = allowArchive
 	newFileBtn.visible = allowCreateFile
@@ -236,8 +234,6 @@ func rebuild():
 			rootContext.nodeTree = instance
 			node_join(instance, false)
 			await instance.rebuild(true)
-			if generation != buildGeneration:
-				return
 			treeTip.hide()
 		else:
 			push_warning("Tree build failed, unrecognized node %s" % rootWrapper.type)
@@ -245,9 +241,8 @@ func rebuild():
 		rootWrapper = {}
 		treeTip.show()
 	await select(selectingPath)
-	if generation != buildGeneration:
-		return
 	await loaded()
+	rebuilding = false
 func loading():
 	loadingScreen.show()
 	loadingScreen.process_mode = Node.PROCESS_MODE_INHERIT

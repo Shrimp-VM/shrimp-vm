@@ -106,3 +106,7 @@ func reparent_head(new: ExecutionContext):
 		parent.reparent_head(new)
 	else:
 		reparent(new)
+func merge(other: ExecutionContext):
+	env.merge(other.env)
+func merged(other: ExecutionContext) -> ExecutionContext:
+	return ExecutionContext.new(parent, lifeMode, env.merged(other.env))

@@ -5,11 +5,12 @@ class_name ShrimpClass
 var initialized: bool = false
 var body: Array[ShrimpIR] = []
 
-func _init(bodx: Array[ShrimpIR], baseContext: ExecutionContext) -> void:
+func _init(bodx: Array[ShrimpIR], extend: ShrimpClass, baseContext: ExecutionContext) -> void:
 	body = bodx
 	instanceContext = ExecutionContext.new(baseContext)
+	if is_instance_valid(extend):
+		instanceContext.merge(extend.instanceContext)
 	instanceContext.env.write_symbol("this", self)
-
 func init(vm: ShrimpVM):
 	if initialized:
 		push_warning("Don't init twice.")
