@@ -2,22 +2,19 @@
 extends ShrimpIR
 class_name FunctionCallNode
 
-@export var functionName: String
+@export var function: ShrimpIR
 @export var paramIRs: Array[ShrimpIR]
 
 func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
-	var data = context.env.read_symbol(functionName)
-	if data is Callable:
-		var input = []
-		for ir in paramIRs:
-			input.append(await vm.execute(ir, context))
-		return await data.call(input)
+	var data = await vm.execute(function, context)
+	if data is ShrimpFunction:
+		return await data.run(await vm.execute_all(paramIRs, context), vm)
 	else:
-		push_error("Function %s not found." % functionName)
+		push_error("Function %s not found." % function)
 		return null
 func decompile() -> Dictionary:
 	return {
-		"name": functionName,
+		"func": ShrimpCompiler.decompile(function),
 		"params": ShrimpCompiler.decompile_body(paramIRs)
 	}
 
@@ -27,15 +24,15 @@ static func get_node_type() -> String:
 	return "function_call"
 static func create_from(wrapper: Dictionary) -> FunctionCallNode:
 	var result = new()
-	result.functionName = wrapper.name
+	result.function = ShrimpCompiler.compile(wrapper.func)
 	result.paramIRs = ShrimpCompiler.compile_body(wrapper.params)
 	return result
 static func get_wrapper_schema() -> Dictionary:
 	return Model.wrapper_schema(
 		"Call function",
 		{
-			"name": Model.attribute_schema(TYPE_STRING_NAME, "function name"),
+			"func": Model.attribute_schema(ShrimpIR.TYPE_ENUM, "function object"),
 			"params": Model.attribute_schema(ShrimpIR.TYPE_ENUM, "parameters", true)
 		},
-		"Run a function symbol in current context."
+		"Run a function in current context."
 	)

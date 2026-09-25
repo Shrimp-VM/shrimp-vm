@@ -7,7 +7,7 @@ class_name WhileNode
 
 func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
 	while !(await vm.execute(condition, context)):
-		await vm.execute_all(body, context)
+		await vm.execute_body(body, context)
 	return
 func decompile() -> Dictionary:
 	return {

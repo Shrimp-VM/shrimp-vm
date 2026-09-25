@@ -15,11 +15,11 @@ func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
 			if !iteratox.is_valid():
 				break
 			runContext.env.write_symbol(symbol, value)
-			await vm.execute_all(body, runContext)
+			await vm.execute_body(body, runContext)
 	else:
 		for i in iteratox:
 			runContext.env.write_symbol(symbol, i)
-			await vm.execute_all(body, runContext)
+			await vm.execute_body(body, runContext)
 	return
 func decompile() -> Dictionary:
 	return {

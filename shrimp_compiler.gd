@@ -33,11 +33,11 @@ static func import_data(data: Variant) -> ShrimpIR:
 		push_error("First node must be a dictionary.")
 		return null
 static func compile(from: Variant, optimize: bool = false, warnSignal = null) -> ShrimpIR:
+	if !from:
+		push_warning("Cannot compile null to ShrimpIR.")
+		return null
 	if from is not Dictionary:
 		push_error("Can only compile #wrapper dictionary# to ShrimpIR.")
-		return null
-	if !from:
-		push_error("Cannot compile null to ShrimpIR.")
 		return null
 	if from.get("invalid", false):
 		# deleted by user, skip

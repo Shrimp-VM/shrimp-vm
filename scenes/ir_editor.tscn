@@ -12,19 +12,165 @@
 [ext_resource type="Script" uid="uid://2bp5i42dylnd" path="res://addons/shrimpvm/clickable_wrapper.gd" id="5_nc1qr"]
 [ext_resource type="Script" uid="uid://dy5pnqath5i5g" path="res://addons/shrimpvm/nodes/maths/add_node.gd" id="5_ott1x"]
 [ext_resource type="Script" uid="uid://dipbdjhg4p62u" path="res://addons/shrimpvm/nodes/macros/function_definition_node.gd" id="6_8c755"]
+[ext_resource type="Script" uid="uid://4amp168xboom" path="res://addons/shrimpvm/nodes/oop/this_node.gd" id="6_l1kpv"]
 [ext_resource type="Script" uid="uid://ctpbtdput2kyx" path="res://addons/shrimpvm/plugin/shrimp_plugin_manager.gd" id="6_p0jkk"]
 [ext_resource type="Script" uid="uid://cvqni0e6mnw20" path="res://addons/shrimpvm/nodes/literals/number_node.gd" id="7_8c755"]
 [ext_resource type="Script" uid="uid://cit3q8s785amk" path="res://addons/shrimpvm/nodes/macros/yield_node.gd" id="7_jwp8f"]
 [ext_resource type="Script" uid="uid://df4i8jqw37216" path="res://addons/shrimpvm/nodes/macros/function_call_node.gd" id="8_h6e4u"]
 [ext_resource type="Script" uid="uid://dd050p5d2k4oe" path="res://addons/shrimpvm/nodes/streams/repeat_node.gd" id="8_mlimm"]
+[ext_resource type="Script" uid="uid://dondb7hgad07g" path="res://addons/shrimpvm/nodes/oop/instantiate_node.gd" id="8_rav6t"]
+[ext_resource type="Script" uid="uid://5mpowvprbhmf" path="res://addons/shrimpvm/nodes/oop/member_access_node.gd" id="9_l1kpv"]
 [ext_resource type="Script" uid="uid://da63e86ydg0o" path="res://addons/shrimpvm/nodes/functions/print_node.gd" id="9_m2yu7"]
 [ext_resource type="PackedScene" uid="uid://bgavbblqerqdd" path="res://addons/shrimpvm/scenes/selection_rect.tscn" id="12_iu8n6"]
 [ext_resource type="Script" uid="uid://c2exvird41rgj" path="res://addons/shrimpvm/scenes/selection_manager.gd" id="12_t82hj"]
 [ext_resource type="Script" uid="uid://cf5p3iodwlcu" path="res://addons/shrimpvm/nodes/streams/for_node.gd" id="13_41fvb"]
+[ext_resource type="Script" uid="uid://bcmr0o623xigu" path="res://addons/shrimpvm/nodes/symbols/write_variable.gd" id="14_mlimm"]
 [ext_resource type="PackedScene" uid="uid://xbde27ya018b" path="res://addons/shrimpvm/scenes/inspector.tscn" id="15_5mgoq"]
+[ext_resource type="Script" uid="uid://bcv3rfn1ivkbo" path="res://addons/shrimpvm/nodes/oop/create_class_node.gd" id="15_41fvb"]
 [ext_resource type="Theme" uid="uid://bvgxqtaxctodq" path="res://addons/shrimpvm/themes/main.tres" id="15_m2yu7"]
 [ext_resource type="Script" uid="uid://bkc7845xeo5e7" path="res://addons/shrimpvm/translator.gd" id="15_oimhj"]
 [ext_resource type="PackedScene" uid="uid://vo0ycl8i2cd2" path="res://addons/shrimpvm/plugin/builtins/DefaultPlugin.tscn" id="15_ott1x"]
+
+[sub_resource type="Resource" id="Resource_efwo6"]
+script = ExtResource("7_8c755")
+content = 10.0
+metadata/_custom_type_script = "uid://cvqni0e6mnw20"
+
+[sub_resource type="Resource" id="Resource_ep10r"]
+script = ExtResource("14_mlimm")
+symbol = "sugar"
+value = SubResource("Resource_efwo6")
+metadata/_custom_type_script = "uid://bcmr0o623xigu"
+
+[sub_resource type="Resource" id="Resource_dui6b"]
+script = ExtResource("6_l1kpv")
+metadata/_custom_type_script = "uid://4amp168xboom"
+
+[sub_resource type="Resource" id="Resource_dbnwa"]
+script = ExtResource("3_ott1x")
+symbol = "initSugar"
+metadata/_custom_type_script = "uid://coy6f2obfpseb"
+
+[sub_resource type="Resource" id="Resource_srrqx"]
+script = ExtResource("9_l1kpv")
+object = SubResource("Resource_dui6b")
+key = "sugar"
+write = true
+value = SubResource("Resource_dbnwa")
+metadata/_custom_type_script = "uid://5mpowvprbhmf"
+
+[sub_resource type="Resource" id="Resource_b3mv7"]
+script = ExtResource("6_8c755")
+capture = true
+functionName = "$init"
+params = ["initSugar"]
+body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_srrqx")])
+metadata/_custom_type_script = "uid://dipbdjhg4p62u"
+
+[sub_resource type="Resource" id="Resource_s37kq"]
+script = ExtResource("6_l1kpv")
+metadata/_custom_type_script = "uid://4amp168xboom"
+
+[sub_resource type="Resource" id="Resource_i4a4p"]
+script = ExtResource("6_l1kpv")
+metadata/_custom_type_script = "uid://4amp168xboom"
+
+[sub_resource type="Resource" id="Resource_0dgin"]
+script = ExtResource("9_l1kpv")
+object = SubResource("Resource_i4a4p")
+key = "sugar"
+metadata/_custom_type_script = "uid://5mpowvprbhmf"
+
+[sub_resource type="Resource" id="Resource_r4xtb"]
+script = ExtResource("7_8c755")
+content = 10.0
+metadata/_custom_type_script = "uid://cvqni0e6mnw20"
+
+[sub_resource type="Resource" id="Resource_0gmwo"]
+script = ExtResource("5_ott1x")
+a = SubResource("Resource_0dgin")
+b = SubResource("Resource_r4xtb")
+metadata/_custom_type_script = "uid://dy5pnqath5i5g"
+
+[sub_resource type="Resource" id="Resource_gcwt3"]
+script = ExtResource("9_l1kpv")
+object = SubResource("Resource_s37kq")
+key = "sugar"
+write = true
+value = SubResource("Resource_0gmwo")
+metadata/_custom_type_script = "uid://5mpowvprbhmf"
+
+[sub_resource type="Resource" id="Resource_cww06"]
+script = ExtResource("6_8c755")
+capture = true
+functionName = "plant"
+body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_gcwt3")])
+metadata/_custom_type_script = "uid://dipbdjhg4p62u"
+
+[sub_resource type="Resource" id="Resource_ffgre"]
+script = ExtResource("15_41fvb")
+name = "Apple"
+body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_ep10r"), SubResource("Resource_b3mv7"), SubResource("Resource_cww06")])
+metadata/_custom_type_script = "uid://bcv3rfn1ivkbo"
+
+[sub_resource type="Resource" id="Resource_si625"]
+script = ExtResource("3_ott1x")
+symbol = "Apple"
+metadata/_custom_type_script = "uid://coy6f2obfpseb"
+
+[sub_resource type="Resource" id="Resource_5le2h"]
+script = ExtResource("7_8c755")
+content = 114.0
+metadata/_custom_type_script = "uid://cvqni0e6mnw20"
+
+[sub_resource type="Resource" id="Resource_cj7s1"]
+script = ExtResource("8_rav6t")
+classInstance = SubResource("Resource_si625")
+initArgs = Array[ExtResource("2_1fc1t")]([SubResource("Resource_5le2h")])
+metadata/_custom_type_script = "uid://dondb7hgad07g"
+
+[sub_resource type="Resource" id="Resource_l1dr3"]
+script = ExtResource("14_mlimm")
+symbol = "apple"
+value = SubResource("Resource_cj7s1")
+metadata/_custom_type_script = "uid://bcmr0o623xigu"
+
+[sub_resource type="Resource" id="Resource_c13pr"]
+script = ExtResource("3_ott1x")
+symbol = "apple"
+metadata/_custom_type_script = "uid://coy6f2obfpseb"
+
+[sub_resource type="Resource" id="Resource_5axl8"]
+script = ExtResource("9_l1kpv")
+object = SubResource("Resource_c13pr")
+key = "sugar"
+metadata/_custom_type_script = "uid://5mpowvprbhmf"
+
+[sub_resource type="Resource" id="Resource_a60ju"]
+script = ExtResource("9_m2yu7")
+content = SubResource("Resource_5axl8")
+metadata/_custom_type_script = "uid://da63e86ydg0o"
+
+[sub_resource type="Resource" id="Resource_1g1a8"]
+script = ExtResource("3_ott1x")
+symbol = "apple"
+metadata/_custom_type_script = "uid://coy6f2obfpseb"
+
+[sub_resource type="Resource" id="Resource_rvclu"]
+script = ExtResource("9_l1kpv")
+object = SubResource("Resource_1g1a8")
+key = "plant"
+metadata/_custom_type_script = "uid://5mpowvprbhmf"
+
+[sub_resource type="Resource" id="Resource_5s7du"]
+script = ExtResource("8_h6e4u")
+function = SubResource("Resource_rvclu")
+metadata/_custom_type_script = "uid://df4i8jqw37216"
+
+[sub_resource type="Resource" id="Resource_1t8re"]
+script = ExtResource("3_iu8n6")
+body = Array[ExtResource("2_1fc1t")]([SubResource("Resource_ffgre"), SubResource("Resource_l1dr3"), SubResource("Resource_a60ju"), SubResource("Resource_5s7du"), SubResource("Resource_a60ju")])
+metadata/_custom_type_script = "uid://uw4oee4tvks"
 
 [sub_resource type="Resource" id="Resource_rav6t"]
 script = ExtResource("3_ott1x")
@@ -77,6 +223,11 @@ script = ExtResource("9_m2yu7")
 content = SubResource("Resource_ott1x")
 metadata/_custom_type_script = "uid://da63e86ydg0o"
 
+[sub_resource type="Resource" id="Resource_255qk"]
+script = ExtResource("3_ott1x")
+symbol = "cooldown"
+metadata/_custom_type_script = "uid://coy6f2obfpseb"
+
 [sub_resource type="Resource" id="Resource_kxmox"]
 script = ExtResource("7_8c755")
 content = 10.0
@@ -84,7 +235,7 @@ metadata/_custom_type_script = "uid://cvqni0e6mnw20"
 
 [sub_resource type="Resource" id="Resource_k5hx1"]
 script = ExtResource("8_h6e4u")
-functionName = "cooldown"
+function = SubResource("Resource_255qk")
 paramIRs = Array[ExtResource("2_1fc1t")]([SubResource("Resource_kxmox")])
 metadata/_custom_type_script = "uid://df4i8jqw37216"
 
@@ -209,15 +360,99 @@ size_flags_vertical = 3
 script = ExtResource("1_iyhou")
 autoLoadBuiltins = true
 initialFileSystem = Dictionary[StringName, ExtResource("2_1fc1t")]({
+&"Eat Apple": SubResource("Resource_1t8re"),
 &"Generator": SubResource("Resource_sr1hs"),
 &"Hello World!": SubResource("Resource_8c755")
 })
-autoOpen = &"Hello World!"
+autoOpen = &"Eat Apple"
 rootWrapper = {
 "body": [{
+"body": [{
+"symbol": "sugar",
+"type": "write_variable",
+"value": {
+"content": 10.0,
+"type": "number_literal"
+}
+}, {
+"async": false,
+"body": [{
+"key": "sugar",
+"object": {
+"type": "this"
+},
+"type": "member_access",
+"value": {
+"symbol": "initSugar",
+"type": "read_symbol"
+},
+"write": true
+}],
+"capture": true,
+"generator": false,
+"name": "$init",
+"params": ["initSugar"],
+"type": "function_definition"
+}, {
+"async": false,
+"body": [],
+"capture": true,
+"generator": false,
+"name": "plant",
+"params": [],
+"type": "function_definition"
+}],
+"name": "Apple",
+"type": "create_class"
+}, {
+"symbol": "apple",
+"type": "write_variable",
+"value": {
+"args": [{
+"content": 114.0,
+"type": "number_literal"
+}],
+"class": {
+"symbol": "Apple",
+"type": "read_symbol"
+},
+"type": "instantiate"
+}
+}, {
 "content": {
-"content": "Hello World!",
-"type": "string_literal"
+"key": "sugar",
+"object": {
+"symbol": "apple",
+"type": "read_symbol"
+},
+"type": "member_access",
+"value": {},
+"write": false
+},
+"type": "print"
+}, {
+"func": {
+"key": "plant",
+"object": {
+"symbol": "apple",
+"type": "read_symbol"
+},
+"type": "member_access",
+"value": {},
+"write": false
+},
+"params": [],
+"type": "function_call"
+}, {
+"content": {
+"key": "sugar",
+"object": {
+"symbol": "apple",
+"type": "read_symbol"
+},
+"type": "member_access",
+"value": {},
+"write": false
 },
 "type": "print"
 }],
@@ -437,7 +672,7 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 mouse_behavior_recursive = 1
-text = "Hello World!"
+text = "Eat Apple"
 label_settings = SubResource("LabelSettings_iejdg")
 
 [node name="selections" type="Control" parent="layout/layout/workspace" unique_id=1899592325]

@@ -1,6 +1,6 @@
 class_name ShrimpVMUtil
 
-const BUILTIN_SUBDIRS = ["base", "functions", "literals", "macros", "maths", "streams", "symbols"]
+const BUILTIN_SUBDIRS = ["base", "functions", "literals", "macros", "maths", "streams", "symbols", "oop"]
 
 class EventEmitter extends RefCounted:
 	signal event()

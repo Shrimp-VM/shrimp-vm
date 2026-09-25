@@ -10,7 +10,7 @@ func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
 	for i in floor(await vm.execute(times, context)):
 		var newContext = ExecutionContext.new(context)
 		newContext.env.write_symbol(symbol, i)
-		await vm.execute_all(body, newContext)
+		await vm.execute_body(body, newContext)
 	return
 func decompile() -> Dictionary:
 	return {

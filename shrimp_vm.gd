@@ -15,10 +15,15 @@ func _ready() -> void:
 func execute_autorun():
 	return await execute(autoRun, ExecutionContext.new())
 func execute(node: ShrimpIR, context: ExecutionContext) -> Variant:
-	return await execute_all([node], context)
-func execute_all(nodes: Array[ShrimpIR], context: ExecutionContext) -> Variant:
+	return await execute_body([node], context)
+func execute_body(nodes: Array[ShrimpIR], context: ExecutionContext) -> Variant:
 	context.reparent_head(globalContext)
 	return await context.start(nodes, self)
+func execute_all(nodes: Array[ShrimpIR], context: ExecutionContext) -> Array:
+	var result = []
+	for node in nodes:
+		result.append(await execute(node, context))
+	return result
 func poll_event(scripts: Array[ShrimpIR], context: ExecutionContext):
 	var irs = ShrimpVMUtil.get_configured_irs()
 	for ir in irs:
