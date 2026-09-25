@@ -62,11 +62,15 @@ var debugContext: ExecutionContext
 var compilationWarns: Array[Array] = []
 var blockCounts: Dictionary[ShrimpIR, float] = {}
 var selectingPath: WrapperPath
+var garlicLsp: GarlicLspServer
 var selectingPointer: Node:
 	get:
 		return WrapperContext.new(rootWrapper, selectingPath, get_root_block()).locate()
 
 func _ready() -> void:
+	if not Engine.is_editor_hint():
+		garlicLsp = GarlicLspServer.new()
+		add_child(garlicLsp)
 	debugContext = ExecutionContext.new()
 	debugContext.env.write_symbol("filemgr", fileManager)
 	openBtn.pressed.connect(
