@@ -276,7 +276,6 @@ func delete_node(block: NodeBlock, auto_rebuild: bool = true):
 		update_selection()
 func store_block(type: String, count: int = 1):
 	blockCounts[find_ir_typed(type)] += count
-	rebuild_desk()
 func consume_block(type: String):
 	store_block(type, -1)
 func find_ir_typed(type: String) -> ShrimpIR:
