@@ -42,7 +42,7 @@ static func get_wrapper_schema() -> Dictionary:
 		{
 			"async": Model.attribute_schema(TYPE_BOOL, "is async?"),
 			"generator": Model.attribute_schema(TYPE_BOOL, "is a generator?"),
-			"capture": Model.attribute_schema(TYPE_BOOL, "capture this outside", false, true),
+			"capture": Model.attribute_schema(TYPE_BOOL, "capture this pointer?", false, true),
 			"name": Model.attribute_schema(TYPE_STRING_NAME, "function name"),
 			"params": Model.attribute_schema(TYPE_STRING_NAME, "parameters", true),
 			"body": Model.attribute_schema(ShrimpIR.TYPE_ENUM, "body", true)

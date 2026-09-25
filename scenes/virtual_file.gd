@@ -14,8 +14,6 @@ signal clicked()
 
 func _ready() -> void:
 	rebuild()
-func _physics_process(_delta: float) -> void:
-	indicator.visible = opening
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index != MouseButton.MOUSE_BUTTON_LEFT: return
@@ -24,3 +22,4 @@ func _gui_input(event: InputEvent) -> void:
 
 func rebuild():
 	nameLabel.text = fileName
+	indicator.visible = opening

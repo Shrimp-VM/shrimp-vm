@@ -48,10 +48,12 @@ func open(file: VirtualFile):
 	open_file.emit(file)
 	currentOpening = file
 	file.opening = true
+	file.rebuild()
 func close():
 	if !is_instance_valid(currentOpening): return
 	close_file.emit(currentOpening)
 	currentOpening.opening = false
+	currentOpening.rebuild()
 	currentOpening = null
 func delete():
 	if is_instance_valid(currentOpening):

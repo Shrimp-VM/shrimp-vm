@@ -94,7 +94,6 @@ offset_bottom = 23.0
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_0auy1")
 script = ExtResource("1_rsdkj")
-opening = true
 
 [node name="animator" type="AnimationPlayer" parent="." unique_id=67258707]
 libraries/ = SubResource("AnimationLibrary_1xwb8")
@@ -106,6 +105,7 @@ size_flags_horizontal = 0
 
 [node name="indicator" type="Control" parent="wrapper" unique_id=599488136]
 unique_name_in_owner = true
+visible = false
 custom_minimum_size = Vector2(5, 5)
 layout_mode = 2
 size_flags_horizontal = 0
