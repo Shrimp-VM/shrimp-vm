@@ -453,6 +453,7 @@ rootWrapper = {
 "params": [],
 "type": "function_definition"
 }],
+"extends": {},
 "name": "Apple",
 "type": "create_class"
 }, {
@@ -813,4 +814,6 @@ horizontal_alignment = 1
 
 [node name="loadingScreen" parent="." unique_id=1393937438 instance=ExtResource("31_pkssi")]
 unique_name_in_owner = true
+process_mode = 4
+visible = false
 layout_mode = 1
