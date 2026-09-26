@@ -1,7 +1,7 @@
 @tool
 extends Control
 class_name ClickableWrapper
-
+ 
 signal clicked()
 
 func _gui_input(event: InputEvent) -> void:
