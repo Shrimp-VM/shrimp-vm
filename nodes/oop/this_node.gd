@@ -2,7 +2,7 @@
 extends ShrimpIR
 class_name ThisNode
 
-func execute(_vm: ShrimpVM, context: ExecutionContext) -> Variant:
+func execute(_vm: ShrimpVM, context: ShrimPoroutine) -> Variant:
 	return context.env.read_symbol("this")
 func decompile() -> Dictionary:
 	return {}

@@ -4,7 +4,7 @@ class_name StringNode
 
 @export var content: String
 
-func execute(_vm: ShrimpVM, _context: ExecutionContext) -> Variant:
+func execute(_vm: ShrimpVM, _context: ShrimPoroutine) -> Variant:
 	return content
 func decompile() -> Dictionary:
 	return {

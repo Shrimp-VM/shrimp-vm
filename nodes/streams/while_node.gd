@@ -5,7 +5,7 @@ class_name WhileNode
 @export var condition: ShrimpIR
 @export var body: Array[ShrimpIR]
 
-func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
+func execute(vm: ShrimpVM, context: ShrimPoroutine) -> Variant:
 	while !(await vm.execute(condition, context)):
 		await vm.execute_body(body, context)
 	return

@@ -5,7 +5,7 @@ class_name AddNode
 @export var a: ShrimpIR
 @export var b: ShrimpIR
 
-func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
+func execute(vm: ShrimpVM, context: ShrimPoroutine) -> Variant:
 	return (await vm.execute(a, context)) + (await vm.execute(b, context))
 func decompile() -> Dictionary:
 	return {

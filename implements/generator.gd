@@ -13,11 +13,11 @@ signal resumed()
 const TAG = "generator"
 
 var state: State = State.READY
-var context: ExecutionContext
+var context: ShrimPoroutine
 var vm: ShrimpVM
 var lastValue: Variant
 
-func _init(parenx: ExecutionContext, vmx: ShrimpVM) -> void:
+func _init(parenx: ShrimPoroutine, vmx: ShrimpVM) -> void:
 	context = parenx
 	vm = vmx
 	context.tags[TAG] = self
@@ -44,7 +44,7 @@ func drive():
 	await context.eventloop(vm)
 	state = State.DONE
 
-static func find(contexx: ExecutionContext) -> ShrimpGenerator:
+static func find(contexx: ShrimPoroutine) -> ShrimpGenerator:
 	var current = contexx
 	while is_instance_valid(current):
 		var found = current.tags.get(TAG)

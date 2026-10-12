@@ -2,7 +2,7 @@
 extends ShrimpIR
 class_name PlaceholderNode
 
-func execute(_vm: ShrimpVM, _context: ExecutionContext) -> Variant:
+func execute(_vm: ShrimpVM, _context: ShrimPoroutine) -> Variant:
 	return
 func decompile() -> Dictionary:
 	return {}

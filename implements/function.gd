@@ -3,13 +3,13 @@ extends RefCounted
 class_name ShrimpFunction
 
 var capturedThis: ShrimpInstance
-var capturedContext: ExecutionContext
+var capturedContext: ShrimPoroutine
 var params: Array
 var body: Array[ShrimpIR]
 var async: bool
 var generator: bool
 
-func _init(context: ExecutionContext, this: ShrimpInstance, paramx: Array = [], bodx: Array[ShrimpIR] = [], asynx: bool = false, generatox: bool = false) -> void:
+func _init(context: ShrimPoroutine, this: ShrimpInstance, paramx: Array = [], bodx: Array[ShrimpIR] = [], asynx: bool = false, generatox: bool = false) -> void:
 	capturedContext = context
 	capturedThis = this
 	params = paramx
@@ -26,7 +26,7 @@ func run(input: Array, vm: ShrimpVM):
 	elif len(input) < len(params):
 		push_error("Too less parameters")
 	else:
-		var runContext = ExecutionContext.new(capturedContext, ExecutionContext.LifeMode.STOP)
+		var runContext = ShrimPoroutine.new(capturedContext, ShrimPoroutine.LifeMode.STOP)
 		for i in len(params):
 			runContext.env.write_symbol(params[i], input[i])
 		runContext.env.write_symbol("this", capturedThis)

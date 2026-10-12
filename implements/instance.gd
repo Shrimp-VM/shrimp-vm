@@ -3,7 +3,7 @@ extends RefCounted
 class_name ShrimpInstance
 
 var prototype: ShrimpClass = null
-var instanceContext: ExecutionContext
+var instanceContext: ShrimPoroutine
 
 func read_attribute(key: StringName) -> Variant:
 	return instanceContext.env.read_symbol(key)

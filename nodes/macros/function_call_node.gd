@@ -5,7 +5,7 @@ class_name FunctionCallNode
 @export var function: ShrimpIR
 @export var paramIRs: Array[ShrimpIR]
 
-func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
+func execute(vm: ShrimpVM, context: ShrimPoroutine) -> Variant:
 	var data = await vm.execute(function, context)
 	if data is ShrimpFunction:
 		return await data.run(await vm.execute_all(paramIRs, context), vm)

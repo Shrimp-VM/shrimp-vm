@@ -1,5 +1,5 @@
 extends RefCounted
-class_name ExecutionContext
+class_name ShrimPoroutine
 
 enum LifeMode {
 	STOP,
@@ -15,7 +15,7 @@ enum State {
 signal exited(data: Variant)
 
 var lifeMode: LifeMode
-var parent: ExecutionContext
+var parent: ShrimPoroutine
 var env: ExecutionEnvironment
 var state: State = State.READY
 var lastResult: Variant
@@ -25,7 +25,7 @@ var currentNode: ShrimpIR
 var currentIndex: int = 0
 var tags: Dictionary = {}
 
-func _init(parenx: ExecutionContext = null, lifeModx: LifeMode = LifeMode.PASS, enx: ExecutionEnvironment = null) -> void:
+func _init(parenx: ShrimPoroutine = null, lifeModx: LifeMode = LifeMode.PASS, enx: ExecutionEnvironment = null) -> void:
 	lifeMode = lifeModx
 	if !is_instance_valid(enx):
 		enx = ExecutionEnvironment.new()
@@ -36,7 +36,7 @@ func _init(parenx: ExecutionContext = null, lifeModx: LifeMode = LifeMode.PASS, 
 
 func start(nodes: Array[ShrimpIR], vmx: ShrimpVM, startLoop: bool = true) -> Variant:
 	if state != State.READY:
-		return await ExecutionContext.new(self, lifeMode, env).start(nodes, vmx)
+		return await ShrimPoroutine.new(self, lifeMode, env).start(nodes, vmx)
 	body = ShrimpVMUtil.erase_nonir(nodes)
 	vm = vmx
 	state = State.RUNNING
@@ -74,7 +74,7 @@ func exit_with(data: Variant):
 	return data
 func stop_parent(data: Variant, spread: bool = false):
 	if is_instance_valid(parent):
-		if parent is ExecutionContext:
+		if parent is ShrimPoroutine:
 			parent.stop(data, spread)
 func stop(data: Variant, spread: bool = false):
 	match lifeMode:
@@ -86,7 +86,7 @@ func stop(data: Variant, spread: bool = false):
 		LifeMode.IGNORE:
 			if spread: stop_parent(data, spread)
 	return data
-func has_parent(target: ExecutionContext) -> bool:
+func has_parent(target: ShrimPoroutine) -> bool:
 	if !is_instance_valid(target): return false
 	if is_instance_valid(parent):
 		if self == target:
@@ -95,18 +95,18 @@ func has_parent(target: ExecutionContext) -> bool:
 			return parent.has_parent(target)
 	else:
 		return false
-func reparent(new: ExecutionContext):
+func reparent(new: ShrimPoroutine):
 	if has_parent(new): return
 	parent = new
 	if is_instance_valid(parent):
 		env.reparent(parent.env)
-func reparent_head(new: ExecutionContext):
+func reparent_head(new: ShrimPoroutine):
 	if has_parent(new): return
 	if is_instance_valid(parent):
 		parent.reparent_head(new)
 	else:
 		reparent(new)
-func merge(other: ExecutionContext):
+func merge(other: ShrimPoroutine):
 	env.merge(other.env)
-func merged(other: ExecutionContext) -> ExecutionContext:
-	return ExecutionContext.new(parent, lifeMode, env.merged(other.env))
+func merged(other: ShrimPoroutine) -> ShrimPoroutine:
+	return ShrimPoroutine.new(parent, lifeMode, env.merged(other.env))

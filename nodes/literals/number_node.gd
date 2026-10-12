@@ -4,7 +4,7 @@ class_name NumberNode
 
 @export var content: float
 
-func execute(_vm: ShrimpVM, _context: ExecutionContext) -> Variant:
+func execute(_vm: ShrimpVM, _context: ShrimPoroutine) -> Variant:
 	return content
 func decompile() -> Dictionary:
 	return {

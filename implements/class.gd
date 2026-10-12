@@ -5,9 +5,9 @@ class_name ShrimpClass
 var initialized: bool = false
 var body: Array[ShrimpIR] = []
 
-func _init(bodx: Array[ShrimpIR], extend: ShrimpClass, baseContext: ExecutionContext) -> void:
+func _init(bodx: Array[ShrimpIR], extend: ShrimpClass, baseContext: ShrimPoroutine) -> void:
 	body = bodx
-	instanceContext = ExecutionContext.new(baseContext)
+	instanceContext = ShrimPoroutine.new(baseContext)
 	if is_instance_valid(extend):
 		instanceContext.merge(extend.instanceContext)
 	instanceContext.env.write_symbol("this", self)
@@ -23,7 +23,7 @@ func create_instantiate(args: Array, vm: ShrimpVM) -> ShrimpInstance:
 		return null
 	var instance = ShrimpInstance.new()
 	instance.prototype = self
-	var context = ExecutionContext.new(instanceContext)
+	var context = ShrimPoroutine.new(instanceContext)
 	context.env.write_symbol("this", instance)
 	instance.instanceContext = context
 	await instance.call_super_method("init", vm, args)

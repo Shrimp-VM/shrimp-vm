@@ -6,9 +6,9 @@ class_name ForNode
 @export var symbol: String
 @export var body: Array[ShrimpIR]
 
-func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
+func execute(vm: ShrimpVM, context: ShrimPoroutine) -> Variant:
 	var iteratox = await vm.execute(iterator, context)
-	var runContext = ExecutionContext.new(context)
+	var runContext = ShrimPoroutine.new(context)
 	if iteratox is ShrimpGenerator:
 		while iteratox.is_valid():
 			var value = await iteratox.next()

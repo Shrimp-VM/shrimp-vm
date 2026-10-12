@@ -4,7 +4,7 @@ class_name PrintNode
 
 @export var content: ShrimpIR
 
-func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
+func execute(vm: ShrimpVM, context: ShrimPoroutine) -> Variant:
 	print(await vm.execute(content, context))
 	return
 func decompile() -> Dictionary:

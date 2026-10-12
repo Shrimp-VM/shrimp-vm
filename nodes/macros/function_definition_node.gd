@@ -9,7 +9,7 @@ class_name FunctionDefinitionNode
 @export var params: Array
 @export var body: Array[ShrimpIR]
 
-func execute(_vm: ShrimpVM, context: ExecutionContext) -> Variant:
+func execute(_vm: ShrimpVM, context: ShrimPoroutine) -> Variant:
 	var instance = ShrimpFunction.new(context, context.env.read_symbol("this") if capture else null, params, body, isAsync, isGenerator)
 	context.env.write_symbol(functionName, instance)
 	return instance

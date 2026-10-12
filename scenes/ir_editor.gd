@@ -58,7 +58,7 @@ signal modal_finished()
 @onready var selectionMgr: SelectionManager = $%selections
 @onready var loadingScreen: Control = $%loadingScreen
 var rebuilding: bool = false
-var debugContext: ExecutionContext
+var debugContext: ShrimPoroutine
 var compilationWarns: Array[Array] = []
 var blockCounts: Dictionary[ShrimpIR, float] = {}
 var selectingPath: WrapperPath
@@ -71,7 +71,7 @@ func _ready() -> void:
 	if not Engine.is_editor_hint():
 		garlicLsp = GarlicLspServer.new()
 		add_child(garlicLsp)
-	debugContext = ExecutionContext.new()
+	debugContext = ShrimPoroutine.new()
 	debugContext.env.write_symbol("filemgr", fileManager)
 	openBtn.pressed.connect(
 		func():

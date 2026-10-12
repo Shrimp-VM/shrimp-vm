@@ -6,7 +6,7 @@ class_name IfNode
 @export var thenBody: Array[ShrimpIR]
 @export var elseBody: Array[ShrimpIR]
 
-func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
+func execute(vm: ShrimpVM, context: ShrimPoroutine) -> Variant:
 	var result = await vm.execute(condition, context)
 	if result:
 		await vm.execute_body(thenBody, context)

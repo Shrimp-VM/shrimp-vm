@@ -4,7 +4,7 @@ class_name YieldNode
 
 @export var data: ShrimpIR
 
-func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
+func execute(vm: ShrimpVM, context: ShrimPoroutine) -> Variant:
 	var value = await vm.execute(data, context)
 	var gen = ShrimpGenerator.find(context)
 	if gen == null:

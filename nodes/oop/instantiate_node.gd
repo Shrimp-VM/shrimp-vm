@@ -5,7 +5,7 @@ class_name InstantiateNode
 @export var classInstance: ShrimpIR
 @export var initArgs: Array[ShrimpIR]
 
-func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
+func execute(vm: ShrimpVM, context: ShrimPoroutine) -> Variant:
 	var classI = await vm.execute(classInstance, context)
 	if classI is ShrimpClass:
 		return await classI.create_instantiate(await vm.execute_all(initArgs, context), vm)

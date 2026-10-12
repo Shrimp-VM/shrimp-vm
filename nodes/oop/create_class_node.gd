@@ -6,7 +6,7 @@ class_name CreateClassNode
 @export var extend: ShrimpIR
 @export var body: Array[ShrimpIR]
 
-func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
+func execute(vm: ShrimpVM, context: ShrimPoroutine) -> Variant:
 	var result = ShrimpClass.new(body, await vm.execute(extend, context), context)
 	await result.init(vm)
 	context.env.write_symbol(name, result)

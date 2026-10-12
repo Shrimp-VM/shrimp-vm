@@ -38,9 +38,9 @@ enum NodeTrigger {
 @export var node_type: String
 
 ## EXECUTION=Orderly run, EVENT_*=event test, returns a bool, TERMINAL=stop, can't connect next sibling
-@abstract func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant
+@abstract func execute(vm: ShrimpVM, context: ShrimPoroutine) -> Variant
 @abstract func decompile() -> Dictionary
-func event_emit(_vm: ShrimpVM, _context: ExecutionContext):
+func event_emit(_vm: ShrimpVM, _context: ShrimPoroutine):
 	pass
 
 func get_keys_type(attribute: String):

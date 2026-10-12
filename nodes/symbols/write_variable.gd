@@ -5,7 +5,7 @@ class_name WriteVariableNode
 @export var symbol: String
 @export var value: ShrimpIR
 
-func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
+func execute(vm: ShrimpVM, context: ShrimPoroutine) -> Variant:
 	return context.env.write_symbol(symbol, await vm.execute(value, context))
 func decompile() -> Dictionary:
 	return {

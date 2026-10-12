@@ -7,7 +7,7 @@ class_name MemberAccessNode
 @export var write: bool
 @export var value: ShrimpIR
 
-func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
+func execute(vm: ShrimpVM, context: ShrimPoroutine) -> Variant:
 	var obj = await vm.execute(object, context)
 	if write:
 		var v = await vm.execute(value, context)

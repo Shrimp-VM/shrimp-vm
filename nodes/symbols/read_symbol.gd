@@ -4,7 +4,7 @@ class_name ReadSymbolNode
 
 @export var symbol: String
 
-func execute(_vm: ShrimpVM, context: ExecutionContext) -> Variant:
+func execute(_vm: ShrimpVM, context: ShrimPoroutine) -> Variant:
 	return context.env.read_symbol(symbol)
 func decompile() -> Dictionary:
 	return {

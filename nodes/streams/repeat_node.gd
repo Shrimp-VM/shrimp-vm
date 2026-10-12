@@ -6,9 +6,9 @@ class_name RepeatNode
 @export var symbol: String
 @export var body: Array[ShrimpIR]
 
-func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant:
+func execute(vm: ShrimpVM, context: ShrimPoroutine) -> Variant:
 	for i in floor(await vm.execute(times, context)):
-		var newContext = ExecutionContext.new(context)
+		var newContext = ShrimPoroutine.new(context)
 		newContext.env.write_symbol(symbol, i)
 		await vm.execute_body(body, newContext)
 	return

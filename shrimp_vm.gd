@@ -5,7 +5,7 @@ class_name ShrimpVM
 @export_tool_button("Run") var run = execute_autorun
 @export var autoRun: ShrimpIR
 
-var globalContext: ExecutionContext = null
+var globalContext: ShrimPoroutine = null
 
 func _ready() -> void:
 	if !Engine.is_editor_hint():
@@ -13,18 +13,18 @@ func _ready() -> void:
 			execute_autorun()
 
 func execute_autorun():
-	return await execute(autoRun, ExecutionContext.new())
-func execute(node: ShrimpIR, context: ExecutionContext) -> Variant:
+	return await execute(autoRun, ShrimPoroutine.new())
+func execute(node: ShrimpIR, context: ShrimPoroutine) -> Variant:
 	return await execute_body([node], context)
-func execute_body(nodes: Array[ShrimpIR], context: ExecutionContext) -> Variant:
+func execute_body(nodes: Array[ShrimpIR], context: ShrimPoroutine) -> Variant:
 	context.reparent_head(globalContext)
 	return await context.start(nodes, self)
-func execute_all(nodes: Array[ShrimpIR], context: ExecutionContext) -> Array:
+func execute_all(nodes: Array[ShrimpIR], context: ShrimPoroutine) -> Array:
 	var result = []
 	for node in nodes:
 		result.append(await execute(node, context))
 	return result
-func poll_event(scripts: Array[ShrimpIR], context: ExecutionContext):
+func poll_event(scripts: Array[ShrimpIR], context: ShrimPoroutine):
 	var irs = ShrimpVMUtil.get_configured_irs()
 	for ir in irs:
 		if ir.get_wrapper_schema().trigger != ShrimpIR.NodeTrigger.EVENT_POLL: return
@@ -34,7 +34,7 @@ func poll_event(scripts: Array[ShrimpIR], context: ExecutionContext):
 				if await execute(headNode, context):
 					await headNode.event_emit(self, context)
 			headTest.call()
-func trigger_event(node: String, scripts: Array[ShrimpIR], context: ExecutionContext, parameters: Dictionary = {}):
+func trigger_event(node: String, scripts: Array[ShrimpIR], context: ShrimPoroutine, parameters: Dictionary = {}):
 	var irs = ShrimpVMUtil.get_configured_irs()
 	for ir in irs:
 		var schema = ir.get_wrapper_schema()
@@ -43,7 +43,7 @@ func trigger_event(node: String, scripts: Array[ShrimpIR], context: ExecutionCon
 		for headNode in scripts:
 			if headNode.node_type != ir.get_node_type(): return
 			var headRun = func():
-				var runContext = ExecutionContext.new(context)
+				var runContext = ShrimPoroutine.new(context)
 				for attributeKey in schema.attributes:
 					if schema.attributes[attributeKey].type == ShrimpIR.TYPE_EXTERNAL_PARAMETER:
 						runContext.env.write_symbol("EVENT_%s" % attributeKey, parameters.get(attributeKey))

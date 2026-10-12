@@ -4,7 +4,7 @@ class_name ShrimpFileChangeNameNode
 
 @export var newName: String
 
-func execute(_vm: ShrimpVM, context: ExecutionContext) -> Variant:
+func execute(_vm: ShrimpVM, context: ShrimPoroutine) -> Variant:
 	var filemgr = context.env.read_symbol("filemgr")
 	if filemgr is ShrimpFileManager:
 		if is_instance_valid(filemgr.currentOpening):
