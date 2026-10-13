@@ -6,10 +6,9 @@ class_name YieldNode
 
 func execute(vm: ShrimpVM, context: ShrimPoroutine) -> Variant:
 	var value = await vm.execute(data, context)
-	var gen = ShrimpGenerator.find(context)
-	if gen == null:
+	if !context.isGenerator:
 		return value
-	return await gen.suspend(value)
+	return await context.suspend(value)
 func decompile() -> Dictionary:
 	return {
 		"data": ShrimpCompiler.decompile(data)

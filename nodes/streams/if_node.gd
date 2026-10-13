@@ -9,9 +9,9 @@ class_name IfNode
 func execute(vm: ShrimpVM, context: ShrimPoroutine) -> Variant:
 	var result = await vm.execute(condition, context)
 	if result:
-		await vm.execute_body(thenBody, context)
+		await context.execute_block(thenBody, vm)
 	else:
-		await vm.execute_body(elseBody, context)
+		await context.execute_block(elseBody, vm)
 	return result
 func decompile() -> Dictionary:
 	return {

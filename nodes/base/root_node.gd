@@ -5,8 +5,7 @@ class_name ShrimpRootNode
 @export var body: Array[ShrimpIR] = []
 
 func execute(vm: ShrimpVM, context: ShrimPoroutine) -> Variant:
-	var newContext = ShrimPoroutine.new(context)
-	await vm.execute_body(body, newContext)
+	await context.execute_block(body, vm)
 	return
 func decompile() -> Dictionary:
 	return {

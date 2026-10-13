@@ -5,7 +5,8 @@ class_name ReturnNode
 @export var data: ShrimpIR
 
 func execute(vm: ShrimpVM, context: ShrimPoroutine) -> Variant:
-	return context.stop(await vm.execute(data, context), true)
+	context.throw_return(await vm.execute(data, context))
+	return null
 func decompile() -> Dictionary:
 	return {
 		"data": ShrimpCompiler.decompile(data)

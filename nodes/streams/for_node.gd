@@ -8,18 +8,21 @@ class_name ForNode
 
 func execute(vm: ShrimpVM, context: ShrimPoroutine) -> Variant:
 	var iteratox = await vm.execute(iterator, context)
-	var runContext = ShrimPoroutine.new(context)
 	if iteratox is ShrimpGenerator:
-		while iteratox.is_valid():
+		while iteratox.is_valid() && !context.interrupted():
 			var value = await iteratox.next()
 			if !iteratox.is_valid():
 				break
-			runContext.env.write_symbol(symbol, value)
-			await vm.execute_body(body, runContext)
+			var sig = await context.execute_block(body, vm, ShrimpFrame.Boundary.LOOP, {symbol: value})
+			if sig is ShrimpControlSignal && sig.type == ShrimpControlSignal.Type.BREAK:
+				break
 	else:
 		for i in iteratox:
-			runContext.env.write_symbol(symbol, i)
-			await vm.execute_body(body, runContext)
+			if context.interrupted():
+				break
+			var sig = await context.execute_block(body, vm, ShrimpFrame.Boundary.LOOP, {symbol: i})
+			if sig is ShrimpControlSignal && sig.type == ShrimpControlSignal.Type.BREAK:
+				break
 	return
 func decompile() -> Dictionary:
 	return {

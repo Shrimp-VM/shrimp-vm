@@ -8,9 +8,11 @@ class_name RepeatNode
 
 func execute(vm: ShrimpVM, context: ShrimPoroutine) -> Variant:
 	for i in floor(await vm.execute(times, context)):
-		var newContext = ShrimPoroutine.new(context)
-		newContext.env.write_symbol(symbol, i)
-		await vm.execute_body(body, newContext)
+		if context.interrupted():
+			break
+		var sig = await context.execute_block(body, vm, ShrimpFrame.Boundary.LOOP, {symbol: i})
+		if sig is ShrimpControlSignal && sig.type == ShrimpControlSignal.Type.BREAK:
+			break
 	return
 func decompile() -> Dictionary:
 	return {

@@ -2,53 +2,26 @@
 extends RefCounted
 class_name ShrimpGenerator
 
-enum State {
-	READY,
-	PAUSED,
-	DONE
-}
-
-signal resumed()
-
-const TAG = "generator"
-
-var state: State = State.READY
-var context: ShrimPoroutine
+var coroutine: ShrimPoroutine
 var vm: ShrimpVM
-var lastValue: Variant
 
-func _init(parenx: ShrimPoroutine, vmx: ShrimpVM) -> void:
-	context = parenx
+func _init(context: ShrimPoroutine, vmx: ShrimpVM) -> void:
+	coroutine = context
 	vm = vmx
-	context.tags[TAG] = self
 
 func is_valid() -> bool:
-	return state != State.DONE
+	return is_instance_valid(coroutine) && coroutine.state != ShrimPoroutine.State.DONE
 func next() -> Variant:
-	if state == State.DONE:
+	if !is_valid():
 		return null
-	elif state == State.READY:
-		drive()
+	if coroutine.state == ShrimPoroutine.State.READY:
+		drive_coroutine()
 	else:
-		resumed.emit()
-	if state == State.PAUSED:
-		return lastValue
-	state = State.DONE
+		coroutine.wake()
+	if coroutine.state == ShrimPoroutine.State.SUSPENDED:
+		return coroutine.lastResult
+	if coroutine.state == ShrimPoroutine.State.RUNNING:
+		coroutine.abort()
 	return null
-func suspend(data: Variant) -> Variant:
-	lastValue = data
-	state = State.PAUSED
-	await resumed
-	return data
-func drive():
-	await context.eventloop(vm)
-	state = State.DONE
-
-static func find(contexx: ShrimPoroutine) -> ShrimpGenerator:
-	var current = contexx
-	while is_instance_valid(current):
-		var found = current.tags.get(TAG)
-		if found is ShrimpGenerator:
-			return found
-		current = current.parent
-	return null
+func drive_coroutine() -> void:
+	await coroutine.drive_all()
