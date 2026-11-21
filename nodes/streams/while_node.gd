@@ -6,8 +6,10 @@ class_name WhileNode
 @export var body: Array[ShrimpIR]
 
 func execute(vm: ShrimpVM, context: ShrimPoroutine) -> Variant:
-	while !(await vm.execute(condition, context)):
-		await vm.execute_body(body, context)
+	while !context.interrupted() && !(await vm.execute(condition, context)):
+		var sig = await context.execute_block(body, vm, ShrimpFrame.Boundary.LOOP)
+		if sig is ShrimpControlSignal && sig.type == ShrimpControlSignal.Type.BREAK:
+			break
 	return
 func decompile() -> Dictionary:
 	return {

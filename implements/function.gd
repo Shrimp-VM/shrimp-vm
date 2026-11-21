@@ -4,6 +4,7 @@ class_name ShrimpFunction
 
 var capturedThis: ShrimpInstance
 var capturedContext: ShrimPoroutine
+var capturedEnv: ExecutionEnvironment
 var params: Array
 var body: Array[ShrimpIR]
 var async: bool
@@ -12,6 +13,8 @@ var generator: bool
 func _init(context: ShrimPoroutine, this: ShrimpInstance, paramx: Array = [], bodx: Array[ShrimpIR] = [], asynx: bool = false, generatox: bool = false) -> void:
 	capturedContext = context
 	capturedThis = this
+	if is_instance_valid(context):
+		capturedEnv = context.env
 	params = paramx
 	body = bodx
 	async = asynx
@@ -23,15 +26,13 @@ func run(input: Array, vm: ShrimpVM):
 		return
 	if len(input) > len(params):
 		push_error("Too much parameters")
+		return
 	elif len(input) < len(params):
 		push_error("Too less parameters")
-	else:
-		var runContext = ShrimPoroutine.new(capturedContext, ShrimPoroutine.LifeMode.STOP)
-		for i in len(params):
-			runContext.env.write_symbol(params[i], input[i])
-		runContext.env.write_symbol("this", capturedThis)
-		if generator:
-			runContext.start(body, vm, false)
-			return ShrimpGenerator.new(runContext, vm)
-		else:
-			return await vm.execute_body(body, runContext)
+		return
+	var runContext = ShrimPoroutine.new(capturedContext)
+	runContext.setup_function(self, input, vm)
+	if generator:
+		return ShrimpGenerator.new(runContext, vm)
+	runContext.reparent_head(vm.globalContext)
+	return await runContext.drive_all()

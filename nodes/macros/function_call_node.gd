@@ -8,7 +8,7 @@ class_name FunctionCallNode
 func execute(vm: ShrimpVM, context: ShrimPoroutine) -> Variant:
 	var data = await vm.execute(function, context)
 	if data is ShrimpFunction:
-		return await data.run(await vm.execute_all(paramIRs, context), vm)
+		return await context.call_function(data, await vm.execute_all(paramIRs, context))
 	else:
 		push_error("Function %s not found." % function)
 		return null
