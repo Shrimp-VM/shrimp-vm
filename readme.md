@@ -20,7 +20,7 @@ A visual block-based scripting virtual machine for Godot 4.6 (UGC framework): le
 3. Or execute manually in code:
 
 ```gdscript
-var result = await vm.execute(some_ir, ExecutionContext.new())
+var result = await vm.execute(some_ir, ShrimPoroutine.new())
 ```
 
 ### Event Model
@@ -39,7 +39,7 @@ The node schema's `trigger` determines how it participates:
 Inherit from `ShrimpIR` and implement the following interface:
 
 ```gdscript
-func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant
+func execute(vm: ShrimpVM, context: ShrimPoroutine) -> Variant
 func decompile() -> Dictionary
 static func create_from(wrapper: Dictionary) -> ShrimpIR
 static func get_wrapper_schema() -> Dictionary

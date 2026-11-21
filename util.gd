@@ -27,7 +27,7 @@ static func disconnect_children(node: Node, excludes: Array = []):
 static func get_importer_setting():
 	return ProjectSettings.get_setting("importer_defaults/%s" % ShrimpCompiler.IMPORTER_ID)
 static func list_scripts(baseDir: String):
-	return Array(
+	return (
 		Array(ResourceLoader.list_directory(baseDir))
 			.filter(func(e: String): return e.ends_with(".gd"))
 			.map(func(e: String): return baseDir.path_join(e))
@@ -45,7 +45,7 @@ static func scan_ir_nodes(baseDirs: Array) -> Array[ShrimpIR]:
 	for dir in baseDirs:
 		for fp in list_scripts(dir):
 			var script = load(fp)
-			if script is Script:
+			if script is GDScript:
 				var instance = script.new()
 				if instance is ShrimpIR:
 					result.append(instance)

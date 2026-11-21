@@ -1,6 +1,6 @@
-[gd_scene format=3 uid="uid://xbde27ya018b"]
+[gd_scene format=3 uid="uid://422wq2snvn48"]
 
-[ext_resource type="Script" uid="uid://br6flbgv84ltm" path="res://addons/shrimpvm/scenes/inspector.gd" id="1_xdey1"]
+[ext_resource type="Script" path="res://addons/shrimpvm/scenes/inspector.gd" id="1_xdey1"]
 [ext_resource type="Theme" uid="uid://bvgxqtaxctodq" path="res://addons/shrimpvm/themes/main.tres" id="2_b273f"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ohykq"]

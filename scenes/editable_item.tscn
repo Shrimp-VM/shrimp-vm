@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bq8fry8kwtsi4"]
 
-[ext_resource type="Script" uid="uid://77s3evn880oo" path="res://addons/shrimpvm/scenes/editable_item.gd" id="1_2k3bn"]
+[ext_resource type="Script" path="res://addons/shrimpvm/scenes/editable_item.gd" id="1_2k3bn"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jvgiq"]
 content_margin_left = 5.0

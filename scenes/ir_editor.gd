@@ -10,7 +10,7 @@ signal script_run_start()
 signal script_run_finihsed()
 signal modal_finished()
 
-@export_tool_button("Rebuild editor") var rebuilder = rebuild
+@export_tool_button("Rebuild editor") var r = rebuild
 @export_tool_button("Run workspace") var runer = run_workspace
 @export_tool_button("Reload file system") var fsr = fs_reload
 @export_category("Metadata")

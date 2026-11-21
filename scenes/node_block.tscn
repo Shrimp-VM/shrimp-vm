@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://2bp5i42dylnd" path="res://addons/shrimpvm/clickable_wrapper.gd" id="2_y5sfv"]
 [ext_resource type="Script" uid="uid://uw4oee4tvks" path="res://addons/shrimpvm/nodes/base/root_node.gd" id="3_w8yxg"]
 [ext_resource type="PackedScene" uid="uid://cwjvn21pj3cv0" path="res://addons/shrimpvm/scenes/triangle.tscn" id="5_qlsr3"]
-[ext_resource type="Script" uid="uid://g02xv4lsxvd" path="res://addons/shrimpvm/scenes/triangle.gd" id="5_w8yxg"]
+[ext_resource type="Script" path="res://addons/shrimpvm/scenes/triangle.gd" id="5_w8yxg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w8yxg"]
 resource_local_to_scene = true
@@ -159,7 +159,6 @@ size_flags_vertical = 4
 mouse_filter = 1
 script = ExtResource("5_w8yxg")
 direction = 1
-metadata/_custom_type_script = "uid://g02xv4lsxvd"
 
 [node name="name" type="RichTextLabel" parent="wrapper/frame/layout/frame/layout/wrapper" unique_id=139600988]
 unique_name_in_owner = true

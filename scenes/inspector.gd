@@ -12,6 +12,7 @@ var block: NodeBlock
 
 func _ready() -> void:
 	deleteBtn.pressed.connect(delete.emit)
+
 func rebuild(release: bool = false):
 	if release:
 		await ShrimpPluginManager.frame()

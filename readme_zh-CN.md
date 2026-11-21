@@ -20,7 +20,7 @@ Godot 4.6 的可视化积木脚本虚拟机（UGC 框架）：让玩家在 GUI �
 3. 代码中手动执行：
 
 ```gdscript
-var result = await vm.execute(some_ir, ExecutionContext.new())
+var result = await vm.execute(some_ir, ShrimPoroutine.new())
 ```
 
 ### 事件模型
@@ -39,7 +39,7 @@ var result = await vm.execute(some_ir, ExecutionContext.new())
 继承 `ShrimpIR` 并实现以下接口：
 
 ```gdscript
-func execute(vm: ShrimpVM, context: ExecutionContext) -> Variant
+func execute(vm: ShrimpVM, context: ShrimPoroutine) -> Variant
 func decompile() -> Dictionary
 static func create_from(wrapper: Dictionary) -> ShrimpIR
 static func get_wrapper_schema() -> Dictionary
